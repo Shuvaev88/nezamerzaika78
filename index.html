@@ -4,882 +4,527 @@
     <meta charset="UTF-8">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-size='24'%3E%E2%9D%84%EF%B8%8F%3C/text%3E%3C/svg%3E">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>❄️ Незамерзайка соседям — Новая Охта и Цветной город</title>
-    <meta name="description" content="Незамерзайка -27°C для жителей Новой Охты и Цветного города. Доставка до подъезда. 240₽/бутылка.">
-    <meta property="og:title" content="❄️ Незамерзайка соседям — 240₽">
-    <meta property="og:description" content="Доставка до подъезда. Оплата наличными.">
-    
-    <!-- PWA Meta Tags -->
-    <link rel="manifest" href="./manifest.json">
+    <title>❄️ Незамерзайка соседям</title>
+    <meta name="description" content="Незамерзайка -27°C. Доставка до подъезда. 240₽/бутылка.">
     <meta name="theme-color" content="#203a43">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Незамерзайка">
+    <link rel="manifest" href="./manifest.json">
     <link rel="apple-touch-icon" href="./icon-192.png">
     
-    <script src="https://unpkg.com/imask"></script>
-    
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-
-        body {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-            color: #fff;
-            padding: 10px;
-            overflow-y: auto;
-            position: relative;
-        }
-
-        .input-error {
-            border-color: #ff4d4d !important;
-            animation: shake 0.4s ease-in-out;
-            background: rgba(255, 77, 77, 0.15) !important;
-        }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20% { transform: translateX(-6px); }
-            40% { transform: translateX(6px); }
-            60% { transform: translateX(-4px); }
-            80% { transform: translateX(4px); }
-        }
-
-        .snowflake {
-            position: fixed; top: -10px; color: #fff; pointer-events: none;
-            animation: fall linear infinite; z-index: 0;
-        }
-        @keyframes fall {
-            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.6; } 90% { opacity: 0.6; }
-            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
-        }
-        .snowman {
-            position: fixed; bottom: -50px; pointer-events: none; z-index: 0;
-            animation: snowmanFloat 12s ease-in-out infinite; opacity: 0.35;
-        }
-        @keyframes snowmanFloat {
-            0%, 100% { transform: translateY(0) rotate(-3deg); }
-            50% { transform: translateY(-10px) rotate(3deg); }
-        }
-
-        .container {
-            max-width: 600px; margin: 0 auto; position: relative; z-index: 1;
-            display: flex; flex-direction: column; gap: 8px; padding-bottom: 40px;
-        }
-
-        .hero-header {
-            background: linear-gradient(135deg, rgba(116, 235, 213, 0.15), rgba(102, 126, 234, 0.15));
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 16px;
-            padding: 16px 14px 12px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-header::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
-            animation: headerShine 6s ease-in-out infinite;
-        }
-        @keyframes headerShine { 0% { left: -100%; } 50%, 100% { left: 100%; } }
-
-        .hero-title {
-            font-size: 1.4em; font-weight: 900;
-            background: linear-gradient(135deg, #fff 0%, #74ebd5 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 3px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-subtitle {
-            font-size: 0.8em; font-weight: 700; color: #ffd89b;
-            margin-bottom: 10px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-info-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-chip {
-            background: rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
-            padding: 8px 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            font-size: 0.8em;
-            font-weight: 600;
-        }
-
-        .hero-chip .chip-icon { font-size: 1.3em; }
-        .hero-chip .chip-value { color: #ffd89b; font-weight: 800; }
-
-        .chip-weather { background: linear-gradient(135deg, rgba(102, 126, 234, 0.35), rgba(118, 75, 162, 0.35)); }
-        .chip-payment { background: linear-gradient(135deg, rgba(255, 0, 0, 0.25), rgba(255, 107, 107, 0.25)); }
-
-        .hero-delivery-btn {
-            margin-top: 10px;
-            background: linear-gradient(135deg, #11998e, #38ef7d);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-            padding: 10px;
-            text-align: center;
-            cursor: pointer;
-            font-size: 0.85em;
-            font-weight: 700;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all 0.2s;
-            position: relative;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .hero-delivery-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(17, 153, 142, 0.5); }
-        .hero-delivery-btn:active { transform: translateY(1px); }
-
-        .social-buttons-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            margin-top: 8px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .social-btn {
-            padding: 10px 8px;
-            border-radius: 10px;
-            text-align: center;
-            cursor: pointer;
-            font-size: 0.8em;
-            font-weight: 700;
-            color: #fff;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            transition: all 0.2s;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .social-btn:hover { transform: translateY(-2px); filter: brightness(1.15); }
-        .social-btn:active { transform: translateY(1px) scale(0.98); }
-
-        .social-btn.tg {
-            background: linear-gradient(135deg, #26A5E4, #1e8ec5);
-            box-shadow: 0 4px 15px rgba(38, 165, 228, 0.4);
-        }
-        .social-btn.tg:hover { box-shadow: 0 6px 20px rgba(38, 165, 228, 0.6); }
-
-        .social-btn.max {
-            background: linear-gradient(135deg, #7B68EE, #5B4FCF);
-            box-shadow: 0 4px 15px rgba(123, 104, 238, 0.4);
-        }
-        .social-btn.max:hover { box-shadow: 0 6px 20px rgba(123, 104, 238, 0.6); }
-
-        .social-btn.call {
-            background: linear-gradient(135deg, #11998e, #38ef7d);
-            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
-            width: 100%;
-            margin-top: 6px;
-        }
-        .social-btn.call:hover { box-shadow: 0 6px 20px rgba(17, 153, 142, 0.6); }
-
-        .social-btn .social-icon { font-size: 1.2em; }
-
-        .order-blocks { display: flex; flex-direction: column; gap: 8px; }
-
-        .weekend-order-block {
-            background: linear-gradient(135deg, #ff8c00, #ff4500);
-            border: 2px solid #ffd700;
-            border-radius: 14px;
-            padding: 12px 10px;
-            text-align: center;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 15px rgba(255, 140, 0, 0.5);
-            animation: ctaPulse 2s infinite;
-            transition: all 0.3s ease;
-        }
-        @keyframes ctaPulse {
-            0% { box-shadow: 0 0 15px rgba(255, 140, 0, 0.4); }
-            50% { box-shadow: 0 0 25px rgba(255, 69, 0, 0.7); }
-            100% { box-shadow: 0 0 15px rgba(255, 140, 0, 0.4); }
-        }
-        .weekend-order-block:hover { transform: translateY(-2px) scale(1.01); }
-        .weekend-order-block:active { transform: scale(0.98); }
-        .weekend-order-block::after {
-            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
-            transform: skewX(-25deg); animation: ctaShine 3s infinite;
-        }
-        @keyframes ctaShine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
-
-        .weekend-title {
-            font-size: 0.95em; font-weight: 900; color: #fff;
-            text-transform: uppercase; letter-spacing: 0.5px;
-            margin-bottom: 3px; text-shadow: 0 2px 4px rgba(0,0,0,0.4);
-        }
-        .weekend-subtitle { font-size: 0.65em; color: rgba(255,255,255,0.95); font-weight: 600; }
-
-        .click-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #ff0000, #cc0000);
-            color: white; font-size: 0.75em; font-weight: 900;
-            padding: 4px 12px; border-radius: 20px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.4);
-            margin: 3px 0;
-            border: 2px solid #fff;
-            text-transform: uppercase;
-            animation: badgePulse 1.5s infinite ease-in-out;
-        }
-        @keyframes badgePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-
-        .weekday-order-block {
-            background: linear-gradient(135deg, #0077ff, #0055cc);
-            border: 2px solid #74ebd5;
-            border-radius: 14px;
-            padding: 12px 10px;
-            text-align: center;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 15px rgba(0, 119, 255, 0.5);
-            animation: weekdayPulse 2s infinite;
-            transition: all 0.3s ease;
-        }
-        @keyframes weekdayPulse {
-            0% { box-shadow: 0 0 15px rgba(0, 119, 255, 0.4); }
-            50% { box-shadow: 0 0 25px rgba(0, 119, 255, 0.7); }
-            100% { box-shadow: 0 0 15px rgba(0, 119, 255, 0.4); }
-        }
-        .weekday-order-block:hover { transform: translateY(-2px) scale(1.01); }
-        .weekday-order-block:active { transform: scale(0.98); }
-        .weekday-order-block::after {
-            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
-            transform: skewX(-25deg); animation: ctaShine 3s infinite;
-        }
-
-        .weekday-title {
-            font-size: 0.95em; font-weight: 900; color: #fff;
-            text-transform: uppercase; letter-spacing: 0.5px;
-            margin-bottom: 3px; text-shadow: 0 2px 4px rgba(0,0,0,0.4);
-        }
-        .weekday-subtitle { font-size: 0.65em; color: rgba(255,255,255,0.95); font-weight: 600; }
-
-        .weekday-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #ffd89b, #ff9a56);
-            color: #000; font-size: 0.7em; font-weight: 900;
-            padding: 3px 12px; border-radius: 20px;
-            margin: 3px 0;
-            border: 2px solid #fff;
-            text-transform: uppercase;
-        }
-
-        .glass {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            padding: 10px;
-        }
-        .section-title { font-size: 0.85em; font-weight: 700; margin-bottom: 6px; }
-        .products { display: flex; flex-direction: column; gap: 6px; }
-
-        .product {
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 8px 10px; border-radius: 10px;
-            display: flex; align-items: center; gap: 10px;
-        }
-
-        .product-img {
-            width: 50px; height: 50px; flex-shrink: 0;
-            border-radius: 8px;
-            background: rgba(0, 0, 0, 0.3);
-            display: flex; align-items: center; justify-content: center; overflow: hidden;
-        }
-        .product-img img { width: 100%; height: 100%; object-fit: cover; }
-
-        .product-info { flex: 1; min-width: 0; }
-        .product-info h3 { font-size: 0.8em; margin-bottom: 1px; }
-        .product-info .desc { font-size: 0.6em; opacity: 0.7; }
-        .product-info .price {
-            font-size: 0.9em; font-weight: 800;
-            background: linear-gradient(135deg, #ffd89b 0%, #ff9a56 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
-        .controls { display: flex; align-items: center; gap: 5px; }
-        .btn-qty {
-            width: 28px; height: 28px; border: none;
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%; font-size: 14px;
-            cursor: pointer; color: #fff; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .btn-qty:active { transform: scale(0.9); }
-        .qty-display { font-weight: 800; width: 24px; text-align: center; font-size: 0.9em; color: #ffd89b; }
-
-        input, textarea, select {
-            width: 100%; padding: 10px 12px; margin-bottom: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px; font-size: 14px;
-            background: rgba(255, 255, 255, 0.08); color: #fff;
-            font-family: inherit;
-        }
-        input::placeholder, textarea::placeholder { color: rgba(255, 255, 255, 0.5); }
-        input:focus, textarea:focus, select:focus { outline: none; border-color: #ffd89b; background: rgba(255, 255, 255, 0.12); }
-        input:disabled, select:disabled { opacity: 0.4; cursor: not-allowed; background: rgba(0, 0, 0, 0.2); }
-        textarea { resize: vertical; min-height: 70px; }
-
-        .delivery-choice {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-        .delivery-choice-label {
-            background: rgba(255, 255, 255, 0.08);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            padding: 10px 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            font-size: 0.85em;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.7);
-        }
-        .delivery-choice-label input[type="radio"] { display: none; }
-        .delivery-choice-label:has(input:checked) {
-            background: rgba(17, 153, 142, 0.25);
-            border-color: #38ef7d;
-            color: #fff;
-            box-shadow: 0 0 15px rgba(56, 239, 125, 0.3);
-        }
-        .delivery-choice-label:hover { background: rgba(255, 255, 255, 0.15); }
-        .delivery-choice-label .choice-icon { font-size: 1.3em; }
-
-        .address-hint { font-size: 0.7em; color: #ffd89b; margin-bottom: 6px; text-align: center; font-weight: 600; }
-
-        .total-block {
-            text-align: right; font-size: 1.1em; font-weight: 800; margin: 4px 0 8px;
-            background: linear-gradient(135deg, #ffd89b 0%, #ff9a56 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
-        .sms-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .sms-block { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; padding: 8px; text-align: center; }
-        .sms-block-title { font-size: 0.7em; font-weight: 700; margin-bottom: 5px; }
-
-        .btn-sms {
-            width: 100%; padding: 10px 6px; color: white; border: none; border-radius: 8px;
-            font-size: 0.8em; font-weight: 700; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 4px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-        }
-        .btn-sms:active { transform: scale(0.95); }
-        .btn-sms.novaya { background: linear-gradient(135deg, #667eea, #764ba2); }
-        .btn-sms.tsvetnoy { background: linear-gradient(135deg, #f093fb, #f5576c); }
-
-        .note { font-size: 0.65em; opacity: 0.7; text-align: center; margin-top: 6px; line-height: 1.2; }
-
-        .reviews-section {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px; padding: 10px;
-        }
-        .reviews-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .reviews-header .section-title { margin-bottom: 0; color: #ffd89b; }
-
-        .btn-add-review {
-            background: linear-gradient(135deg, #ffd89b, #ff9a56);
-            color: #000; border: none; border-radius: 20px;
-            padding: 5px 12px; font-size: 0.7em; font-weight: 700;
-            cursor: pointer; display: flex; align-items: center; gap: 4px;
-            transition: all 0.2s;
-        }
-        .btn-add-review:hover { transform: scale(1.05); box-shadow: 0 3px 10px rgba(255, 216, 155, 0.4); }
-        .btn-add-review:active { transform: scale(0.95); }
-
-        .reviews-list { display: flex; flex-direction: column; gap: 6px; max-height: 400px; overflow-y: auto; }
-
-        .review {
-            background: rgba(255, 255, 255, 0.08);
-            border-left: 3px solid #ffd89b;
-            padding: 8px 10px; border-radius: 6px;
-            animation: reviewAppear 0.4s ease-out;
-        }
-        @keyframes reviewAppear {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .review-top { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
-        .review-avatar {
-            width: 32px; height: 32px; border-radius: 50%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 800; font-size: 0.85em; color: #fff; flex-shrink: 0;
-        }
-        .review-meta { flex: 1; min-width: 0; }
-        .review-author { font-size: 0.8em; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .review-location { font-size: 0.65em; color: #74ebd5; opacity: 0.9; }
-        .review-stars { color: #ffd89b; font-size: 0.85em; letter-spacing: 1px; }
-        .review-text { font-size: 0.75em; line-height: 1.4; opacity: 0.95; word-wrap: break-word; }
-        .review-date { font-size: 0.6em; opacity: 0.5; margin-top: 3px; }
-
-        .no-reviews { text-align: center; padding: 15px; font-size: 0.8em; opacity: 0.6; font-style: italic; }
-
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);
-            z-index: 2000; display: none; align-items: center; justify-content: center;
-            padding: 15px; animation: modalFadeIn 0.3s ease-out;
-        }
-        .modal-overlay.active { display: flex; }
-        @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .modal {
-            background: linear-gradient(135deg, #203a43, #2c5364);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 16px; padding: 18px;
-            max-width: 400px; width: 100%; max-height: 90vh; overflow-y: auto;
-            animation: modalSlideIn 0.3s ease-out;
-        }
-        @keyframes modalSlideIn {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .modal-title { font-size: 1.1em; font-weight: 800; color: #ffd89b; text-align: center; margin-bottom: 12px; }
-        .modal-label { font-size: 0.75em; font-weight: 600; margin-bottom: 4px; color: rgba(255, 255, 255, 0.9); }
-
-        .star-rating { display: flex; gap: 5px; justify-content: center; margin-bottom: 10px; }
-        .star {
-            font-size: 1.8em; cursor: pointer; color: rgba(255, 255, 255, 0.3);
-            transition: all 0.2s; user-select: none;
-        }
-        .star:hover { transform: scale(1.2); }
-        .star.active { color: #ffd89b; text-shadow: 0 0 10px rgba(255, 216, 155, 0.5); }
-
-        .modal-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
-        .modal-btn {
-            padding: 11px; border: none; border-radius: 10px;
-            font-size: 0.85em; font-weight: 700; cursor: pointer; transition: all 0.2s;
-        }
-        .modal-btn.cancel { background: rgba(255, 255, 255, 0.15); color: #fff; border: 1px solid rgba(255, 255, 255, 0.3); }
-        .modal-btn.submit { background: linear-gradient(135deg, #11998e, #38ef7d); color: #fff; box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4); }
-        .modal-btn:hover { transform: translateY(-2px); }
-        .modal-btn:active { transform: scale(0.97); }
-        .modal-hint { font-size: 0.65em; opacity: 0.6; text-align: center; margin-top: 8px; line-height: 1.3; }
-
-        .how-it-works { background: rgba(255, 216, 155, 0.1); border-color: rgba(255, 216, 155, 0.3); }
-        .how-it-works .section-title { color: #ffd89b; }
-        .how-it-works-text { font-size: 0.75em; line-height: 1.4; opacity: 0.9; }
-        .how-it-works-text strong { color: #ffd89b; }
-
-        .calendar-page, .weekend-page, .delivery-page {
-            display: none; max-width: 600px; margin: 0 auto; position: relative;
-            z-index: 1; padding-bottom: 40px; animation: slideIn 0.3s ease-out;
-        }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
-
-        .calendar-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding: 6px 0; }
-        .btn-back {
-            background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); color: white;
-            padding: 7px 12px; border-radius: 8px; cursor: pointer; font-size: 0.85em; font-weight: 700;
-            display: flex; align-items: center; gap: 4px;
-        }
-        .btn-back:hover { background: rgba(255, 255, 255, 0.25); }
-        .calendar-title { font-size: 1em; font-weight: 900; color: #ffd89b; flex: 1; text-align: center; }
-
-        .welcome-block, .weekend-welcome {
-            background: linear-gradient(135deg, rgba(255, 107, 53, 0.2), rgba(247, 147, 30, 0.2));
-            border: 2px solid rgba(255, 107, 53, 0.4); border-radius: 10px; padding: 10px;
-            margin-bottom: 10px; text-align: center;
-        }
-        .welcome-icon, .weekend-welcome-icon { font-size: 1.5em; margin-bottom: 4px; display: block; }
-        .welcome-text, .weekend-welcome-text { font-size: 0.8em; font-weight: 600; line-height: 1.4; color: #fff; }
-        .welcome-text strong, .weekend-welcome-text strong { color: #ffd89b; font-weight: 800; }
-
-        .weekday-hint, .weekend-hint {
-            border-radius: 8px; padding: 8px; margin-bottom: 10px; text-align: center;
-            font-size: 0.75em; font-weight: 600;
-        }
-        .weekday-hint { background: rgba(116, 235, 213, 0.15); border: 1px solid rgba(116, 235, 213, 0.3); color: #74ebd5; }
-        .weekend-hint { background: rgba(255, 107, 107, 0.15); border: 1px solid rgba(255, 107, 107, 0.3); color: #ff9a9a; }
-        .weekday-hint strong, .weekend-hint strong { color: #ffd89b; }
-
-        .calendar-card {
-            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px; padding: 12px; margin-bottom: 10px;
-        }
-        .calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .calendar-nav button {
-            background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.3); color: white;
-            padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9em; font-weight: bold;
-        }
-        .calendar-month { font-size: 1em; font-weight: 700; color: #ffd89b; }
-
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
-        .calendar-day-header { text-align: center; font-size: 0.65em; font-weight: 700; color: #ffd89b; padding: 3px 0; }
-        .calendar-day-header.weekend { color: #ff6b6b; }
-
-        .calendar-day {
-            aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
-            background: rgba(255, 255, 255, 0.08); border-radius: 6px; font-size: 0.8em;
-            font-weight: 600; cursor: pointer; border: 2px solid transparent;
-        }
-        .calendar-day:hover:not(.disabled) { background: rgba(255, 255, 255, 0.2); transform: scale(1.05); }
-        .calendar-day.weekend:not(.disabled) { background: rgba(255, 107, 107, 0.2); color: #ff9a9a; }
-        .calendar-day.selected {
-            background: linear-gradient(135deg, #ffd89b, #ff9a56) !important; color: #000 !important;
-            border-color: #fff; font-weight: 900; transform: scale(1.05);
-        }
-        .calendar-day.disabled { opacity: 0.2; cursor: not-allowed; }
-        .calendar-day.today { border: 2px solid #74ebd5; }
-
-        .selected-info {
-            background: linear-gradient(135deg, rgba(17, 153, 142, 0.3), rgba(56, 239, 125, 0.3));
-            border: 1px solid rgba(56, 239, 125, 0.4); border-radius: 8px; padding: 10px;
-            text-align: center; margin-bottom: 10px; font-size: 0.85em; font-weight: 600;
-        }
-
-        .calendar-actions { display: flex; gap: 8px; }
-        .calendar-btn {
-            flex: 1; padding: 12px; border: none; border-radius: 10px; font-size: 0.9em;
-            font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;
-        }
-        .calendar-btn.cancel { background: rgba(255, 255, 255, 0.15); color: white; border: 1px solid rgba(255, 255, 255, 0.3); }
-        .calendar-btn.confirm { background: linear-gradient(135deg, #11998e, #38ef7d); color: white; }
-        .calendar-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        .weekend-page-header {
-            background: linear-gradient(135deg, #ff6b35, #f7931e); border-radius: 12px; padding: 12px;
-            text-align: center; margin-bottom: 10px; border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-        .weekend-page-title { font-size: 1.1em; font-weight: 900; color: #fff; text-transform: uppercase; margin-bottom: 3px; }
-        .weekend-page-subtitle { font-size: 0.75em; color: rgba(255,255,255,0.9); font-weight: 600; }
-
-        .weekend-total {
-            text-align: right; font-size: 1.1em; font-weight: 800; margin: 4px 0 8px;
-            background: linear-gradient(135deg, #ffd89b 0%, #ff9a56 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
-        .weekend-submit {
-            width: 100%; padding: 14px; background: linear-gradient(135deg, #ff6b35, #f7931e);
-            color: white; border: none; border-radius: 10px; font-size: 0.95em; font-weight: 700;
-            cursor: pointer; box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
-        }
-        .weekend-submit:hover { transform: translateY(-2px); }
-        .weekend-submit:active { transform: scale(0.97); }
-        .weekend-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-        .delivery-header {
-            background: linear-gradient(135deg, #11998e, #38ef7d);
-            border-radius: 12px; padding: 12px; text-align: center; margin-bottom: 10px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-        .delivery-header-title { font-size: 1.1em; font-weight: 900; color: #fff; text-transform: uppercase; margin-bottom: 3px; }
-        .delivery-header-subtitle { font-size: 0.75em; color: rgba(255,255,255,0.95); font-weight: 600; }
-
-        .delivery-section {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px; padding: 10px; margin-bottom: 10px;
-        }
-        .delivery-section-title { font-size: 0.9em; font-weight: 700; margin-bottom: 8px; color: #ffd89b; }
-        .delivery-item {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 6px; padding: 8px; margin-bottom: 6px;
-        }
-        .delivery-item:last-child { margin-bottom: 0; }
-        .delivery-item-title { font-size: 0.8em; font-weight: 700; margin-bottom: 3px; }
-        .delivery-item-text { font-size: 0.75em; color: rgba(255,255,255,0.85); line-height: 1.3; }
-        .delivery-item-text strong { color: #74ebd5; }
-
-        .price-list { display: flex; flex-direction: column; gap: 6px; }
-        .price-item {
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 6px; padding: 8px 10px;
-        }
-        .price-item-name { font-size: 0.8em; font-weight: 600; }
-        .price-item-value {
-            font-size: 0.95em; font-weight: 800;
-            background: linear-gradient(135deg, #ffd89b 0%, #ff9a56 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
-        .contact-item {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 6px; padding: 8px; margin-bottom: 6px;
-        }
-        .contact-item:last-child { margin-bottom: 0; }
-        .contact-item-title { font-size: 0.75em; font-weight: 700; color: #74ebd5; margin-bottom: 3px; }
-        .contact-item-line { font-size: 0.75em; color: rgba(255,255,255,0.9); margin-bottom: 2px; }
-        .contact-item-line:last-child { margin-bottom: 0; }
-
-        .delivery-note {
-            background: rgba(255, 107, 107, 0.15);
-            border: 1px solid rgba(255, 107, 107, 0.3);
-            border-radius: 8px; padding: 8px; text-align: center;
-            font-size: 0.75em; font-weight: 600; color: #ff9a9a; margin-top: 8px;
-        }
-        .delivery-note strong { color: #ffd89b; }
-
-        .floating-tg {
-            position: fixed; bottom: 15px; right: 15px;
-            width: 55px; height: 55px;
-            background: linear-gradient(135deg, #26A5E4, #1e8ec5);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 26px;
-            box-shadow: 0 4px 20px rgba(38, 165, 228, 0.6);
-            z-index: 1000; text-decoration: none;
-            animation: floatBounce 2s ease-in-out infinite;
-        }
-        .floating-tg:hover { transform: scale(1.1); }
-        @keyframes floatBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
-        }
-
-        .copy-toast {
-            position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%) translateY(100px);
-            background: linear-gradient(135deg, #11998e, #38ef7d); color: white; padding: 10px 20px;
-            border-radius: 50px; font-size: 13px; font-weight: 600; opacity: 0;
-            transition: all 0.4s; pointer-events: none; z-index: 3000;
-        }
-        .copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-        .pwa-install-banner {
-            display: none;
-            position: fixed;
-            bottom: 80px;
-            left: 10px;
-            right: 10px;
-            background: rgba(32, 58, 67, 0.98);
-            backdrop-filter: blur(15px);
-            border: 2px solid rgba(116, 235, 213, 0.5);
-            border-radius: 14px;
-            padding: 14px;
-            z-index: 1500;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            animation: slideUp 0.4s ease-out;
-        }
-        @keyframes slideUp {
-            from { transform: translateY(100px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        .pwa-install-content {
-            display: flex; align-items: center; justify-content: space-between; gap: 10px;
-        }
-        .pwa-install-text {
-            font-size: 0.85em; font-weight: 600; color: #fff; flex: 1; line-height: 1.3;
-        }
-        .pwa-install-text strong { color: #74ebd5; }
-        .pwa-install-btn {
-            background: linear-gradient(135deg, #11998e, #38ef7d);
-            color: white; border: none; border-radius: 10px;
-            padding: 10px 18px; font-size: 0.85em; font-weight: 700;
-            cursor: pointer; white-space: nowrap;
-            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
-        }
-        .pwa-install-btn:active { transform: scale(0.95); }
-        .pwa-close-btn {
-            background: transparent; border: none;
-            color: rgba(255,255,255,0.6); font-size: 1.4em;
-            cursor: pointer; padding: 0 5px; line-height: 1;
-        }
-
-        .pwa-ios-instructions {
-            display: none;
-            position: fixed;
-            bottom: 80px;
-            left: 10px;
-            right: 10px;
-            background: rgba(32, 58, 67, 0.98);
-            backdrop-filter: blur(15px);
-            border: 2px solid rgba(116, 235, 213, 0.5);
-            border-radius: 14px;
-            padding: 16px;
-            z-index: 1500;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            animation: slideUp 0.4s ease-out;
-        }
-        .pwa-ios-title {
-            font-size: 1em; font-weight: 800; color: #ffd89b;
-            text-align: center; margin-bottom: 10px;
-        }
-        .pwa-ios-step {
-            display: flex; align-items: center; gap: 10px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 8px; padding: 10px; margin-bottom: 6px; font-size: 0.85em;
-        }
-        .pwa-ios-step-num {
-            background: linear-gradient(135deg, #11998e, #38ef7d);
-            color: white; width: 26px; height: 26px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 800; flex-shrink: 0;
-        }
-        .pwa-ios-icon { font-size: 1.3em; }
-    </style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { min-height: 100vh; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: #fff; padding: 8px; overflow-y: auto; }
+    
+    .snowflake { position: fixed; top: -10px; color: rgba(255,255,255,0.6); pointer-events: none; z-index: 0; animation: fall linear infinite; }
+    @keyframes fall { to { transform: translateY(105vh); } }
+
+    .container { max-width: 600px; margin: 0 auto; position: relative; z-index: 1; display: flex; flex-direction: column; gap: 6px; padding-bottom: 30px; }
+
+    .hero-header { 
+        background: linear-gradient(135deg, rgba(15, 52, 96, 0.6), rgba(22, 33, 62, 0.6)); 
+        border: 1px solid rgba(116, 235, 213, 0.25); 
+        border-radius: 12px; 
+        padding: 10px 10px 8px; 
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    .hero-title { font-size: 1.15em; font-weight: 900; background: linear-gradient(135deg, #fff, #74ebd5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 2px; }
+    .hero-subtitle { font-size: 0.7em; font-weight: 700; color: #f0c27f; margin-bottom: 6px; }
+
+    /* === ВИДЖЕТ ПОГОДЫ === */
+    .weather-widget {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+        border: 1px solid rgba(116, 235, 213, 0.3);
+        border-radius: 12px;
+        padding: 10px;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 4px 15px rgba(42, 82, 152, 0.4);
+    }
+    .weather-current {
+        flex-shrink: 0;
+        text-align: center;
+        padding-right: 10px;
+        border-right: 1px solid rgba(255,255,255,0.15);
+        min-width: 70px;
+    }
+    .weather-current-temp {
+        font-size: 2em;
+        font-weight: 900;
+        color: #fff;
+        line-height: 1;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .weather-current-temp sup {
+        font-size: 0.4em;
+        vertical-align: super;
+        font-weight: 700;
+    }
+    .weather-current-label {
+        font-size: 0.6em;
+        color: #74ebd5;
+        font-weight: 700;
+        margin-top: 3px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .weather-forecast {
+        flex: 1;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4px;
+    }
+    .weather-forecast-day {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 6px 3px;
+        text-align: center;
+        transition: background 0.2s;
+    }
+    .weather-forecast-day:first-child {
+        background: rgba(116, 235, 213, 0.15);
+        border-color: rgba(116, 235, 213, 0.3);
+    }
+    .weather-forecast-day-name {
+        font-size: 0.6em;
+        font-weight: 700;
+        color: #74ebd5;
+        margin-bottom: 2px;
+        text-transform: uppercase;
+    }
+    .weather-forecast-icon {
+        font-size: 1.1em;
+        margin-bottom: 2px;
+    }
+    .weather-forecast-temp {
+        font-size: 0.75em;
+        font-weight: 800;
+        color: #fff;
+    }
+    .weather-forecast-temp-min {
+        font-size: 0.6em;
+        opacity: 0.7;
+        font-weight: 600;
+        color: #a8d8ff;
+    }
+    .weather-loading {
+        text-align: center;
+        font-size: 0.7em;
+        opacity: 0.7;
+        padding: 8px;
+        width: 100%;
+        color: #a8d8ff;
+    }
+    /* =================== */
+
+    .hero-chip { 
+        background: rgba(15, 52, 96, 0.4); 
+        border: 1px solid rgba(116, 235, 213, 0.2); 
+        border-radius: 8px; 
+        padding: 6px; 
+        font-size: 0.7em; 
+        font-weight: 600; 
+        margin-bottom: 6px;
+    }
+    .hero-chip .chip-value { color: #f0c27f; font-weight: 800; }
+
+    .hero-delivery-btn, .social-btn, .btn-sms, .calendar-btn, .weekend-submit, .modal-btn {
+        width: 100%; padding: 9px; border: none; border-radius: 8px; font-size: 0.8em; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; color: #fff; display: flex; align-items: center; justify-content: center; gap: 5px; transition: transform 0.1s, box-shadow 0.2s;
+    }
+    .hero-delivery-btn:active, .social-btn:active, .btn-sms:active { transform: scale(0.96); }
+    .hero-delivery-btn { 
+        background: linear-gradient(135deg, #11998e, #38ef7d); 
+        margin-top: 6px;
+        box-shadow: 0 3px 10px rgba(17, 153, 142, 0.3);
+    }
+
+    .social-buttons-row { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 6px; }
+    .social-btn.tg { background: linear-gradient(135deg, #26A5E4, #1e8ec5); box-shadow: 0 2px 8px rgba(38, 165, 228, 0.3); }
+    .social-btn.max { background: linear-gradient(135deg, #7B68EE, #6a5acd); box-shadow: 0 2px 8px rgba(123, 104, 238, 0.3); }
+    .social-btn.call { background: linear-gradient(135deg, #11998e, #38ef7d); grid-column: span 2; margin-top: 5px; box-shadow: 0 2px 8px rgba(17, 153, 142, 0.3); }
+
+    .order-blocks { display: flex; flex-direction: column; gap: 6px; }
+    .weekend-order-block, .weekday-order-block { border-radius: 10px; padding: 10px 8px; text-align: center; cursor: pointer; border: 2px solid transparent; transition: transform 0.2s, box-shadow 0.2s; }
+    .weekend-order-block { 
+        background: linear-gradient(135deg, #f39c12, #e67e22); 
+        border-color: rgba(240, 194, 127, 0.5);
+        box-shadow: 0 3px 12px rgba(243, 156, 18, 0.3);
+    }
+    .weekday-order-block { 
+        background: linear-gradient(135deg, #3498db, #2980b9); 
+        border-color: rgba(116, 235, 213, 0.4);
+        box-shadow: 0 3px 12px rgba(52, 152, 219, 0.3);
+    }
+    .weekend-order-block:hover, .weekday-order-block:hover { transform: translateY(-2px); }
+    .weekend-title, .weekday-title { font-size: 0.85em; font-weight: 900; color: #fff; text-transform: uppercase; margin-bottom: 3px; }
+    .click-badge { display: inline-block; background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; font-size: 0.6em; font-weight: 900; padding: 2px 8px; border-radius: 15px; margin: 3px 0; border: 2px solid #fff; }
+    .weekday-badge { display: inline-block; background: linear-gradient(135deg, #f0c27f, #e6a54d); color: #000; font-size: 0.6em; font-weight: 900; padding: 2px 8px; border-radius: 15px; margin: 3px 0; }
+
+    .glass { 
+        background: rgba(22, 33, 62, 0.5); 
+        border: 1px solid rgba(116, 235, 213, 0.2); 
+        border-radius: 10px; 
+        padding: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    .section-title { font-size: 0.8em; font-weight: 700; margin-bottom: 6px; color: #f0c27f; }
+    
+    .product { 
+        background: rgba(15, 52, 96, 0.4); 
+        border: 1px solid rgba(116, 235, 213, 0.15); 
+        padding: 7px; 
+        border-radius: 8px; 
+        display: flex; 
+        align-items: center; 
+        gap: 8px;
+    }
+    .product-img { width: 40px; height: 40px; flex-shrink: 0; border-radius: 6px; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .product-img img { width: 100%; height: 100%; object-fit: cover; }
+    .product-info { flex: 1; }
+    .product-info h3 { font-size: 0.75em; margin-bottom: 1px; }
+    .product-info .desc { font-size: 0.6em; opacity: 0.7; }
+    .product-info .price { font-size: 0.85em; font-weight: 800; color: #f0c27f; }
+    
+    .controls { display: flex; align-items: center; gap: 6px; }
+    .btn-qty { width: 26px; height: 26px; border: 1px solid rgba(116, 235, 213, 0.3); background: rgba(116, 235, 213, 0.15); border-radius: 50%; font-size: 14px; cursor: pointer; color: #fff; display: flex; align-items: center; justify-content: center; }
+    .qty-display { font-weight: 800; width: 20px; text-align: center; color: #f0c27f; font-size: 0.85em; }
+
+    input, select, textarea { width: 100%; padding: 9px; margin-bottom: 5px; border: 1px solid rgba(116, 235, 213, 0.2); border-radius: 7px; font-size: 14px; background: rgba(15, 52, 96, 0.4); color: #fff; -webkit-appearance: none; }
+    input:focus, textarea:focus { outline: none; border-color: #74ebd5; background: rgba(15, 52, 96, 0.6); }
+    input:disabled { opacity: 0.4; }
+    textarea { resize: vertical; min-height: 50px; }
+
+    .input-error { border-color: #e74c3c !important; animation: shake 0.3s; background: rgba(231, 76, 60, 0.2) !important; }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+
+    .delivery-choice { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px; }
+    .delivery-choice-label { 
+        background: rgba(15, 52, 96, 0.4); 
+        border: 2px solid rgba(116, 235, 213, 0.2); 
+        border-radius: 8px; 
+        padding: 7px; 
+        text-align: center; 
+        cursor: pointer; 
+        font-size: 0.75em; 
+        font-weight: 700; 
+        color: rgba(255,255,255,0.7);
+        transition: all 0.2s;
+    }
+    .delivery-choice-label input { display: none; }
+    .delivery-choice-label:has(input:checked) { 
+        background: rgba(17, 153, 142, 0.3); 
+        border-color: #38ef7d; 
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(56, 239, 125, 0.2);
+    }
+    
+    .total-block { text-align: right; font-size: 1em; font-weight: 800; margin: 6px 0; color: #f0c27f; }
+    .sms-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .sms-block { 
+        background: rgba(15, 52, 96, 0.4); 
+        border: 1px solid rgba(116, 235, 213, 0.15); 
+        border-radius: 7px; 
+        padding: 6px; 
+        text-align: center;
+    }
+    .sms-block-title { font-size: 0.65em; font-weight: 700; margin-bottom: 4px; color: #f0c27f; }
+    .btn-sms.novaya { background: linear-gradient(135deg, #667eea, #5a6fd6); box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3); }
+    .btn-sms.tsvetnoy { background: linear-gradient(135deg, #f093fb, #e082ea); color: #000; box-shadow: 0 2px 8px rgba(240, 147, 251, 0.3); }
+
+    .calendar-page, .weekend-page, .delivery-page { display: none; max-width: 600px; margin: 0 auto; padding-bottom: 30px; animation: slideIn 0.2s ease-out; }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+    
+    .calendar-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .btn-back { 
+        background: rgba(15, 52, 96, 0.5); 
+        border: 1px solid rgba(116, 235, 213, 0.3); 
+        color: white; 
+        padding: 6px 10px; 
+        border-radius: 7px; 
+        font-size: 0.8em; 
+        font-weight: 700;
+    }
+    .calendar-title { font-size: 0.95em; font-weight: 900; color: #f0c27f; flex: 1; text-align: center; }
+
+    .calendar-card { 
+        background: rgba(22, 33, 62, 0.5); 
+        border: 1px solid rgba(116, 235, 213, 0.2); 
+        border-radius: 10px; 
+        padding: 8px; 
+        margin-bottom: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    .calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .calendar-nav button { 
+        background: rgba(15, 52, 96, 0.5); 
+        border: 1px solid rgba(116, 235, 213, 0.3); 
+        color: white; 
+        padding: 5px 10px; 
+        border-radius: 5px; 
+        font-weight: bold; 
+        font-size: 0.85em;
+    }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+    .calendar-day-header { text-align: center; font-size: 0.6em; font-weight: 700; color: #f0c27f; padding: 3px 0; }
+    .calendar-day { 
+        aspect-ratio: 1; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        background: rgba(15, 52, 96, 0.4); 
+        border-radius: 5px; 
+        font-size: 0.75em; 
+        font-weight: 600; 
+        cursor: pointer;
+        border: 1px solid rgba(116, 235, 213, 0.1);
+    }
+    .calendar-day.weekend { color: #ff9a9a; }
+    .calendar-day.selected { 
+        background: linear-gradient(135deg, #f0c27f, #e6a54d) !important; 
+        color: #000 !important; 
+        font-weight: 900;
+        border-color: #f0c27f;
+    }
+    .calendar-day.disabled { opacity: 0.2; pointer-events: none; }
+    .calendar-day.today { border: 2px solid #74ebd5; }
+
+    .selected-info { 
+        background: rgba(17, 153, 142, 0.2); 
+        border: 1px solid rgba(56, 239, 125, 0.3); 
+        border-radius: 7px; 
+        padding: 7px; 
+        text-align: center; 
+        margin-bottom: 8px; 
+        font-size: 0.8em; 
+        font-weight: 600;
+    }
+    .calendar-actions { display: flex; gap: 6px; }
+    .calendar-btn.cancel { 
+        background: rgba(15, 52, 96, 0.5);
+        border: 1px solid rgba(116, 235, 213, 0.2);
+    }
+    .calendar-btn.confirm { 
+        background: linear-gradient(135deg, #11998e, #38ef7d);
+        box-shadow: 0 2px 8px rgba(17, 153, 142, 0.3);
+    }
+    .calendar-btn:disabled { opacity: 0.4; pointer-events: none; }
+
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 12px; }
+    .modal-overlay.active { display: flex; }
+    .modal { 
+        background: linear-gradient(135deg, #1a1a2e, #16213e); 
+        border: 1px solid rgba(116, 235, 213, 0.3); 
+        border-radius: 12px; 
+        padding: 14px; 
+        max-width: 380px; 
+        width: 100%; 
+        max-height: 90vh; 
+        overflow-y: auto;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+    .star-rating { display: flex; gap: 6px; justify-content: center; margin: 8px 0; font-size: 1.3em; }
+    .star { cursor: pointer; color: rgba(255,255,255,0.3); }
+    .star.active { color: #f0c27f; }
+    .modal-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 10px; }
+    .modal-btn.cancel { 
+        background: rgba(15, 52, 96, 0.5);
+        border: 1px solid rgba(116, 235, 213, 0.2);
+    }
+    .modal-btn.submit { 
+        background: linear-gradient(135deg, #11998e, #38ef7d);
+        box-shadow: 0 2px 8px rgba(17, 153, 142, 0.3);
+    }
+
+    .floating-tg { 
+        position: fixed; 
+        bottom: 12px; 
+        right: 12px; 
+        width: 48px; 
+        height: 48px; 
+        background: linear-gradient(135deg, #26A5E4, #1e8ec5); 
+        border-radius: 50%; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        font-size: 22px; 
+        box-shadow: 0 4px 12px rgba(38,165,228,0.5); 
+        z-index: 1000; 
+        text-decoration: none;
+    }
+    .copy-toast { 
+        position: fixed; 
+        bottom: 15px; 
+        left: 50%; 
+        transform: translateX(-50%) translateY(100px); 
+        background: linear-gradient(135deg, #11998e, #38ef7d); 
+        color: white; 
+        padding: 8px 16px; 
+        border-radius: 40px; 
+        font-size: 12px; 
+        font-weight: 600; 
+        opacity: 0; 
+        transition: transform 0.3s, opacity 0.3s; 
+        pointer-events: none; 
+        z-index: 3000;
+        box-shadow: 0 4px 12px rgba(17, 153, 142, 0.4);
+    }
+    .copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    .pwa-install-banner { 
+        display: none; 
+        position: fixed; 
+        bottom: 70px; 
+        left: 8px; 
+        right: 8px; 
+        background: linear-gradient(135deg, #1a1a2e, #16213e); 
+        border: 1px solid rgba(116, 235, 213, 0.4); 
+        border-radius: 10px; 
+        padding: 10px; 
+        z-index: 1500; 
+        box-shadow: 0 6px 16px rgba(0,0,0,0.5);
+    }
+    .pwa-install-content { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .pwa-install-btn { 
+        background: linear-gradient(135deg, #11998e, #38ef7d); 
+        color: #000; 
+        border: none; 
+        border-radius: 7px; 
+        padding: 7px 14px; 
+        font-weight: 700; 
+        font-size: 0.8em;
+        box-shadow: 0 2px 8px rgba(17, 153, 142, 0.3);
+    }
+    .pwa-close-btn { background: transparent; border: none; color: rgba(255,255,255,0.6); font-size: 1.3em; }
+
+    .delivery-header {
+        background: linear-gradient(135deg, #11998e, #38ef7d);
+        border-radius: 10px; padding: 10px; text-align: center; margin-bottom: 8px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 4px 12px rgba(17, 153, 142, 0.3);
+    }
+    .delivery-header-title { font-size: 0.95em; font-weight: 900; color: #fff; text-transform: uppercase; margin-bottom: 2px; }
+    .delivery-header-subtitle { font-size: 0.65em; color: rgba(255,255,255,0.95); font-weight: 600; }
+
+    .delivery-section {
+        background: rgba(22, 33, 62, 0.5);
+        border: 1px solid rgba(116, 235, 213, 0.2);
+        border-radius: 8px; padding: 8px; margin-bottom: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    .delivery-section-title { font-size: 0.8em; font-weight: 700; margin-bottom: 6px; color: #f0c27f; }
+    .delivery-item {
+        background: rgba(15, 52, 96, 0.4);
+        border: 1px solid rgba(116, 235, 213, 0.15);
+        border-radius: 6px; padding: 6px; margin-bottom: 5px;
+    }
+    .delivery-item:last-child { margin-bottom: 0; }
+    .delivery-item-title { font-size: 0.7em; font-weight: 700; margin-bottom: 2px; }
+    .delivery-item-text { font-size: 0.65em; color: rgba(255,255,255,0.85); line-height: 1.3; }
+    .delivery-item-text strong { color: #74ebd5; }
+
+    .price-list { display: flex; flex-direction: column; gap: 5px; }
+    .price-item {
+        display: flex; justify-content: space-between; align-items: center;
+        background: rgba(15, 52, 96, 0.4);
+        border: 1px solid rgba(116, 235, 213, 0.15);
+        border-radius: 6px; padding: 6px 8px;
+    }
+    .price-item-name { font-size: 0.7em; font-weight: 600; }
+    .price-item-value {
+        font-size: 0.8em; font-weight: 800;
+        background: linear-gradient(135deg, #f0c27f, #e6a54d);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .contact-item {
+        background: rgba(15, 52, 96, 0.4);
+        border: 1px solid rgba(116, 235, 213, 0.15);
+        border-radius: 6px; padding: 6px; margin-bottom: 5px;
+    }
+    .contact-item:last-child { margin-bottom: 0; }
+    .contact-item-title { font-size: 0.65em; font-weight: 700; color: #74ebd5; margin-bottom: 2px; }
+    .contact-item-line { font-size: 0.65em; color: rgba(255,255,255,0.9); margin-bottom: 1px; }
+    .contact-item-line:last-child { margin-bottom: 0; }
+
+    .delivery-note {
+        background: rgba(231, 76, 60, 0.15);
+        border: 1px solid rgba(231, 76, 60, 0.3);
+        border-radius: 6px; padding: 6px; text-align: center;
+        font-size: 0.65em; font-weight: 600; color: #ff9a9a; margin-top: 6px;
+    }
+    .delivery-note strong { color: #f0c27f; }
+</style>
 </head>
 <body>
+    <div id="snowContainer">
+        <div class="snowflake" style="left:10%; animation-duration:8s; font-size:0.8em;">❅</div>
+        <div class="snowflake" style="left:25%; animation-duration:11s; font-size:0.7em; animation-delay:1s;">❆</div>
+        <div class="snowflake" style="left:40%; animation-duration:9s; font-size:0.9em; animation-delay:2s;">❅</div>
+        <div class="snowflake" style="left:55%; animation-duration:12s; font-size:0.7em; animation-delay:0.5s;">❆</div>
+        <div class="snowflake" style="left:70%; animation-duration:10s; font-size:0.8em; animation-delay:3s;">❅</div>
+        <div class="snowflake" style="left:85%; animation-duration:13s; font-size:0.6em; animation-delay:1.5s;">❆</div>
+    </div>
+
     <div class="pwa-install-banner" id="pwaInstallBanner">
         <div class="pwa-install-content">
-            <div class="pwa-install-text">📲 <strong>Установите приложение</strong> для быстрого заказа!</div>
+            <div style="font-size:0.75em; font-weight:600; flex:1;">📲 <strong>Установите приложение</strong>!</div>
             <button class="pwa-install-btn" id="pwaInstallBtn">Установить</button>
             <button class="pwa-close-btn" id="pwaCloseBtn">×</button>
         </div>
     </div>
-
-    <div class="pwa-ios-instructions" id="pwaIosBanner">
-        <div class="pwa-ios-title"> Установите на iPhone</div>
-        <div class="pwa-ios-step">
-            <div class="pwa-ios-step-num">1</div>
-            <div>Нажмите кнопку <span class="pwa-ios-icon">⎙</span> «Поделиться» внизу Safari</div>
-        </div>
-        <div class="pwa-ios-step">
-            <div class="pwa-ios-step-num">2</div>
-            <div>Выберите <strong>«На экран «Домой»</strong></div>
-        </div>
-        <div class="pwa-ios-step">
-            <div class="pwa-ios-step-num">3</div>
-            <div>Нажмите <strong>«Добавить»</strong></div>
-        </div>
-        <button class="pwa-close-btn" id="pwaIosCloseBtn" style="position:absolute; top:8px; right:10px;">×</button>
-    </div>
-
-    <div id="snowContainer"></div>
-    <div id="snowmanContainer"></div>
 
     <div class="container" id="mainPage">
         <div class="hero-header">
             <div class="hero-title">❄️ Незамерзайка соседям</div>
             <div class="hero-subtitle">Новая Охта • Цветной город</div>
 
-            <div class="hero-info-row">
-                <div class="hero-chip chip-weather">
-                    <span class="chip-icon">🌡️</span>
-                    <span>
-                        <span class="chip-value" id="temp">—</span>
-                        <span style="font-size: 0.85em; opacity: 0.85;" id="weatherLabel">Мурино</span>
-                    </span>
-                </div>
-                <div class="hero-chip chip-payment">
-                    <span class="chip-icon">💵</span>
-                    <span>
-                        <span class="chip-value">Наличные</span>
-                        <span style="font-size: 0.85em; opacity: 0.85;">при получении</span>
-                    </span>
-                </div>
-            </div>
+           <!-- === ВИДЖЕТ ПОГОДЫ === -->
+<div class="weather-widget">
+    <div class="weather-current">
+        <div class="weather-current-temp" id="temp">—<sup>°C</sup></div>
+        <div class="weather-current-label">Сейчас</div>
+    </div>
+    <div class="weather-forecast" id="weatherForecast">
+        <div class="weather-loading">Загрузка...</div>
+    </div>
+</div>
+<!-- =================== -->
 
-            <div class="hero-delivery-btn" onclick="openDeliveryPage()">
-                🚚 Доставка и контакты
-            </div>
-
+            <div class="hero-chip">💵 <span class="chip-value">Наличные</span> при получении</div>
+            <div class="hero-delivery-btn" onclick="navigateTo('deliveryPage')">🚚 Доставка и контакты</div>
             <div class="social-buttons-row">
-                <a href="https://t.me/nezamerzaikaSPB" target="_blank" class="social-btn tg">
-                    <span class="social-icon">✈️</span>
-                    <span>Telegram</span>
-                </a>
-                <a href="https://max.ru/channel_nezamerzaika_SPB" target="_blank" class="social-btn max">
-                    <span class="social-icon">📨</span>
-                    <span>Max</span>
-                </a>
+                <a href="https://t.me/nezamerzaikaSPB" target="_blank" class="social-btn tg">✈️ Telegram</a>
+                <a href="https://max.ru/channel_nezamerzaika_SPB" target="_blank" class="social-btn max">📨 Max</a>
+                <a href="tel:+79213838413" class="social-btn call">📞 Позвонить нам</a>
             </div>
-            
-            <a href="tel:+79213838413" class="social-btn call">
-                <span class="social-icon"></span>
-                <span>Позвонить нам</span>
-            </a>
         </div>
 
         <div class="order-blocks">
             <div class="weekend-order-block" onclick="openWeekendPage()">
                 <div class="weekend-title">Заказать на ВЫХОДНЫЕ</div>
-                <div class="click-badge">👆 НАЖМИТЕ СЮДА</div>
-                <div class="weekend-subtitle">Суббота и Воскресенье — выберите дату!</div>
+                <div class="click-badge"> НАЖМИТЕ СЮДА</div>
             </div>
-
             <div class="weekday-order-block" onclick="scrollToWeekdayForm()">
-                <div class="weekday-title"> Заказать на БУДНИ</div>
+                <div class="weekday-title">📅 Заказать на БУДНИ</div>
                 <div class="weekday-badge">👇 ПРОКРУТИТЕ НИЖЕ</div>
-                <div class="weekday-subtitle">Понедельник — Пятница — выберите день!</div>
             </div>
         </div>
 
         <div class="glass">
             <div class="section-title">Шаг 1. Выберите товар</div>
-            <div class="products">
-                <div class="product">
-                    <div class="product-img">
-                        <img src="./bottle.png" alt="Незамерзайка 5л">
-                    </div>
-                    <div class="product-info">
-                        <h3>Незамерзайка -27°C</h3>
-                        <div class="desc">1 канистра (5л)</div>
-                        <div class="price">240 ₽</div>
-                    </div>
-                    <div class="controls">
-                        <button class="btn-qty" onclick="changeQty(1, -1)">−</button>
-                        <span id="qty-1" class="qty-display">0</span>
-                        <button class="btn-qty" onclick="changeQty(1, 1)">+</button>
-                    </div>
-                </div>
-                <div class="product">
-                    <div class="product-img">
-                        <img src="./pack.png" alt="Упаковка 4x5л">
-                    </div>
-                    <div class="product-info">
-                        <h3>Упаковка</h3>
-                        <div class="desc">4 бутылки по 5л — выгоднее!</div>
-                        <div class="price">950 ₽</div>
-                    </div>
-                    <div class="controls">
-                        <button class="btn-qty" onclick="changeQty(2, -1)">−</button>
-                        <span id="qty-2" class="qty-display">0</span>
-                        <button class="btn-qty" onclick="changeQty(2, 1)">+</button>
-                    </div>
-                </div>
+            <div class="product">
+                <div class="product-img"><img src="./bottle.png" alt="5л" loading="lazy"></div>
+                <div class="product-info"><h3>Незамерзайка -27°C</h3><div class="desc">1 канистра (5л)</div><div class="price">240 ₽</div></div>
+                <div class="controls"><button class="btn-qty" onclick="changeQty(1, -1)">−</button><span id="qty-1" class="qty-display">0</span><button class="btn-qty" onclick="changeQty(1, 1)">+</button></div>
+            </div>
+            <div class="product" style="margin-top:6px;">
+                <div class="product-img"><img src="./pack.png" alt="4x5л" loading="lazy"></div>
+                <div class="product-info"><h3>Упаковка</h3><div class="desc">4 бутылки по 5л</div><div class="price">950 ₽</div></div>
+                <div class="controls"><button class="btn-qty" onclick="changeQty(2, -1)">−</button><span id="qty-2" class="qty-display">0</span><button class="btn-qty" onclick="changeQty(2, 1)">+</button></div>
             </div>
         </div>
 
@@ -887,105 +532,58 @@
             <div class="section-title">📝 Шаг 2. Заполните данные</div>
             <div class="total-block" id="totalDisplay">Итого: 0 ₽</div>
             <form id="orderForm" onsubmit="return false;">
-                <input type="text" id="name" placeholder="Ваше имя" required autocomplete="name" autocapitalize="words" inputmode="text">
-                <input type="tel" id="phone" placeholder="+7 (___) ___-__-__" required autocomplete="tel" inputmode="tel">
-                
+                <input type="text" id="name" placeholder="Ваше имя" autocomplete="name" autocapitalize="words">
+                <input type="tel" id="phone" placeholder="+7 (___) ___-__-__" autocomplete="tel" inputmode="tel">
                 <div class="delivery-choice">
-                    <label class="delivery-choice-label" id="label-pickup">
-                        <input type="radio" name="delivery-method" value="pickup" checked onchange="toggleDeliveryMethod()">
-                        <span class="choice-icon">📍</span>
-                        <span>Самовывоз</span>
-                    </label>
-                    <label class="delivery-choice-label" id="label-delivery">
-                        <input type="radio" name="delivery-method" value="delivery" onchange="toggleDeliveryMethod()">
-                        <span class="choice-icon">🚚</span>
-                        <span>Доставка (от 6 уп.)</span>
-                    </label>
+                    <label class="delivery-choice-label"><input type="radio" name="delivery-method" value="pickup" checked onchange="toggleDeliveryMethod()"><span> Самовывоз</span></label>
+                    <label class="delivery-choice-label"><input type="radio" name="delivery-method" value="delivery" onchange="toggleDeliveryMethod()"><span>🚚 Доставка (от 6 уп.)</span></label>
                 </div>
-                
-                <input type="text" id="address" placeholder="Адрес доставки (корпус, дом, подъезд)" disabled autocomplete="street-address" inputmode="text">
-                <div class="address-hint" id="addressHint">📍 Самовывоз: выберите ЖК ниже</div>
+                <input type="text" id="address" placeholder="Адрес (корпус, дом, подъезд)" disabled autocomplete="street-address">
+                <div style="font-size:0.65em; color:#ffd89b; text-align:center; margin-top:3px;" id="addressHint">📍 Самовывоз: выберите ЖК ниже</div>
             </form>
         </div>
 
         <div class="glass">
-            <div class="section-title"> Шаг 3. Выберите ЖК и день</div>
+            <div class="section-title">📅 Шаг 3. Выберите ЖК и день</div>
             <div class="sms-buttons">
-                <div class="sms-block">
-                    <div class="sms-block-title">🏢 НОВАЯ ОХТА</div>
-                    <button class="btn-sms novaya" onclick="openWeekdayCalendar('novaya')">
-                        📅 Выбрать день
-                    </button>
-                </div>
-                <div class="sms-block">
-                    <div class="sms-block-title">🏘️ ЦВЕТНОЙ ГОРОД</div>
-                    <button class="btn-sms tsvetnoy" onclick="openWeekdayCalendar('tsvetnoy')">
-                         Выбрать день
-                    </button>
-                </div>
+                <div class="sms-block"><div class="sms-block-title">🏢 НОВАЯ ОХТА</div><button class="btn-sms novaya" onclick="openWeekdayCalendar('novaya')">📅 Выбрать день</button></div>
+                <div class="sms-block"><div class="sms-block-title">🏘️ ЦВЕТНОЙ ГОРОД</div><button class="btn-sms tsvetnoy" onclick="openWeekdayCalendar('tsvetnoy')">📅 Выбрать день</button></div>
             </div>
-            <p class="note">💡 Откроется SMS с готовым заказом — нажмите «Отправить»</p>
         </div>
 
-        <div class="reviews-section">
-            <div class="reviews-header">
-                <div class="section-title">⭐ Отзывы соседей</div>
-                <button class="btn-add-review" onclick="openReviewModal()">
-                    ✍️ Оставить отзыв
-                </button>
+        <div class="glass">
+            <div class="section-title" style="display:flex; justify-content:space-between; align-items:center;">
+                <span>⭐ Отзывы соседей</span>
+                <button onclick="openReviewModal()" style="background:#ffd89b; color:#000; border:none; border-radius:15px; padding:3px 8px; font-size:0.65em; font-weight:700; cursor:pointer;">✍️ Оставить</button>
             </div>
-            <div class="reviews-list" id="reviewsList"></div>
+            <div id="reviewsList" style="display:flex; flex-direction:column; gap:6px; max-height:250px; overflow-y:auto;"></div>
         </div>
 
-        <div class="glass how-it-works">
+        <div class="glass" style="background:rgba(255, 216, 155, 0.1); border-color:rgba(255, 216, 155, 0.3);">
             <div class="section-title">🤔 Как это работает?</div>
-            <div class="how-it-works-text">
+            <div style="font-size:0.7em; line-height:1.4; opacity:0.9;">
                 <strong>1.</strong> Выберите товар кнопками +/−<br>
-                <strong>2.</strong> Заполните имя, телефон<br>
-                <strong>3.</strong> Выберите: <strong>Самовывоз</strong> или <strong>Доставку</strong> (от 6 упаковок)<br>
-                <strong>4.</strong> Нажмите «Выбрать день» под ЖК<br>
-                <strong>5.</strong> Выберите день и отправьте SMS<br><br>
-                <strong>🎉 Хотите в выходные?</strong> Жмите оранжевую кнопку выше!
+                <strong>2.</strong> Заполните имя и телефон<br>
+                <strong>3.</strong> Выберите: <strong>Самовывоз</strong> или <strong>Доставку</strong> (от 6 уп.)<br>
+                <strong>4.</strong> Нажмите «Выбрать день» под нужным ЖК<br>
+                <strong>5.</strong> Отправьте готовое SMS<br><br>
+                <span style="color:#ffd89b;">🎉 Хотите в выходные?</span> Жмите оранжевую кнопку вверху!
             </div>
         </div>
     </div>
 
-    <div class="modal-overlay" id="reviewModal">
-        <div class="modal">
-            <div class="modal-title">✍️ Оставить отзыв</div>
-            <div class="modal-label">Ваше имя</div>
-            <input type="text" id="reviewName" placeholder="Например, Анна" maxlength="30" autocomplete="name" autocapitalize="words">
-            <div class="modal-label">Ваш ЖК</div>
-            <input type="text" id="reviewLocation" placeholder="Например, Новая Охта, корп. 3" maxlength="40" autocomplete="street-address">
-            <div class="modal-label" style="text-align: center;">Ваша оценка</div>
-            <div class="star-rating" id="starRating">
-                <span class="star" data-value="1">★</span>
-                <span class="star" data-value="2">★</span>
-                <span class="star" data-value="3">★</span>
-                <span class="star" data-value="4">★</span>
-                <span class="star" data-value="5">★</span>
-            </div>
-            <div class="modal-label">Ваш отзыв</div>
-            <textarea id="reviewText" placeholder="Расскажите о заказе..." maxlength="300"></textarea>
-            <div class="modal-buttons">
-                <button class="modal-btn cancel" onclick="closeReviewModal()">Отмена</button>
-                <button class="modal-btn submit" onclick="submitReview()">Отправить</button>
-            </div>
-            <div class="modal-hint">
-                💡 Отзыв появится сразу. Мы также получим уведомление и сможем ответить.
-            </div>
-        </div>
-    </div>
-
+    <!-- === СТРАНИЦА ДОСТАВКИ (ПОЛНАЯ ВЕРСИЯ КАК В ИСХОДНОМ КОДЕ) === -->
     <div class="delivery-page" id="deliveryPage">
         <div class="calendar-header">
-            <button class="btn-back" onclick="closeDeliveryPage()">← Назад</button>
+            <button class="btn-back" onclick="goBack()">← Назад</button>
             <div class="calendar-title">🚚 Доставка и контакты</div>
         </div>
+
         <div class="delivery-header">
             <div class="delivery-header-title">Условия доставки</div>
             <div class="delivery-header-subtitle">Всё просто и прозрачно!</div>
         </div>
+
         <div class="delivery-section">
             <div class="delivery-section-title">📦 Условия</div>
             <div class="delivery-item">
@@ -995,22 +593,23 @@
             <div class="delivery-item">
                 <div class="delivery-item-title">📍 Самовывоз</div>
                 <div class="delivery-item-text">
-                    Любое количество — самовывоз:<br>
+                    Менее 6 упаковок — самовывоз:<br>
                     <strong>Новая Охта:</strong> Муринская дорога, 80<br>
                     <strong>Цветной город:</strong> Муринская дорога, 16
                 </div>
             </div>
             <div class="delivery-item">
-                <div class="delivery-item-title">🗺️ За пределами ЖК</div>
+                <div class="delivery-item-title">️ За пределами ЖК</div>
                 <div class="delivery-item-text">Доставка — <strong>по договорённости</strong>.</div>
             </div>
             <div class="delivery-item">
-                <div class="delivery-item-title">💵 Оплата</div>
+                <div class="delivery-item-title"> Оплата</div>
                 <div class="delivery-item-text">Только <strong>наличными</strong> при получении. Без предоплат!</div>
             </div>
         </div>
+
         <div class="delivery-section">
-            <div class="delivery-section-title">Цены</div>
+            <div class="delivery-section-title">💰 Цены</div>
             <div class="price-list">
                 <div class="price-item">
                     <div class="price-item-name">🧴 1 бутылка 5л (-27°C)</div>
@@ -1023,47 +622,30 @@
             </div>
             <div class="delivery-note">💡 <strong>Выгоднее упаковкой!</strong> Экономия 10₽/бутылка</div>
         </div>
+
         <div class="delivery-section">
-            <div class="delivery-section-title"> Контакты</div>
+            <div class="delivery-section-title">📞 Контакты</div>
             <div class="contact-item">
-                <div class="contact-item-title">🏢 Новая Охта</div>
+                <div class="contact-item-title"> Новая Охта</div>
                 <div class="contact-item-line">📍 Муринская дорога, 80</div>
                 <div class="contact-item-line">📞 <a href="tel:+79213838413" style="color:#fff; text-decoration:none;">+7 (921) 383-84-13</a></div>
-                <div class="contact-item-line">️ Telegram: @SHuVai88</div>
+                <div class="contact-item-line">✈️ Telegram: @SHuVai88</div>
             </div>
             <div class="contact-item">
                 <div class="contact-item-title">🏘️ Цветной город</div>
-                <div class="contact-item-line"> Муринская дорога, 16</div>
-                <div class="contact-item-line"> <a href="tel:+79650939639" style="color:#fff; text-decoration:none;">+7 (965) 093-96-39</a></div>
+                <div class="contact-item-line">📍 Муринская дорога, 16</div>
+                <div class="contact-item-line">📞 <a href="tel:+79650939639" style="color:#fff; text-decoration:none;">+7 (965) 093-96-39</a></div>
                 <div class="contact-item-line">✈️ Telegram: @MaFin77</div>
             </div>
             <div class="delivery-note">🕐 Отвечаем быстро!</div>
         </div>
     </div>
+    <!-- ============================================== -->
 
     <div class="calendar-page" id="calendarPage">
-        <div class="calendar-header">
-            <button class="btn-back" onclick="goBack()">← Назад</button>
-            <div class="calendar-title">📅 Выберите будний день</div>
-        </div>
-        <div class="weekday-hint">
-            💡 <strong>Только будни</strong> (Пн-Пт).<br>
-            Для выходных — оранжевая кнопка на главной.
-        </div>
-        <div class="welcome-block">
-            <span class="welcome-icon">👋</span>
-            <div class="welcome-text">
-                <strong>Здравствуйте!</strong><br>
-                Выберите дату — мы сообщим время получения заказа!<br>
-                <strong>Спасибо) 🎉</strong>
-            </div>
-        </div>
+        <div class="calendar-header"><button class="btn-back" onclick="goBack()">← Назад</button><div class="calendar-title">Выберите будний день</div></div>
         <div class="calendar-card">
-            <div class="calendar-nav">
-                <button onclick="changeMonth(-1)">◀</button>
-                <div class="calendar-month" id="calendarMonth"></div>
-                <button onclick="changeMonth(1)">▶</button>
-            </div>
+            <div class="calendar-nav"><button onclick="changeMonth(-1)">◀</button><div id="calendarMonth" style="font-weight:700; color:#ffd89b; font-size:0.85em;"></div><button onclick="changeMonth(1)">▶</button></div>
             <div class="calendar-grid" id="calendarGrid"></div>
         </div>
         <div class="selected-info" id="selectedInfo">👆 Нажмите на будний день</div>
@@ -1074,129 +656,266 @@
     </div>
 
     <div class="weekend-page" id="weekendPage">
-        <div class="calendar-header">
-            <button class="btn-back" onclick="closeWeekendPage()">← Назад</button>
-            <div class="calendar-title">🎉 Заказ на выходные</div>
-        </div>
-        <div class="weekend-page-header">
-            <div class="weekend-page-title">🎉 Заказ на выходные</div>
-            <div class="weekend-page-subtitle">Выберите дату — сообщим время!</div>
-        </div>
-        <div class="weekend-welcome">
-            <span class="weekend-welcome-icon">👋</span>
-            <div class="weekend-welcome-text">
-                <strong>Здравствуйте!</strong><br>
-                Выберите дату и оформите заказ.<br>
-                Мы сообщим время получения!<br>
-                <strong>Спасибо) 🎉</strong>
-            </div>
-        </div>
-        <div class="glass">
+        <div class="calendar-header"><button class="btn-back" onclick="goBack()">← Назад</button><div class="calendar-title">Заказ на выходные</div></div>
+        <div class="glass" style="margin-bottom:8px;">
             <div class="section-title">Ваши данные</div>
-            <input type="text" id="w-name" placeholder="Ваше имя" autocomplete="name" autocapitalize="words" inputmode="text">
+            <input type="text" id="w-name" placeholder="Ваше имя" autocomplete="name">
             <input type="tel" id="w-phone" placeholder="+7 (___) ___-__-__" autocomplete="tel" inputmode="tel">
-            
             <div class="delivery-choice">
-                <label class="delivery-choice-label" id="w-label-pickup">
-                    <input type="radio" name="w-delivery-method" value="pickup" checked onchange="toggleWeekendDeliveryMethod()">
-                    <span class="choice-icon">📍</span>
-                    <span>Самовывоз</span>
-                </label>
-                <label class="delivery-choice-label" id="w-label-delivery">
-                    <input type="radio" name="w-delivery-method" value="delivery" onchange="toggleWeekendDeliveryMethod()">
-                    <span class="choice-icon">🚚</span>
-                    <span>Доставка (от 6 уп.)</span>
-                </label>
+                <label class="delivery-choice-label"><input type="radio" name="w-delivery-method" value="pickup" checked onchange="toggleWeekendDeliveryMethod()"><span> Самовывоз</span></label>
+                <label class="delivery-choice-label"><input type="radio" name="w-delivery-method" value="delivery" onchange="toggleWeekendDeliveryMethod()"><span> Доставка (от 6 уп.)</span></label>
             </div>
-            
-            <input type="text" id="w-address" placeholder="Адрес доставки (корпус, дом, подъезд)" disabled autocomplete="street-address" inputmode="text">
-            <div class="address-hint" id="w-addressHint">📍 Самовывоз: выберите ЖК ниже</div>
+            <input type="text" id="w-address" placeholder="Адрес (корпус, дом, подъезд)" disabled autocomplete="street-address">
+            <div style="font-size:0.65em; color:#ffd89b; text-align:center; margin-top:3px;" id="w-addressHint">📍 Самовывоз</div>
         </div>
-        <div class="glass">
-            <div class="section-title">🛒 Выберите товар</div>
-            <div class="products">
-                <div class="product">
-                    <div class="product-img">
-                        <img src="./bottle.png" alt="Незамерзайка 5л">
-                    </div>
-                    <div class="product-info">
-                        <h3>Незамерзайка -27°C</h3>
-                        <div class="desc">1 канистра (5л)</div>
-                        <div class="price">240 ₽</div>
-                    </div>
-                    <div class="controls">
-                        <button class="btn-qty" onclick="changeWeekendQty(1, -1)">−</button>
-                        <span id="w-qty-1" class="qty-display">0</span>
-                        <button class="btn-qty" onclick="changeWeekendQty(1, 1)">+</button>
-                    </div>
-                </div>
-                <div class="product">
-                    <div class="product-img">
-                        <img src="./pack.png" alt="Упаковка 4x5л">
-                    </div>
-                    <div class="product-info">
-                        <h3>Упаковка</h3>
-                        <div class="desc">Выгодный запас</div>
-                        <div class="price">950 ₽</div>
-                    </div>
-                    <div class="controls">
-                        <button class="btn-qty" onclick="changeWeekendQty(2, -1)">−</button>
-                        <span id="w-qty-2" class="qty-display">0</span>
-                        <button class="btn-qty" onclick="changeWeekendQty(2, 1)">+</button>
-                    </div>
-                </div>
+        <div class="glass" style="margin-bottom:8px;">
+            <div class="section-title">🛒 Товар</div>
+            <div class="product">
+                <div class="product-info"><h3>Незамерзайка 5л</h3><div class="price">240 ₽</div></div>
+                <div class="controls"><button class="btn-qty" onclick="changeWeekendQty(1, -1)">−</button><span id="w-qty-1" class="qty-display">0</span><button class="btn-qty" onclick="changeWeekendQty(1, 1)">+</button></div>
             </div>
-            <div class="weekend-total" id="weekendTotalDisplay">Итого: 0 ₽</div>
-        </div>
-        <div class="weekend-hint">
-            💡 <strong>Только выходные</strong> (Сб, Вс). Будни заблокированы.
+            <div class="product" style="margin-top:6px;">
+                <div class="product-info"><h3>Упаковка 4x5л</h3><div class="price">950 ₽</div></div>
+                <div class="controls"><button class="btn-qty" onclick="changeWeekendQty(2, -1)">−</button><span id="w-qty-2" class="qty-display">0</span><button class="btn-qty" onclick="changeWeekendQty(2, 1)">+</button></div>
+            </div>
+            <div class="total-block" id="weekendTotalDisplay">Итого: 0 ₽</div>
         </div>
         <div class="calendar-card">
-            <div class="calendar-nav">
-                <button onclick="changeWeekendMonth(-1)">◀</button>
-                <div class="calendar-month" id="weekendCalendarMonth"></div>
-                <button onclick="changeWeekendMonth(1)">▶</button>
-            </div>
+            <div class="calendar-nav"><button onclick="changeWeekendMonth(-1)">◀</button><div id="weekendCalendarMonth" style="font-weight:700; color:#ffd89b; font-size:0.85em;"></div><button onclick="changeWeekendMonth(1)">▶</button></div>
             <div class="calendar-grid" id="weekendCalendarGrid"></div>
         </div>
         <div class="selected-info" id="weekendSelectedInfo">👆 Нажмите на Сб или Вс</div>
-        <button class="weekend-submit" id="weekendSubmitBtn" onclick="submitWeekendOrder()" disabled>
-            📱 Отправить заказ
-        </button>
+        <button class="weekend-submit" id="weekendSubmitBtn" onclick="submitWeekendOrder()" disabled>📱 Отправить заказ</button>
     </div>
 
-    <a href="https://t.me/SHuVai88" target="_blank" class="floating-tg" title="Написать в Telegram">✈️</a>
+    <div class="modal-overlay" id="reviewModal">
+        <div class="modal">
+            <div class="section-title" style="text-align:center; margin-bottom:10px;">✍️ Оставить отзыв</div>
+            <input type="text" id="reviewName" placeholder="Ваше имя" style="margin-bottom:6px;">
+            <input type="text" id="reviewLocation" placeholder="Ваш ЖК (напр. Новая Охта)" style="margin-bottom:6px;">
+            <div style="text-align:center; margin-bottom:6px; font-size:0.75em;">Ваша оценка:</div>
+            <div class="star-rating" id="starRating">
+                <span class="star" data-value="1">★</span><span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span><span class="star" data-value="4">★</span><span class="star" data-value="5">★</span>
+            </div>
+            <textarea id="reviewText" placeholder="Расскажите о заказе..." style="margin-bottom:6px;"></textarea>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeReviewModal()">Отмена</button>
+                <button class="modal-btn submit" onclick="submitReview()">Отправить</button>
+            </div>
+        </div>
+    </div>
+
+    <a href="https://t.me/SHuVai88" target="_blank" class="floating-tg">✈️</a>
     <div class="copy-toast" id="copyToast">✅ Скопировано!</div>
 
     <script>
-        const PHONE_NOVAYA = '+79213838413';
-        const PHONE_TSVETNOY = '+79650939639';
-        const TELEGRAM_OWNER = 'SHuVai88';
-        const MIN_DELIVERY_PACKS = 6;
-
-        const products = { 1: { name: 'Незамерзайка -27°C', price: 240 }, 2: { name: 'Упаковка', price: 950 } };
-
-        let cart = { 1: 0, 2: 0 };
+        const PHONE_NOVAYA = '+79213838413', PHONE_TSVETNOY = '+79650939639', MIN_DELIVERY = 6;
+        const products = { 1: { price: 240 }, 2: { price: 950 } };
+        let cart = { 1: 0, 2: 0 }, weekendCart = { 1: 0, 2: 0 };
+        let selectedDate = null, weekendSelectedDate = null;
+        let currentMonth = new Date().getMonth(), currentYear = new Date().getFullYear();
+        let weekendMonth = new Date().getMonth(), weekendYear = new Date().getFullYear();
         let currentLocation = '';
-        let selectedDate = null;
-        let currentMonth = new Date().getMonth();
-        let currentYear = new Date().getFullYear();
+        const monthNames = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+        const dayNames = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+        const weekdays = ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
 
-        let weekendCart = { 1: 0, 2: 0 };
-        let weekendSelectedDate = null;
-        let weekendMonth = new Date().getMonth();
-        let weekendYear = new Date().getFullYear();
+        document.querySelectorAll('input[type="tel"]').forEach(input => {
+            input.addEventListener('input', function(e) {
+                let val = this.value.replace(/\D/g, '');
+                let formatted = '';
+                if (val.length > 0) {
+                    formatted = '+7';
+                    if (val.length > 1) formatted += ' (' + val.substring(1, 4);
+                    if (val.length >= 5) formatted += ') ' + val.substring(4, 7);
+                    if (val.length >= 8) formatted += '-' + val.substring(7, 9);
+                    if (val.length >= 10) formatted += '-' + val.substring(9, 11);
+                }
+                this.value = formatted;
+            });
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && this.value.length <= 4) this.value = '';
+            });
+        });
 
-        const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
-        const dayNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
-        const weekdays = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+        function showPage(pageId) {
+            ['mainPage', 'calendarPage', 'weekendPage', 'deliveryPage'].forEach(id => document.getElementById(id).style.display = 'none');
+            document.getElementById(pageId).style.display = pageId === 'mainPage' ? 'flex' : 'block';
+            window.scrollTo(0, 0);
+        }
+        function navigateTo(pageId) { history.pushState({ page: pageId }, '', '#' + pageId); showPage(pageId); }
+        function goBack() { history.back(); }
+        window.addEventListener('popstate', e => showPage(e.state?.page || 'mainPage'));
+        window.addEventListener('load', () => {
+            loadCart();
+            renderReviews();
+            const hash = window.location.hash.replace('#', '');
+            showPage(['calendarPage', 'weekendPage', 'deliveryPage'].includes(hash) ? hash : 'mainPage');
+        });
+
+        function updateTotal() { document.getElementById('totalDisplay').innerText = `Итого: ${(cart[1]*240 + cart[2]*950)} ₽`; }
+        function updateWeekendTotal() { document.getElementById('weekendTotalDisplay').innerText = `Итого: ${(weekendCart[1]*240 + weekendCart[2]*950)} ₽`; }
+        
+        function changeQty(id, delta) {
+            if (cart[id] + delta >= 0) { cart[id] += delta; document.getElementById(`qty-${id}`).innerText = cart[id]; updateTotal(); saveCart(); toggleDeliveryMethod(); }
+        }
+        function changeWeekendQty(id, delta) {
+            if (weekendCart[id] + delta >= 0) { weekendCart[id] += delta; document.getElementById(`w-qty-${id}`).innerText = weekendCart[id]; updateWeekendTotal(); toggleWeekendDeliveryMethod(); }
+        }
+        function saveCart() { localStorage.setItem('nezamerzayka_cart', JSON.stringify(cart)); }
+        function loadCart() {
+            const saved = localStorage.getItem('nezamerzayka_cart');
+            if (saved) { try { cart = JSON.parse(saved); document.getElementById('qty-1').innerText = cart[1]; document.getElementById('qty-2').innerText = cart[2]; updateTotal(); toggleDeliveryMethod(); } catch(e){} }
+        }
+
+        function toggleDeliveryMethod() {
+            const method = document.querySelector('input[name="delivery-method"]:checked').value;
+            const addr = document.getElementById('address'), hint = document.getElementById('addressHint');
+            if (method === 'pickup') { addr.disabled = true; addr.value = ''; hint.innerText = ' Самовывоз: выберите ЖК ниже'; hint.style.color = '#ffd89b'; }
+            else if (cart[2] >= MIN_DELIVERY) { addr.disabled = false; hint.innerText = '✅ Доставка активирована!'; hint.style.color = '#38ef7d'; }
+            else { addr.disabled = true; addr.value = ''; hint.innerText = `️ Нужно мин. ${MIN_DELIVERY} уп. (сейчас: ${cart[2]})`; hint.style.color = '#ff9a9a'; document.querySelector('input[name="delivery-method"][value="pickup"]').checked = true; }
+        }
+        function toggleWeekendDeliveryMethod() {
+            const method = document.querySelector('input[name="w-delivery-method"]:checked').value;
+            const addr = document.getElementById('w-address'), hint = document.getElementById('w-addressHint');
+            if (method === 'pickup') { addr.disabled = true; addr.value = ''; hint.innerText = '📍 Самовывоз'; hint.style.color = '#ffd89b'; }
+            else if (weekendCart[2] >= MIN_DELIVERY) { addr.disabled = false; hint.innerText = '✅ Доставка активирована!'; hint.style.color = '#38ef7d'; }
+            else { addr.disabled = true; addr.value = ''; hint.innerText = `⚠️ Нужно мин. ${MIN_DELIVERY} уп. (сейчас: ${weekendCart[2]})`; hint.style.color = '#ff9a9a'; document.querySelector('input[name="w-delivery-method"][value="pickup"]').checked = true; }
+        }
+
+        function showError(input) {
+            input.classList.add('input-error'); input.focus(); input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => input.classList.remove('input-error'), 1000); return false;
+        }
+        function scrollToWeekdayForm() {
+            const form = document.getElementById('orderForm');
+            form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => document.getElementById('name').focus(), 500);
+        }
+
+        function openWeekdayCalendar(location) {
+            if (!cart[1] && !cart[2]) return alert('Сначала выберите товар!');
+            const name = document.getElementById('name'), phone = document.getElementById('phone'), addr = document.getElementById('address');
+            if (!name.value.trim()) return showError(name);
+            if (phone.value.length < 18) return showError(phone);
+            if (document.querySelector('input[name="delivery-method"]:checked').value === 'delivery' && (!addr.value.trim() || cart[2] < MIN_DELIVERY)) return showError(addr);
+            
+            currentLocation = location; selectedDate = null; currentMonth = new Date().getMonth(); currentYear = new Date().getFullYear();
+            navigateTo('calendarPage'); renderCalendar(); updateSelectedInfo();
+        }
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            document.getElementById('calendarMonth').innerText = `${monthNames[currentMonth]} ${currentYear}`;
+            grid.innerHTML = '';
+            dayNames.forEach((d, i) => { const h = document.createElement('div'); h.className = 'calendar-day-header' + (i >= 5 ? ' weekend' : ''); h.innerText = d; grid.appendChild(h); });
+            const firstDay = new Date(currentYear, currentMonth, 1), lastDay = new Date(currentYear, currentMonth + 1, 0);
+            let startDay = firstDay.getDay() - 1; if (startDay < 0) startDay = 6;
+            for (let i = 0; i < startDay; i++) grid.appendChild(document.createElement('div'));
+            const today = new Date(); today.setHours(0,0,0,0);
+            for (let day = 1; day <= lastDay.getDate(); day++) {
+                const date = new Date(currentYear, currentMonth, day);
+                const el = document.createElement('div'); el.className = 'calendar-day'; el.innerText = day;
+                const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+                if (isWeekend || date < today) el.classList.add('disabled');
+                else {
+                    if (date.getTime() === today.getTime()) el.classList.add('today');
+                    el.onclick = () => { document.querySelectorAll('#calendarGrid .calendar-day').forEach(e => e.classList.remove('selected')); el.classList.add('selected'); selectedDate = date; updateSelectedInfo(); document.getElementById('confirmBtn').disabled = false; };
+                }
+                if (selectedDate && selectedDate.getDate() === day && selectedDate.getMonth() === currentMonth) el.classList.add('selected');
+                grid.appendChild(el);
+            }
+        }
+        function changeMonth(delta) { currentMonth += delta; if (currentMonth > 11) { currentMonth = 0; currentYear++; } else if (currentMonth < 0) { currentMonth = 11; currentYear--; } renderCalendar(); }
+        function updateSelectedInfo() {
+            const info = document.getElementById('selectedInfo');
+            if (!selectedDate) { info.innerHTML = '👆 Нажмите на будний день'; document.getElementById('confirmBtn').disabled = true; }
+            else { info.innerHTML = `📅 <b>${selectedDate.getDate()}.${(selectedDate.getMonth()+1).toString().padStart(2,'0')}.${selectedDate.getFullYear()}</b> — ${weekdays[selectedDate.getDay()]}`; }
+        }
+        function confirmDate() {
+            if (!selectedDate) return;
+            const name = document.getElementById('name').value, phone = document.getElementById('phone').value;
+            const method = document.querySelector('input[name="delivery-method"]:checked').value;
+            const addr = method === 'delivery' ? document.getElementById('address').value.trim() : `Самовывоз (${currentLocation === 'novaya' ? 'Новая Охта' : 'Цветной город'})`;
+            let items = '', total = 0;
+            if (cart[1] > 0) { items += `• Незамерзайка: ${cart[1]} шт. — ${cart[1]*240}₽\n`; total += cart[1]*240; }
+            if (cart[2] > 0) { items += `• Упаковка: ${cart[2]} уп. — ${cart[2]*950}₽\n`; total += cart[2]*950; }
+            const msg = `❄️ НЕЗАМЕРЗАЙКА (БУДНИ)\nЖК: ${currentLocation === 'novaya' ? 'НОВАЯ ОХТА' : 'ЦВЕТНОЙ ГОРОД'}\nИмя: ${name}\nТел: ${phone}\n📍 ${addr}\n ${selectedDate.getDate()}.${(selectedDate.getMonth()+1).toString().padStart(2,'0')}.${selectedDate.getFullYear()} (${weekdays[selectedDate.getDay()]})\n\n${items}Итого: ${total}₽\n💵 Наличные`;
+            sendOrder(msg, currentLocation === 'novaya' ? PHONE_NOVAYA : PHONE_TSVETNOY);
+        }
+
+        function openWeekendPage() {
+            weekendCart = { 1: 0, 2: 0 }; weekendSelectedDate = null; weekendMonth = new Date().getMonth(); weekendYear = new Date().getFullYear();
+            document.getElementById('w-name').value = ''; document.getElementById('w-phone').value = ''; document.getElementById('w-address').value = '';
+            document.getElementById('w-qty-1').innerText = '0'; document.getElementById('w-qty-2').innerText = '0';
+            document.querySelector('input[name="w-delivery-method"][value="pickup"]').checked = true;
+            toggleWeekendDeliveryMethod(); updateWeekendTotal();
+            document.getElementById('weekendSelectedInfo').innerHTML = '👆 Нажмите на Сб или Вс';
+            document.getElementById('weekendSubmitBtn').disabled = true;
+            navigateTo('weekendPage'); renderWeekendCalendar();
+        }
+        function renderWeekendCalendar() {
+            const grid = document.getElementById('weekendCalendarGrid');
+            document.getElementById('weekendCalendarMonth').innerText = `${monthNames[weekendMonth]} ${weekendYear}`;
+            grid.innerHTML = '';
+            dayNames.forEach((d, i) => { const h = document.createElement('div'); h.className = 'calendar-day-header' + (i >= 5 ? ' weekend' : ''); h.innerText = d; grid.appendChild(h); });
+            const firstDay = new Date(weekendYear, weekendMonth, 1), lastDay = new Date(weekendYear, weekendMonth + 1, 0);
+            let startDay = firstDay.getDay() - 1; if (startDay < 0) startDay = 6;
+            for (let i = 0; i < startDay; i++) grid.appendChild(document.createElement('div'));
+            const today = new Date(); today.setHours(0,0,0,0);
+            for (let day = 1; day <= lastDay.getDate(); day++) {
+                const date = new Date(weekendYear, weekendMonth, day);
+                const el = document.createElement('div'); el.className = 'calendar-day'; el.innerText = day;
+                const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+                if (isWeekend) el.classList.add('weekend');
+                if (!isWeekend || date < today) el.classList.add('disabled');
+                else {
+                    if (date.getTime() === today.getTime()) el.classList.add('today');
+                    el.onclick = () => { document.querySelectorAll('#weekendCalendarGrid .calendar-day').forEach(e => e.classList.remove('selected')); el.classList.add('selected'); weekendSelectedDate = date; updateWeekendSelectedInfo(); document.getElementById('weekendSubmitBtn').disabled = false; };
+                }
+                if (weekendSelectedDate && weekendSelectedDate.getDate() === day && weekendSelectedDate.getMonth() === weekendMonth) el.classList.add('selected');
+                grid.appendChild(el);
+            }
+        }
+        function changeWeekendMonth(delta) { weekendMonth += delta; if (weekendMonth > 11) { weekendMonth = 0; weekendYear++; } else if (weekendMonth < 0) { weekendMonth = 11; weekendYear--; } renderWeekendCalendar(); }
+        function updateWeekendSelectedInfo() {
+            const info = document.getElementById('weekendSelectedInfo');
+            if (!weekendSelectedDate) { info.innerHTML = '👆 Нажмите на Сб или Вс'; document.getElementById('weekendSubmitBtn').disabled = true; }
+            else { info.innerHTML = `🎉 <b>${weekendSelectedDate.getDate()}.${(weekendSelectedDate.getMonth()+1).toString().padStart(2,'0')}.${weekendSelectedDate.getFullYear()}</b> — ${weekdays[weekendSelectedDate.getDay()]}`; }
+        }
+        function submitWeekendOrder() {
+            if (!weekendSelectedDate) return;
+            const name = document.getElementById('w-name'), phone = document.getElementById('w-phone'), addr = document.getElementById('w-address');
+            if (!name.value.trim()) return showError(name);
+            if (phone.value.length < 18) return showError(phone);
+            if (!weekendCart[1] && !weekendCart[2]) return alert('Выберите товар!');
+            if (document.querySelector('input[name="w-delivery-method"]:checked').value === 'delivery' && (!addr.value.trim() || weekendCart[2] < MIN_DELIVERY)) return showError(addr);
+            
+            const method = document.querySelector('input[name="w-delivery-method"]:checked').value;
+            const addrText = method === 'delivery' ? addr.value.trim() : 'Самовывоз';
+            let items = '', total = 0;
+            if (weekendCart[1] > 0) { items += `• Незамерзайка: ${weekendCart[1]} шт. — ${weekendCart[1]*240}₽\n`; total += weekendCart[1]*240; }
+            if (weekendCart[2] > 0) { items += `• Упаковка: ${weekendCart[2]} уп. — ${weekendCart[2]*950}₽\n`; total += weekendCart[2]*950; }
+            const msg = `🎉 ЗАКАЗ НА ВЫХОДНЫЕ\n\n👤 ${name.value}\n📞 ${phone.value}\n📍 ${addrText}\n📅 ${weekendSelectedDate.getDate()}.${(weekendSelectedDate.getMonth()+1).toString().padStart(2,'0')}.${weekendSelectedDate.getFullYear()} (${weekdays[weekendSelectedDate.getDay()]})\n\n${items}💰 ${total}₽\n💵 Наличные\n\nСообщите время получения!`;
+            sendOrder(msg, PHONE_NOVAYA);
+        }
+
+        function sendOrder(msg, target) {
+            const isMobile = /Android|webOS|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            if (!isMobile) return alert('SMS работает только на телефонах!');
+            const sep = /iPhone|iPad|iPod/i.test(navigator.userAgent) ? '&' : '?';
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(msg).then(() => { showToast('✅ Скопировано! Открываем SMS...'); setTimeout(() => window.location.href = `sms:${target}${sep}body=${encodeURIComponent(msg)}`, 500); });
+            } else {
+                window.location.href = `sms:${target}${sep}body=${encodeURIComponent(msg)}`;
+            }
+        }
+        function showToast(text) { const t = document.getElementById('copyToast'); t.innerText = text; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
 
         const defaultReviews = [
-            { name: 'Анна', location: 'Новая Охта, корп. 3', rating: 5, text: 'Заказывала упаковку, привезли прямо к подъезду. Качество отличное, не замерзает даже в -25!', date: '15.09.2026' },
-            { name: 'Дмитрий', location: 'Цветной город', rating: 5, text: 'Брал на выходных, всё быстро. Цена адекватная, соседи тоже заказывают.', date: '14.09.2026' },
-            { name: 'Мария', location: 'Новая Охта', rating: 5, text: 'Удобно, что можно заказать через сайт. Приехали вовремя, оплата на месте.', date: '12.09.2026' }
+            { name: 'Анна', location: 'Новая Охта, корп. 3', rating: 5, text: 'Привезли прямо к подъезду. Качество отличное, не замерзает!', date: '15.09.2026' },
+            { name: 'Дмитрий', location: 'Цветной город', rating: 5, text: 'Брал на выходных, всё быстро. Цена адекватная.', date: '14.09.2026' }
         ];
-
         let currentRating = 0;
 
         function getReviews() {
@@ -1208,34 +927,19 @@
         function renderReviews() {
             const list = document.getElementById('reviewsList');
             const reviews = getReviews();
-            if (reviews.length === 0) {
-                list.innerHTML = '<div class="no-reviews">Пока нет отзывов. Будьте первым!</div>';
-                return;
-            }
             list.innerHTML = reviews.map(r => {
                 const initials = r.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
                 const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
-                return `
-                    <div class="review">
-                        <div class="review-top">
-                            <div class="review-avatar">${initials || '?'}</div>
-                            <div class="review-meta">
-                                <div class="review-author">${escapeHtml(r.name)}</div>
-                                <div class="review-location">${escapeHtml(r.location || '')}</div>
-                            </div>
-                            <div class="review-stars">${stars}</div>
-                        </div>
-                        <div class="review-text">${escapeHtml(r.text)}</div>
-                        <div class="review-date">${r.date || ''}</div>
+                return `<div style="background:rgba(255,255,255,0.08); border-left:3px solid #ffd89b; padding:6px; border-radius:5px;">
+                    <div style="display:flex; align-items:center; gap:6px; margin-bottom:3px;">
+                        <div style="width:24px; height:24px; border-radius:50%; background:#667eea; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.7em;">${initials}</div>
+                        <div style="flex:1;"><div style="font-size:0.7em; font-weight:700;">${r.name}</div><div style="font-size:0.6em; color:#74ebd5;">${r.location}</div></div>
+                        <div style="color:#ffd89b; font-size:0.75em;">${stars}</div>
                     </div>
-                `;
+                    <div style="font-size:0.7em; line-height:1.3;">${r.text}</div>
+                    <div style="font-size:0.55em; opacity:0.5; margin-top:2px;">${r.date}</div>
+                </div>`;
             }).join('');
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
         }
 
         function openReviewModal() {
@@ -1245,640 +949,109 @@
             document.getElementById('reviewText').value = '';
             currentRating = 0;
             updateStars();
-            document.body.style.overflow = 'hidden';
         }
-
-        function closeReviewModal() {
-            document.getElementById('reviewModal').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
+        function closeReviewModal() { document.getElementById('reviewModal').classList.remove('active'); }
         function updateStars() {
             document.querySelectorAll('#starRating .star').forEach(star => {
-                const value = parseInt(star.dataset.value);
-                star.classList.toggle('active', value <= currentRating);
+                star.classList.toggle('active', parseInt(star.dataset.value) <= currentRating);
             });
         }
-
-        function showError(input) {
-            input.classList.add('input-error');
-            input.focus();
-            input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(() => input.classList.remove('input-error'), 1000);
-            return false;
-        }
-
-        function toggleDeliveryMethod() {
-            const method = document.querySelector('input[name="delivery-method"]:checked').value;
-            const addressInput = document.getElementById('address');
-            const addressHint = document.getElementById('addressHint');
-            
-            if (method === 'pickup') {
-                addressInput.disabled = true;
-                addressInput.value = '';
-                addressHint.innerHTML = '📍 Самовывоз: выберите ЖК ниже';
-                addressHint.style.color = '#ffd89b';
-            } else {
-                if (cart[2] >= MIN_DELIVERY_PACKS) {
-                    addressInput.disabled = false;
-                    addressHint.innerHTML = '✅ Доставка активирована! Укажите адрес';
-                    addressHint.style.color = '#38ef7d';
-                } else {
-                    addressInput.disabled = true;
-                    addressInput.value = '';
-                    addressHint.innerHTML = `️ Нужно минимум ${MIN_DELIVERY_PACKS} упаковок для доставки (сейчас: ${cart[2]})`;
-                    addressHint.style.color = '#ff9a9a';
-                    document.querySelector('input[name="delivery-method"][value="pickup"]').checked = true;
-                }
-            }
-        }
-
-        function toggleWeekendDeliveryMethod() {
-            const method = document.querySelector('input[name="w-delivery-method"]:checked').value;
-            const addressInput = document.getElementById('w-address');
-            const addressHint = document.getElementById('w-addressHint');
-            
-            if (method === 'pickup') {
-                addressInput.disabled = true;
-                addressInput.value = '';
-                addressHint.innerHTML = '📍 Самовывоз: выберите ЖК ниже';
-                addressHint.style.color = '#ffd89b';
-            } else {
-                if (weekendCart[2] >= MIN_DELIVERY_PACKS) {
-                    addressInput.disabled = false;
-                    addressHint.innerHTML = '✅ Доставка активирована! Укажите адрес';
-                    addressHint.style.color = '#38ef7d';
-                } else {
-                    addressInput.disabled = true;
-                    addressInput.value = '';
-                    addressHint.innerHTML = `⚠️ Нужно минимум ${MIN_DELIVERY_PACKS} упаковок для доставки (сейчас: ${weekendCart[2]})`;
-                    addressHint.style.color = '#ff9a9a';
-                    document.querySelector('input[name="w-delivery-method"][value="pickup"]').checked = true;
-                }
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('#starRating .star').forEach(star => {
-                star.addEventListener('click', () => {
-                    currentRating = parseInt(star.dataset.value);
-                    updateStars();
-                });
-            });
-
-            document.getElementById('reviewModal').addEventListener('click', (e) => {
-                if (e.target.id === 'reviewModal') closeReviewModal();
-            });
-
-            const phoneInputs = document.querySelectorAll('input[type="tel"]');
-            phoneInputs.forEach(input => {
-                IMask(input, { mask: '+{7} (000) 000-00-00', lazy: false });
-            });
+        document.querySelectorAll('#starRating .star').forEach(star => {
+            star.addEventListener('click', () => { currentRating = parseInt(star.dataset.value); updateStars(); });
         });
+        document.getElementById('reviewModal').addEventListener('click', e => { if(e.target.id === 'reviewModal') closeReviewModal(); });
 
         function submitReview() {
             const name = document.getElementById('reviewName').value.trim();
             const location = document.getElementById('reviewLocation').value.trim();
             const text = document.getElementById('reviewText').value.trim();
-
-            if (!name) return showError(document.getElementById('reviewName'));
-            if (!text) return showError(document.getElementById('reviewText'));
-            if (currentRating === 0) { alert('Поставьте оценку звёздочками!'); return; }
-
+            if (!name || !text || currentRating === 0) return alert('Заполните имя, текст и поставьте оценку!');
+            
             const now = new Date();
-            const date = `${now.getDate().toString().padStart(2, '0')}.${(now.getMonth() + 1).toString().padStart(2, '0')}.${now.getFullYear()}`;
-
+            const date = `${now.getDate().toString().padStart(2,'0')}.${(now.getMonth()+1).toString().padStart(2,'0')}.${now.getFullYear()}`;
+            
             const saved = localStorage.getItem('user_reviews');
             const userReviews = saved ? JSON.parse(saved) : [];
             userReviews.push({ name, location, rating: currentRating, text, date });
             localStorage.setItem('user_reviews', JSON.stringify(userReviews));
-
-            const stars = '★'.repeat(currentRating) + '☆'.repeat(5 - currentRating);
-            const message = `🆕 НОВЫЙ ОТЗЫВ\n\n👤 ${name}\n📍 ${location || 'не указан'}\n⭐ ${stars}\n💬 ${text}\n📅 ${date}`;
-            const tgUrl = `https://t.me/${TELEGRAM_OWNER}?text=${encodeURIComponent(message)}`;
-
+            
             renderReviews();
-            document.getElementById('reviewsList').scrollTop = 0;
             closeReviewModal();
             showToast('✅ Спасибо за отзыв!');
-
-            setTimeout(() => { window.open(tgUrl, '_blank'); }, 500);
         }
 
-        renderReviews();
-
-        async function loadWeather() {
-            try {
-                const lat = 60.0493, lon = 30.4394;
-                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m`);
-                const data = await res.json();
-                const temp = Math.round(data.current.temperature_2m);
-                document.getElementById('temp').innerText = `${temp}°C`;
-                const label = document.getElementById('weatherLabel');
-                if (temp < -15) label.innerText = 'Срочно!';
-                else if (temp < -5) label.innerText = 'Пора!';
-                else if (temp < 0) label.innerText = 'Скоро';
-                else label.innerText = 'Готовься';
-            } catch(e) {
-                document.getElementById('temp').innerText = '—';
-            }
+       // === ПОГОДА: ГОРИЗОНТАЛЬНЫЙ ВИДЖЕТ ===
+setTimeout(async () => {
+    try {
+        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=60.0493&longitude=30.4394&current=temperature_2m&daily=temperature_2m_max,temperature_2m_min,weathercode&forecast_days=3&timezone=Europe/Moscow');
+        const data = await res.json();
+        
+        const temp = Math.round(data.current.temperature_2m);
+        document.getElementById('temp').innerHTML = `${temp}<sup>°C</sup>`;
+        
+        const forecast = document.getElementById('weatherForecast');
+        const daysShort = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+        const dayLabels = ['Сегодня', 'Завтра', 'Послезавтра'];
+        
+        function getWeatherEmoji(code) {
+            if (code === 0) return '☀️';
+            if (code <= 3) return '⛅';
+            if (code <= 48) return '️';
+            if (code <= 57) return '🌧️';
+            if (code <= 67) return '🌨️';
+            if (code <= 77) return '❄️';
+            if (code <= 82) return '🌧️';
+            if (code <= 86) return '️';
+            if (code >= 95) return '⛈️';
+            return '🌤️';
         }
-        loadWeather();
-
-        function saveCart() { localStorage.setItem('nezamerzayka_cart', JSON.stringify(cart)); }
-        function loadCart() {
-            const saved = localStorage.getItem('nezamerzayka_cart');
-            if (saved) {
-                try {
-                    cart = JSON.parse(saved);
-                    document.getElementById('qty-1').innerText = cart[1];
-                    document.getElementById('qty-2').innerText = cart[2];
-                    updateTotal();
-                    toggleDeliveryMethod();
-                } catch(e) {}
-            }
-        }
-
-        function showPage(pageId) {
-            ['mainPage', 'calendarPage', 'weekendPage', 'deliveryPage'].forEach(id => {
-                document.getElementById(id).style.display = 'none';
-            });
-            document.getElementById(pageId).style.display = pageId === 'mainPage' ? 'flex' : 'block';
-            window.scrollTo(0, 0);
-        }
-
-        function navigateTo(pageId) {
-            history.pushState({ page: pageId }, '', '#' + pageId);
-            showPage(pageId);
-        }
-
-        window.addEventListener('popstate', function(event) {
-            if (event.state && event.state.page) showPage(event.state.page);
-            else showPage('mainPage');
-        });
-
-        window.addEventListener('load', function() {
-            loadCart();
-            const hash = window.location.hash.replace('#', '');
-            if (hash && ['calendarPage', 'weekendPage', 'deliveryPage'].includes(hash)) showPage(hash);
-            else showPage('mainPage');
-        });
-
-        function openDeliveryPage() { navigateTo('deliveryPage'); }
-        function closeDeliveryPage() { history.back(); }
-
-        function scrollToWeekdayForm() {
-            const form = document.getElementById('orderForm');
-            if (form) {
-                form.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                setTimeout(() => { document.getElementById('name').focus(); }, 500);
-            }
-        }
-
-        function openWeekendPage() {
-            weekendCart = { 1: 0, 2: 0 };
-            weekendSelectedDate = null;
-            weekendMonth = new Date().getMonth();
-            weekendYear = new Date().getFullYear();
-            document.getElementById('w-name').value = '';
-            document.getElementById('w-phone').value = '';
-            document.getElementById('w-address').value = '';
-            document.getElementById('w-qty-1').innerText = '0';
-            document.getElementById('w-qty-2').innerText = '0';
-            document.querySelector('input[name="w-delivery-method"][value="pickup"]').checked = true;
-            toggleWeekendDeliveryMethod();
-            updateWeekendTotal();
-            document.getElementById('weekendSelectedInfo').innerHTML = ' Нажмите на Сб или Вс';
-            document.getElementById('weekendSubmitBtn').disabled = true;
-            navigateTo('weekendPage');
-            renderWeekendCalendar();
-        }
-
-        function closeWeekendPage() { history.back(); }
-
-        function openWeekdayCalendar(location) {
-            if (cart[1] === 0 && cart[2] === 0) { alert('Сначала выберите товар!'); return; }
-            const nameInput = document.getElementById('name');
-            const phoneInput = document.getElementById('phone');
-            const addressInput = document.getElementById('address');
-            const deliveryMethod = document.querySelector('input[name="delivery-method"]:checked').value;
+        
+        let forecastHTML = '';
+        for (let i = 0; i < 3; i++) {
+            const date = new Date(data.daily.time[i]);
+            const dayName = i === 0 ? dayLabels[0] : daysShort[date.getDay()];
+            const maxTemp = Math.round(data.daily.temperature_2m_max[i]);
+            const minTemp = Math.round(data.daily.temperature_2m_min[i]);
+            const weatherCode = data.daily.weathercode[i];
+            const emoji = getWeatherEmoji(weatherCode);
             
-            if (!nameInput.value.trim()) return showError(nameInput);
-            if (!phoneInput.value.trim() || phoneInput.value.includes('_')) return showError(phoneInput);
-            
-            if (deliveryMethod === 'delivery') {
-                if (cart[2] < MIN_DELIVERY_PACKS) {
-                    alert(`Для доставки нужно минимум ${MIN_DELIVERY_PACKS} упаковок!`);
-                    return;
-                }
-                if (!addressInput.value.trim()) return showError(addressInput);
-            }
-
-            currentLocation = location;
-            selectedDate = null;
-            currentMonth = new Date().getMonth();
-            currentYear = new Date().getFullYear();
-            navigateTo('calendarPage');
-            updateSelectedInfo();
-            renderCalendar();
+            forecastHTML += `
+                <div class="weather-forecast-day">
+                    <div class="weather-forecast-day-name">${dayName}</div>
+                    <div class="weather-forecast-icon">${emoji}</div>
+                    <div class="weather-forecast-temp">${maxTemp > 0 ? '+' : ''}${maxTemp}°</div>
+                    <div class="weather-forecast-temp-min">${minTemp > 0 ? '+' : ''}${minTemp}°</div>
+                </div>
+            `;
         }
+        forecast.innerHTML = forecastHTML;
+    } catch(e) { 
+        document.getElementById('temp').innerHTML = '—<sup>°C</sup>';
+        document.getElementById('weatherForecast').innerHTML = '<div class="weather-loading">Прогноз недоступен</div>';
+    }
+}, 1000);
 
-        function goBack() { history.back(); }
-
-        function changeQty(id, delta) {
-            if (cart[id] + delta >= 0) {
-                cart[id] += delta;
-                document.getElementById(`qty-${id}`).innerText = cart[id];
-                updateTotal();
-                saveCart();
-                toggleDeliveryMethod();
-            }
-        }
-
-        function updateTotal() {
-            let total = (cart[1] * products[1].price) + (cart[2] * products[2].price);
-            document.getElementById('totalDisplay').innerText = `Итого: ${total} ₽`;
-        }
-
-        function changeWeekendQty(id, delta) {
-            if (weekendCart[id] + delta >= 0) {
-                weekendCart[id] += delta;
-                document.getElementById(`w-qty-${id}`).innerText = weekendCart[id];
-                updateWeekendTotal();
-                toggleWeekendDeliveryMethod();
-            }
-        }
-
-        function updateWeekendTotal() {
-            let total = (weekendCart[1] * products[1].price) + (weekendCart[2] * products[2].price);
-            document.getElementById('weekendTotalDisplay').innerText = `Итого: ${total} ₽`;
-        }
-
-        function showToast(text) {
-            const toast = document.getElementById('copyToast');
-            toast.innerText = text;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
-        }
-
-        function copyToClipboard(text) {
-            if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
-            const t = document.createElement('textarea');
-            t.value = text; t.style.position = 'fixed'; t.style.opacity = '0';
-            document.body.appendChild(t); t.select();
-            try { document.execCommand('copy'); } catch (e) {}
-            document.body.removeChild(t);
-            return Promise.resolve();
-        }
-
-        function changeMonth(delta) {
-            currentMonth += delta;
-            if (currentMonth > 11) { currentMonth = 0; currentYear++; }
-            else if (currentMonth < 0) { currentMonth = 11; currentYear--; }
-            renderCalendar();
-        }
-
-        function renderCalendar() {
-            const grid = document.getElementById('calendarGrid');
-            document.getElementById('calendarMonth').innerText = `${monthNames[currentMonth]} ${currentYear}`;
-            grid.innerHTML = '';
-            dayNames.forEach((day, index) => {
-                const header = document.createElement('div');
-                header.className = 'calendar-day-header';
-                if (index >= 5) header.classList.add('weekend');
-                header.innerText = day;
-                grid.appendChild(header);
-            });
-            const firstDay = new Date(currentYear, currentMonth, 1);
-            const lastDay = new Date(currentYear, currentMonth + 1, 0);
-            let startDay = firstDay.getDay() - 1;
-            if (startDay < 0) startDay = 6;
-            for (let i = 0; i < startDay; i++) grid.appendChild(document.createElement('div'));
-            const today = new Date(); today.setHours(0, 0, 0, 0);
-            for (let day = 1; day <= lastDay.getDate(); day++) {
-                const date = new Date(currentYear, currentMonth, day);
-                const dayElement = document.createElement('div');
-                dayElement.className = 'calendar-day';
-                dayElement.innerText = day;
-                const dayOfWeek = date.getDay();
-                const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
-                if (isWeekend || date < today) {
-                    dayElement.classList.add('disabled');
-                } else {
-                    if (date.getTime() === today.getTime()) dayElement.classList.add('today');
-                    dayElement.onclick = () => selectDate(day, dayElement, date);
-                }
-                if (selectedDate && selectedDate.getDate() === day && selectedDate.getMonth() === currentMonth && selectedDate.getFullYear() === currentYear) {
-                    dayElement.classList.add('selected');
-                }
-                grid.appendChild(dayElement);
-            }
-        }
-
-        function selectDate(day, element, date) {
-            document.querySelectorAll('#calendarGrid .calendar-day').forEach(el => el.classList.remove('selected'));
-            element.classList.add('selected');
-            selectedDate = date;
-            updateSelectedInfo();
-            document.getElementById('confirmBtn').disabled = false;
-        }
-
-        function updateSelectedInfo() {
-            const info = document.getElementById('selectedInfo');
-            if (!selectedDate) {
-                info.innerHTML = '👆 Нажмите на будний день';
-                document.getElementById('confirmBtn').disabled = true;
-            } else {
-                const day = selectedDate.getDate(), month = selectedDate.getMonth() + 1;
-                info.innerHTML = `📅 <b>${day}.${month.toString().padStart(2, '0')}.${selectedDate.getFullYear()}</b> — ${weekdays[selectedDate.getDay()]}`;
-                document.getElementById('confirmBtn').disabled = false;
-            }
-        }
-
-        function confirmDate() {
-            if (!selectedDate) return;
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-            const deliveryMethod = document.querySelector('input[name="delivery-method"]:checked').value;
-            let address = document.getElementById('address').value.trim();
-            
-            let receiveMethod = '';
-            if (deliveryMethod === 'pickup') {
-                receiveMethod = ` Самовывоз (${currentLocation === 'novaya' ? 'Новая Охта' : 'Цветной город'})`;
-            } else {
-                receiveMethod = `🚚 Доставка: ${address}`;
-            }
-
-            let itemsList = '', total = 0;
-            if (cart[1] > 0) { itemsList += `• Незамерзайка: ${cart[1]} шт. — ${cart[1]*240}₽\n`; total += cart[1]*240; }
-            if (cart[2] > 0) { itemsList += `• Упаковка: ${cart[2]} уп. — ${cart[2]*950}₽\n`; total += cart[2]*950; }
-
-            const loc = currentLocation === 'novaya' ? 'НОВАЯ ОХТА' : 'ЦВЕТНОЙ ГОРОД';
-            const dateStr = `${selectedDate.getDate()}.${(selectedDate.getMonth()+1).toString().padStart(2,'0')}.${selectedDate.getFullYear()} (${weekdays[selectedDate.getDay()]})`;
-            const msg = `❄️ НЕЗАМЕРЗАЙКА (БУДНИ)\nЖК: ${loc}\nИмя: ${name}\nТел: ${phone}\n${receiveMethod}\n📅 ${dateStr}\n\n${itemsList}Итого: ${total}₽\n💵 Наличные`;
-
-            const isMobile = /Android|webOS|iPhone|iPad|iPod/i.test(navigator.userAgent);
-            if (!isMobile) { alert('SMS только на телефонах!'); return; }
-            const target = currentLocation === 'novaya' ? PHONE_NOVAYA : PHONE_TSVETNOY;
-            const sep = /iPhone|iPad|iPod/i.test(navigator.userAgent) ? '&' : '?';
-
-            copyToClipboard(msg).then(() => {
-                showToast('✅ Заказ скопирован! Откроется SMS');
-                setTimeout(() => { window.location.href = `sms:${target}${sep}body=${encodeURIComponent(msg)}`; }, 500);
-            });
-        }
-
-        function changeWeekendMonth(delta) {
-            weekendMonth += delta;
-            if (weekendMonth > 11) { weekendMonth = 0; weekendYear++; }
-            else if (weekendMonth < 0) { weekendMonth = 11; weekendYear--; }
-            renderWeekendCalendar();
-        }
-
-        function renderWeekendCalendar() {
-            const grid = document.getElementById('weekendCalendarGrid');
-            document.getElementById('weekendCalendarMonth').innerText = `${monthNames[weekendMonth]} ${weekendYear}`;
-            grid.innerHTML = '';
-            dayNames.forEach((day, index) => {
-                const header = document.createElement('div');
-                header.className = 'calendar-day-header';
-                if (index >= 5) header.classList.add('weekend');
-                header.innerText = day;
-                grid.appendChild(header);
-            });
-            const firstDay = new Date(weekendYear, weekendMonth, 1);
-            const lastDay = new Date(weekendYear, weekendMonth + 1, 0);
-            let startDay = firstDay.getDay() - 1;
-            if (startDay < 0) startDay = 6;
-            for (let i = 0; i < startDay; i++) grid.appendChild(document.createElement('div'));
-            const today = new Date(); today.setHours(0, 0, 0, 0);
-            for (let day = 1; day <= lastDay.getDate(); day++) {
-                const date = new Date(weekendYear, weekendMonth, day);
-                const dayElement = document.createElement('div');
-                dayElement.className = 'calendar-day';
-                dayElement.innerText = day;
-                const dayOfWeek = date.getDay();
-                const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
-                if (isWeekend) dayElement.classList.add('weekend');
-                if (date.getTime() === today.getTime()) dayElement.classList.add('today');
-                if (!isWeekend || date < today) {
-                    dayElement.classList.add('disabled');
-                } else {
-                    dayElement.onclick = () => selectWeekendDate(day, dayElement, date);
-                }
-                if (weekendSelectedDate && weekendSelectedDate.getDate() === day && weekendSelectedDate.getMonth() === weekendMonth && weekendSelectedDate.getFullYear() === weekendYear) {
-                    dayElement.classList.add('selected');
-                }
-                grid.appendChild(dayElement);
-            }
-        }
-
-        function selectWeekendDate(day, element, date) {
-            document.querySelectorAll('#weekendCalendarGrid .calendar-day').forEach(el => el.classList.remove('selected'));
-            element.classList.add('selected');
-            weekendSelectedDate = date;
-            updateWeekendSelectedInfo();
-            document.getElementById('weekendSubmitBtn').disabled = false;
-        }
-
-        function updateWeekendSelectedInfo() {
-            const info = document.getElementById('weekendSelectedInfo');
-            if (!weekendSelectedDate) {
-                info.innerHTML = ' Нажмите на Сб или Вс';
-                document.getElementById('weekendSubmitBtn').disabled = true;
-            } else {
-                const day = weekendSelectedDate.getDate(), month = weekendSelectedDate.getMonth() + 1;
-                info.innerHTML = `🎉 <b>${day}.${month.toString().padStart(2, '0')}.${weekendSelectedDate.getFullYear()}</b> — ${weekdays[weekendSelectedDate.getDay()]}`;
-                document.getElementById('weekendSubmitBtn').disabled = false;
-            }
-        }
-
-        function submitWeekendOrder() {
-            if (!weekendSelectedDate) return;
-            const nameInput = document.getElementById('w-name');
-            const phoneInput = document.getElementById('w-phone');
-            const addressInput = document.getElementById('w-address');
-            const deliveryMethod = document.querySelector('input[name="w-delivery-method"]:checked').value;
-            
-            if (!nameInput.value.trim()) return showError(nameInput);
-            if (!phoneInput.value.trim() || phoneInput.value.includes('_')) return showError(phoneInput);
-            if (weekendCart[1] === 0 && weekendCart[2] === 0) { alert('Выберите товар!'); return; }
-            
-            if (deliveryMethod === 'delivery') {
-                if (weekendCart[2] < MIN_DELIVERY_PACKS) {
-                    alert(`Для доставки нужно минимум ${MIN_DELIVERY_PACKS} упаковок!`);
-                    return;
-                }
-                if (!addressInput.value.trim()) return showError(addressInput);
-            }
-
-            const name = nameInput.value;
-            const phone = phoneInput.value;
-            let address = addressInput.value.trim();
-            
-            let receiveMethod = '';
-            if (deliveryMethod === 'pickup') {
-                receiveMethod = '📍 Самовывоз';
-            } else {
-                receiveMethod = `🚚 Доставка: ${address}`;
-            }
-
-            let itemsList = '', total = 0;
-            if (weekendCart[1] > 0) { itemsList += `• Незамерзайка: ${weekendCart[1]} шт. — ${weekendCart[1]*240}₽\n`; total += weekendCart[1]*240; }
-            if (weekendCart[2] > 0) { itemsList += `• Упаковка: ${weekendCart[2]} уп. — ${weekendCart[2]*950}₽\n`; total += weekendCart[2]*950; }
-
-            const dateStr = `${weekendSelectedDate.getDate()}.${(weekendSelectedDate.getMonth()+1).toString().padStart(2,'0')}.${weekendSelectedDate.getFullYear()} (${weekdays[weekendSelectedDate.getDay()]})`;
-            const msg = `🎉 ЗАКАЗ НА ВЫХОДНЫЕ\n\n👤 ${name}\n📞 ${phone}\n${receiveMethod}\n📅 ${dateStr}\n\n${itemsList}💰 ${total}₽\n💵 Наличные\n\nСообщите время получения!`;
-
-            const isMobile = /Android|webOS|iPhone|iPad|iPod/i.test(navigator.userAgent);
-            if (!isMobile) { alert('SMS только на телефонах!'); return; }
-            const target = PHONE_NOVAYA;
-            const sep = /iPhone|iPad|iPod/i.test(navigator.userAgent) ? '&' : '?';
-
-            copyToClipboard(msg).then(() => {
-                showToast('✅ Заказ скопирован! Откроется SMS');
-                setTimeout(() => { window.location.href = `sms:${target}${sep}body=${encodeURIComponent(msg)}`; }, 500);
-            });
-        }
-
-        const snowContainer = document.getElementById('snowContainer');
-        const snowflakes = ['', '❅', '❆', '', '✼'];
-        function createSnowflake() {
-            const snow = document.createElement('div');
-            snow.className = 'snowflake';
-            snow.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
-            snow.style.left = Math.random() * 100 + 'vw';
-            snow.style.fontSize = (Math.random() * 1.2 + 0.5) + 'em';
-            snow.style.animationDuration = (Math.random() * 4 + 3) + 's';
-            snow.style.opacity = Math.random() * 0.5 + 0.3;
-            snowContainer.appendChild(snow);
-            setTimeout(() => snow.remove(), 8000);
-        }
-        setInterval(createSnowflake, 150);
-        for (let i = 0; i < 40; i++) setTimeout(createSnowflake, i * 40);
-
-        const snowmanContainer = document.getElementById('snowmanContainer');
-        function createSnowman() {
-            const s = document.createElement('div');
-            s.className = 'snowman';
-            s.textContent = ['', '☃️'][Math.floor(Math.random() * 2)];
-            s.style.left = Math.random() * 85 + 'vw';
-            s.style.fontSize = (Math.random() * 1.5 + 1.5) + 'em';
-            s.style.animationDuration = (Math.random() * 8 + 8) + 's';
-            snowmanContainer.appendChild(s);
-            setTimeout(() => s.remove(), 16000);
-        }
-        setInterval(createSnowman, 5000);
-        for (let i = 0; i < 3; i++) setTimeout(createSnowman, i * 800);
-
-        // PWA: РЕГИСТРАЦИЯ SERVICE WORKER
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                const swPath = new URL('./sw.js', window.location.href).href;
-                console.log('[PWA] Регистрация SW по пути:', swPath);
-                
-                navigator.serviceWorker.register(swPath, { scope: './' })
-                    .then(registration => { 
-                        console.log('✅ SW зарегистрирован:', registration.scope);
-                        console.log('[PWA] SW статус:', registration.active ? 'active' : 'waiting');
-                    })
-                    .catch(error => { 
-                        console.error('❌ Ошибка SW:', error); 
-                    });
+                navigator.serviceWorker.register(new URL('./sw.js', window.location.href).href, { scope: './' })
+                    .then(r => console.log('✅ SW:', r.scope))
+                    .catch(e => console.error('❌ SW:', e));
             });
         }
-
-        // PWA: УСТАНОВКА
-        (function initPWAInstall() {
-            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-            const dismissedUntil = parseInt(localStorage.getItem('pwa_dismissed_until') || '0');
-            const now = Date.now();
-            if (now < dismissedUntil) return;
-            if (isStandalone) return;
-
+        (function initPWA() {
+            if (window.matchMedia('(display-mode: standalone)').matches || navigator.standalone) return;
             const ua = navigator.userAgent;
-            const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
-            const isSafari = /Safari/.test(ua) && !/Chrome|CriOS|FxiOS|EdgiOS/.test(ua);
-
-            if (isIOS && isSafari) {
-                const iosBanner = document.getElementById('pwaIosBanner');
-                if (iosBanner) {
-                    setTimeout(() => { iosBanner.style.display = 'block'; }, 3000);
-                    document.getElementById('pwaIosCloseBtn').addEventListener('click', () => {
-                        iosBanner.style.display = 'none';
-                        localStorage.setItem('pwa_dismissed_until', String(Date.now() + 24*60*60*1000));
-                    });
-                }
+            if (/iPad|iPhone|iPod/.test(ua) && /Safari/.test(ua) && !/Chrome|CriOS/.test(ua)) {
+                setTimeout(() => document.getElementById('pwaInstallBanner').style.display = 'block', 3000);
+                document.getElementById('pwaCloseBtn').onclick = () => { document.getElementById('pwaInstallBanner').style.display = 'none'; localStorage.setItem('pwa_dismissed', Date.now() + 86400000); };
                 return;
             }
-
-            let deferredPrompt = null;
-            const banner = document.getElementById('pwaInstallBanner');
-            const installBtn = document.getElementById('pwaInstallBtn');
-            const closeBtn = document.getElementById('pwaCloseBtn');
-
-            window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault();
-                deferredPrompt = e;
-                console.log('✅ beforeinstallprompt получен');
-                setTimeout(() => { banner.style.display = 'block'; }, 3000);
-            });
-
-            window.addEventListener('appinstalled', () => {
-                console.log('✅ Приложение установлено');
-                banner.style.display = 'none';
-                deferredPrompt = null;
-            });
-
-            if (installBtn) {
-                installBtn.addEventListener('click', async () => {
-                    if (!deferredPrompt) { alert('Установка недоступна. Попробуйте обновить страницу.'); return; }
-                    deferredPrompt.prompt();
-                    const { outcome } = await deferredPrompt.userChoice;
-                    console.log('Выбор пользователя:', outcome);
-                    deferredPrompt = null;
-                    banner.style.display = 'none';
-                });
-            }
-
-            if (closeBtn) {
-                closeBtn.addEventListener('click', () => {
-                    banner.style.display = 'none';
-                    localStorage.setItem('pwa_dismissed_until', String(Date.now() + 24*60*60*1000));
-                });
-            }
+            let deferredPrompt;
+            window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; setTimeout(() => document.getElementById('pwaInstallBanner').style.display = 'block', 3000); });
+            document.getElementById('pwaInstallBtn').onclick = async () => { if (deferredPrompt) { deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; document.getElementById('pwaInstallBanner').style.display = 'none'; } };
+            document.getElementById('pwaCloseBtn').onclick = () => { document.getElementById('pwaInstallBanner').style.display = 'none'; localStorage.setItem('pwa_dismissed', Date.now() + 86400000); };
+            if (parseInt(localStorage.getItem('pwa_dismissed') || '0') > Date.now()) document.getElementById('pwaInstallBanner').style.display = 'none';
         })();
-
-        // ДИАГНОСТИКА PWA
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                console.log('=== PWA ДИАГНОСТИКА ===');
-                console.log('1. Manifest:', document.querySelector('link[rel="manifest"]')?.href);
-                console.log('2. Theme color:', document.querySelector('meta[name="theme-color"]')?.content);
-                console.log('3. Service Worker:', 'serviceWorker' in navigator);
-                console.log('4. HTTPS:', window.location.protocol === 'https:');
-                console.log('5. URL:', window.location.href);
-                
-                if ('serviceWorker' in navigator) {
-                    navigator.serviceWorker.getRegistration().then(reg => {
-                        console.log('6. SW регистрация:', reg ? 'НАЙДЕНА' : 'ОТСУТСТВУЕТ');
-                        if (reg) {
-                            console.log('   Scope:', reg.scope);
-                            console.log('   Active:', reg.active?.state);
-                        }
-                    });
-                }
-                
-                fetch(document.querySelector('link[rel="manifest"]').href)
-                    .then(r => r.json())
-                    .then(m => {
-                        console.log('7. Manifest name:', m.name);
-                        console.log('8. Manifest icons:', m.icons?.length, 'штук');
-                        console.log('9. Display mode:', m.display);
-                    })
-                    .catch(e => console.error('❌ Manifest не загружен:', e));
-            }, 2000);
-        });
     </script>
 </body>
 </html>
