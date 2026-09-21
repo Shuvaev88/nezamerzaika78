@@ -91,7 +91,7 @@
         .install-banner:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(17, 153, 142, 0.6); }
         .install-banner:active { transform: translateY(1px); }
 
-        /* ===== ШАПКА ===== */
+        /* ===== ШАПКА ===== */                
         .hero-header {
             background: linear-gradient(135deg, rgba(116, 235, 213, 0.15), rgba(102, 126, 234, 0.15));
             backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.2);
@@ -468,7 +468,7 @@
             <div class="hero-info-row">
                 <div class="hero-chip chip-weather">
                     <span class="chip-icon">🌡️</span>
-                    <span><span class="chip-value" id="temp">—</span> <span style="font-size: 0.85em; opacity: 0.85;" id="weatherLabel">Мурино</span></span>
+                    <span><span class="chip-value" id="temp">—</span> <span style="font-size: 0.85em; opacity: 0.85;" id="weatherLabel">Новая Охта</span></span>
                 </div>
                 <div class="hero-chip chip-payment">
                     <span class="chip-icon">💵</span>
@@ -712,7 +712,7 @@
         <button class="weekend-submit" id="weekendSubmitBtn" onclick="sendOrder(true)" disabled>📱 Отправить заказ</button>
     </div>
 
-    <a href="https://t.me/SHuVal88" target="_blank" class="floating-tg" title="Написать в Telegram">✈️</a>
+    <a href="https://t.me/SHuVai88" target="_blank" class="floating-tg" title="Написать в Telegram">✈️</a>
     <div class="copy-toast" id="copyToast">✅ Скопировано!</div>
 
     <script>
@@ -833,7 +833,7 @@
                 const temp = Math.round(data.current.temperature_2m);
                 document.getElementById('temp').innerText = `${temp}°C`;
                 const label = document.getElementById('weatherLabel');
-                label.innerText = temp < -15 ? 'Срочно!' : temp < -5 ? 'Пора!' : temp < 0 ? 'Скоро' : 'Готовься';
+                label.innerText = temp < -15 ? 'Срочно!' : temp < -5 ? 'Пора!' : temp < 0 ? 'Скоро' : 'Готовимся';
             } catch(e) { document.getElementById('temp').innerText = '—'; }
         }
         loadWeather();
