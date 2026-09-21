@@ -1,45 +1,63 @@
-const CACHE_NAME = 'nezamerzayka-cache-v1';
+const CACHE_NAME = 'nezamerzayka-cache-v5';
 const urlsToCache = [
   './',
   './index.html',
-  './manifest.json'
-  // Если вы вынесете CSS/JS в отдельные файлы, добавьте их имена сюда
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png',
+  './bottle.png',
+  './pack.png'
 ];
 
-// Установка сервис-воркера и кэширование файлов
 self.addEventListener('install', (event) => {
+  console.log('[SW] Установка...');
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        console.log('Кэширование файлов приложения');
-        return cache.addAll(urlsToCache);
+        console.log('[SW] Кэширование файлов:', urlsToCache);
+        return Promise.all(
+          urlsToCache.map(url => 
+            cache.add(url).catch(err => {
+              console.warn('[SW] Не удалось закэшировать:', url, err.message);
+            })
+          )
+        );
+      })
+      .then(() => {
+        console.log('[SW] Кэширование завершено');
+        return self.skipWaiting();
       })
   );
-  // Активируем новый SW сразу
-  self.skipWaiting();
 });
 
-// Очистка старого кэша при обновлении
 self.addEventListener('activate', (event) => {
+  console.log('[SW] Активация...');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheName !== CACHE_NAME) {
-            console.log('Удаление старого кэша:', cacheName);
+            console.log('[SW] Удаление старого кэша:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
+    }).then(() => {
+      console.log('[SW] Активация завершена');
+      return self.clients.claim();
     })
   );
-  self.clients.claim();
 });
 
-// Перехват запросов: сначала ищем в кэше, если нет — загружаем из сети
 self.addEventListener('fetch', (event) => {
-  // API погоды не кэшируем, чтобы данные были свежими
-  if (event.request.url.includes('open-meteo.com')) {
+  const url = event.request.url;
+  
+  // Не кэшируем внешние ресурсы
+  if (url.includes('open-meteo.com') || 
+      url.includes('unpkg.com') ||
+      url.includes('chrome-extension') ||
+      url.includes('github.com') ||
+      url.includes('githubusercontent.com')) {
     return; 
   }
 
@@ -47,9 +65,9 @@ self.addEventListener('fetch', (event) => {
     caches.match(event.request)
       .then((response) => {
         if (response) {
-          return response; // Найдено в кэше
+          return response;
         }
-        return fetch(event.request).then( // Загружаем из сети
+        return fetch(event.request).then(
           (response) => {
             if (!response || response.status !== 200 || response.type !== 'basic') {
               return response;
@@ -61,7 +79,12 @@ self.addEventListener('fetch', (event) => {
               });
             return response;
           }
-        );
+        ).catch(err => {
+          console.warn('[SW] Ошибка сети:', event.request.url);
+          if (event.request.mode === 'navigate') {
+            return caches.match('./index.html');
+          }
+        });
       })
   );
 });
