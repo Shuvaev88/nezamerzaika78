@@ -30,7 +30,6 @@
             position: relative;
         }
 
-        /* ===== ЧИСТОЕ СТЕКЛО С КАПЛЯМИ ===== */
         .glass-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 0; pointer-events: none; overflow: hidden;
@@ -58,20 +57,9 @@
             animation: reflectionFloat 40s ease-in-out infinite;
         }
 
-        @keyframes dropsShimmer {
-            0%, 100% { opacity: 0.6; filter: brightness(1); }
-            50% { opacity: 0.8; filter: brightness(1.2); }
-        }
-
-        @keyframes shineMove {
-            0% { transform: translateX(-100%) translateY(-100%); }
-            100% { transform: translateX(100%) translateY(100%); }
-        }
-
-        @keyframes reflectionFloat {
-            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
-            50% { transform: translate(30px, 20px) scale(1.1); opacity: 0.7; }
-        }
+        @keyframes dropsShimmer { 0%, 100% { opacity: 0.6; filter: brightness(1); } 50% { opacity: 0.8; filter: brightness(1.2); } }
+        @keyframes shineMove { 0% { transform: translateX(-100%) translateY(-100%); } 100% { transform: translateX(100%) translateY(100%); } }
+        @keyframes reflectionFloat { 0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; } 50% { transform: translate(30px, 20px) scale(1.1); opacity: 0.7; } }
 
         .container, .calendar-page, .weekend-page, .delivery-page {
             max-width: 600px; margin: 0 auto; position: relative; z-index: 1;
@@ -79,7 +67,6 @@
         }
         .calendar-page, .weekend-page, .delivery-page { display: none; }
 
-        /* ===== БАННЕР УСТАНОВКИ ===== */
         .install-banner {
             background: linear-gradient(135deg, #11998e, #38ef7d);
             padding: 12px; border-radius: 10px; margin-bottom: 10px;
@@ -88,10 +75,8 @@
             box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
             transition: all 0.2s;
         }
-        .install-banner:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(17, 153, 142, 0.6); }
-        .install-banner:active { transform: translateY(1px); }
+        .install-banner:hover { transform: translateY(-2px); }
 
-        /* ===== ШАПКА ===== */                
         .hero-header {
             background: linear-gradient(135deg, rgba(116, 235, 213, 0.15), rgba(102, 126, 234, 0.15));
             backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.2);
@@ -129,10 +114,9 @@
             border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 10px; padding: 10px;
             text-align: center; cursor: pointer; font-size: 0.85em; font-weight: 700;
             color: #fff; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s;
-            position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+            position: relative; z-index: 1;
         }
         .hero-delivery-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(17, 153, 142, 0.5); }
-        .hero-delivery-btn:active { transform: translateY(1px); }
 
         .social-buttons-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; position: relative; z-index: 1; }
         .social-btn {
@@ -143,14 +127,10 @@
             text-transform: uppercase; letter-spacing: 0.5px;
         }
         .social-btn:hover { transform: translateY(-2px); filter: brightness(1.15); }
-        .social-btn:active { transform: translateY(1px) scale(0.98); }
         .social-btn.tg { background: linear-gradient(135deg, #26A5E4, #1e8ec5); box-shadow: 0 4px 15px rgba(38, 165, 228, 0.4); }
-        .social-btn.tg:hover { box-shadow: 0 6px 20px rgba(38, 165, 228, 0.6); }
         .social-btn.max { background: linear-gradient(135deg, #7B68EE, #5B4FCF); box-shadow: 0 4px 15px rgba(123, 104, 238, 0.4); }
-        .social-btn.max:hover { box-shadow: 0 6px 20px rgba(123, 104, 238, 0.6); }
         .social-btn .social-icon { font-size: 1.2em; }
 
-        /* ===== КНОПКИ ЗАКАЗА ===== */
         .order-blocks { display: flex; flex-direction: column; gap: 8px; }
         .weekend-order-block, .weekday-order-block {
             border-radius: 14px; padding: 12px 10px; text-align: center; cursor: pointer;
@@ -162,7 +142,6 @@
         }
         @keyframes ctaPulse { 0%, 100% { box-shadow: 0 0 15px rgba(255, 140, 0, 0.4); } 50% { box-shadow: 0 0 25px rgba(255, 69, 0, 0.7); } }
         .weekend-order-block:hover { transform: translateY(-2px) scale(1.01); }
-        .weekend-order-block:active { transform: scale(0.98); }
         .weekend-order-block::after, .weekday-order-block::after {
             content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
             background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
@@ -186,21 +165,18 @@
         }
         @keyframes weekdayPulse { 0%, 100% { box-shadow: 0 0 15px rgba(0, 119, 255, 0.4); } 50% { box-shadow: 0 0 25px rgba(0, 119, 255, 0.7); } }
         .weekday-order-block:hover { transform: translateY(-2px) scale(1.01); }
-        .weekday-order-block:active { transform: scale(0.98); }
         .weekday-badge {
             display: inline-block; background: linear-gradient(135deg, #ffd89b, #ff9a56);
             color: #000; font-size: 0.7em; font-weight: 900; padding: 3px 12px; border-radius: 20px;
             margin: 3px 0; border: 2px solid #fff; text-transform: uppercase;
         }
 
-        /* ===== ОБЩИЕ СТИЛИ ===== */
         .glass {
             background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 10px;
         }
         .section-title { font-size: 0.85em; font-weight: 700; margin-bottom: 6px; }
         
-        /* ===== КАРТОЧКИ ТОВАРОВ ===== */
         .products { display: flex; flex-direction: column; gap: 8px; }
         .product {
             background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.2);
@@ -211,9 +187,7 @@
             background: rgba(0, 0, 0, 0.3); display: flex; align-items: center; justify-content: center;
             overflow: hidden;
         }
-        .product-img img {
-            width: 100%; height: 100%; object-fit: cover; /* Используйте contain, если нужно видеть картинку целиком без обрезки краев */
-        }
+        .product-img img { width: 100%; height: 100%; object-fit: cover; }
         .product-info { flex: 1; min-width: 0; }
         .product-info h3 { font-size: 0.85em; margin-bottom: 2px; }
         .product-info .desc { font-size: 0.65em; opacity: 0.7; margin-bottom: 2px; }
@@ -261,7 +235,6 @@
         .btn-sms.tsvetnoy { background: linear-gradient(135deg, #f093fb, #f5576c); }
         .note { font-size: 0.65em; opacity: 0.7; text-align: center; margin-top: 6px; line-height: 1.2; }
 
-        /* ===== ОТЗЫВЫ ===== */
         .reviews-section { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 10px; }
         .reviews-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
         .reviews-header .section-title { margin-bottom: 0; color: #ffd89b; }
@@ -270,8 +243,7 @@
             border-radius: 20px; padding: 5px 12px; font-size: 0.7em; font-weight: 700;
             cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.2s;
         }
-        .btn-add-review:hover { transform: scale(1.05); box-shadow: 0 3px 10px rgba(255, 216, 155, 0.4); }
-        .btn-add-review:active { transform: scale(0.95); }
+        .btn-add-review:hover { transform: scale(1.05); }
         .reviews-list { display: flex; flex-direction: column; gap: 6px; max-height: 400px; overflow-y: auto; }
         .review {
             background: rgba(255, 255, 255, 0.08); border-left: 3px solid #ffd89b;
@@ -291,7 +263,6 @@
         .review-date { font-size: 0.6em; opacity: 0.5; margin-top: 3px; }
         .no-reviews { text-align: center; padding: 15px; font-size: 0.8em; opacity: 0.6; font-style: italic; }
 
-        /* ===== МОДАЛЬНОЕ ОКНО ===== */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);
@@ -315,7 +286,6 @@
         .modal-btn.cancel { background: rgba(255, 255, 255, 0.15); color: #fff; border: 1px solid rgba(255, 255, 255, 0.3); }
         .modal-btn.submit { background: linear-gradient(135deg, #11998e, #38ef7d); color: #fff; box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4); }
         .modal-btn:hover { transform: translateY(-2px); }
-        .modal-btn:active { transform: scale(0.97); }
         .modal-hint { font-size: 0.65em; opacity: 0.6; text-align: center; margin-top: 8px; line-height: 1.3; }
 
         .how-it-works { background: rgba(255, 216, 155, 0.1); border-color: rgba(255, 216, 155, 0.3); }
@@ -323,7 +293,6 @@
         .how-it-works-text { font-size: 0.75em; line-height: 1.4; opacity: 0.9; }
         .how-it-works-text strong { color: #ffd89b; }
 
-        /* ===== СТРАНИЦЫ ===== */
         .calendar-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding: 6px 0; }
         .btn-back {
             background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); color: white;
@@ -401,7 +370,6 @@
             cursor: pointer; box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
         }
         .weekend-submit:hover { transform: translateY(-2px); }
-        .weekend-submit:active { transform: scale(0.97); }
         .weekend-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
         .delivery-header {
@@ -459,7 +427,6 @@
     </style>
 </head>
 <body>
-    <!-- ===== ЧИСТОЕ СТЕКЛО С КАПЛЯМИ ===== -->
     <div class="glass-bg">
         <div class="water-drops"></div>
         <div class="glass-shine"></div>
@@ -509,11 +476,7 @@
             <div class="section-title">Шаг 1. Выберите товар</div>
             <div class="products">
                 
-                <!-- ========================================================= -->
-                <!-- 🖼️ МЕСТО 1: КАРТИНКА ОДНОЙ КАНИСТРЫ (ГЛАВНАЯ СТРАНИЦА)    -->
-                <!-- Замените "bottle.png" на имя вашего файла.                -->
-                <!-- Пример: src="img/nezamerzayka.jpg" или src="img/k1.webp"  -->
-                <!-- ========================================================= -->
+                <!-- 🖼️ МЕСТО 1: КАРТИНКА ОДНОЙ КАНИСТРЫ (ГЛАВНАЯ) -->
                 <div class="product">
                     <div class="product-img">
                         <img src="bottle.png" alt="Незамерзайка 5л">
@@ -526,11 +489,7 @@
                     </div>
                 </div>
 
-                <!-- ========================================================= -->
-                <!-- 🖼️ МЕСТО 2: КАРТИНКА УПАКОВКИ (ГЛАВНАЯ СТРАНИЦА)          -->
-                <!-- Замените "pack.png" на имя вашего файла.                  -->
-                <!-- Пример: src="img/upakovka.jpg" или src="img/k4.webp"      -->
-                <!-- ========================================================= -->
+                <!-- 🖼️ МЕСТО 2: КАРТИНКА УПАКОВКИ (ГЛАВНАЯ) -->
                 <div class="product">
                     <div class="product-img">
                         <img src="pack.png" alt="Упаковка 4x5л">
@@ -558,7 +517,7 @@
         </div>
 
         <div class="glass">
-            <div class="section-title">📅 Шаг 3. Выберите ЖК и день</div>
+            <div class="section-title"> Шаг 3. Выберите ЖК и день</div>
             <div class="sms-buttons">
                 <div class="sms-block">
                     <div class="sms-block-title">🏢 НОВАЯ ОХТА</div>
@@ -629,7 +588,7 @@
         <div class="delivery-section">
             <div class="delivery-section-title">📦 Условия</div>
             <div class="delivery-item"><div class="delivery-item-title">✅ Бесплатная доставка</div><div class="delivery-item-text">От <strong>4 упаковок</strong> — до подъезда в Новой Охте или Цветном городе!</div></div>
-            <div class="delivery-item"><div class="delivery-item-title">📍 Самовывоз</div><div class="delivery-item-text">Менее 4 упаковок — самовывоз:<br><strong>Новая Охта:</strong> Муринская дорога, 80<br><strong>Цветной город:</strong> Муринская дорога, 16</div></div>
+            <div class="delivery-item"><div class="delivery-item-title"> Самовывоз</div><div class="delivery-item-text">Менее 4 упаковок — самовывоз:<br><strong>Новая Охта:</strong> Муринская дорога, 80<br><strong>Цветной город:</strong> Муринская дорога, 16</div></div>
             <div class="delivery-item"><div class="delivery-item-title">🗺️ За пределами ЖК</div><div class="delivery-item-text">Доставка — <strong>по договорённости</strong>.</div></div>
             <div class="delivery-item"><div class="delivery-item-title">💵 Оплата</div><div class="delivery-item-text">Только <strong>наличными</strong> при получении. Без предоплат!</div></div>
         </div>
@@ -645,12 +604,12 @@
             <div class="delivery-section-title">📞 Контакты</div>
             <div class="contact-item">
                 <div class="contact-item-title">🏢 Новая Охта</div>
-                <div class="contact-item-line">📍 Муринская дорога, 80</div>
-                <div class="contact-item-line">📞 +7 (921) 383-84-13</div>
+                <div class="contact-item-line"> Муринская дорога, 80</div>
+                <div class="contact-item-line"> +7 (921) 383-84-13</div>
                 <div class="contact-item-line">✈️ Telegram: @SHuVai88</div>
             </div>
             <div class="contact-item">
-                <div class="contact-item-title">🏘️ Цветной город</div>
+                <div class="contact-item-title">️ Цветной город</div>
                 <div class="contact-item-line">📍 Муринская дорога, 16</div>
                 <div class="contact-item-line">📞 +7 (965) 093-96-39</div>
                 <div class="contact-item-line">✈️ Telegram: @MaFin77</div>
@@ -710,11 +669,7 @@
             <div class="section-title">🛒 Выберите товар</div>
             <div class="products">
                 
-                <!-- ========================================================= -->
-                <!-- 🖼️ МЕСТО 3: КАРТИНКА ОДНОЙ КАНИСТРЫ (СТРАНИЦА ВЫХОДНЫХ)   -->
-                <!-- Замените "bottle.png" на имя вашего файла.                -->
-                <!-- Пример: src="img/nezamerzayka.jpg" или src="img/k1.webp"  -->
-                <!-- ========================================================= -->
+                <!-- 🖼️ МЕСТО 3: КАРТИНКА ОДНОЙ КАНИСТРЫ (ВЫХОДНЫЕ) -->
                 <div class="product">
                     <div class="product-img">
                         <img src="bottle.png" alt="Незамерзайка 5л">
@@ -727,11 +682,7 @@
                     </div>
                 </div>
 
-                <!-- ========================================================= -->
-                <!-- 🖼️ МЕСТО 4: КАРТИНКА УПАКОВКИ (СТРАНИЦА ВЫХОДНЫХ)         -->
-                <!-- Замените "pack.png" на имя вашего файла.                  -->
-                <!-- Пример: src="img/upakovka.jpg" или src="img/k4.webp"      -->
-                <!-- ========================================================= -->
+                <!-- 🖼️ МЕСТО 4: КАРТИНКА УПАКОВКИ (ВЫХОДНЫЕ) -->
                 <div class="product">
                     <div class="product-img">
                         <img src="pack.png" alt="Упаковка 4x5л">
@@ -756,8 +707,8 @@
             </div>
             <div class="calendar-grid" id="weekendCalendarGrid"></div>
         </div>
-        <div class="selected-info" id="weekendSelectedInfo">👆 Нажмите на Сб или Вс</div>
-        <button class="weekend-submit" id="weekendSubmitBtn" onclick="sendOrder(true)" disabled>📱 Отправить заказ</button>
+        <div class="selected-info" id="weekendSelectedInfo"> Нажмите на Сб или Вс</div>
+        <button class="weekend-submit" id="weekendSubmitBtn" onclick="sendOrder(true)" disabled> Отправить заказ</button>
     </div>
 
     <a href="https://t.me/SHuVai88" target="_blank" class="floating-tg" title="Написать в Telegram">✈️</a>
@@ -785,7 +736,6 @@
             { name: 'Мария', location: 'Новая Охта', rating: 5, text: 'Удобно, что можно заказать через сайт. Приехали вовремя.', date: '12.09.2026' }
         ];
 
-        // ===== PWA INSTALLATION =====
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -803,29 +753,29 @@
             }
         });
 
+        // ✅ ИСПРАВЛЕНО: ./sw.js вместо /sw.js
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
+                navigator.serviceWorker.register('./sw.js')
                     .then(reg => console.log('✅ PWA установлен'))
-                    .catch(err => console.log('❌ Ошибка:', err));
+                    .catch(err => console.log('❌ Ошибка ServiceWorker:', err));
             });
         }
 
-        // ===== ИСПРАВЛЕННАЯ ФУНКЦИЯ ПОЛУЧЕНИЯ ОТЗЫВОВ =====
         function getReviews() {
             try {
                 const saved = localStorage.getItem('user_reviews');
                 const userReviews = saved ? JSON.parse(saved) : [];
-                // Разворачиваем массив, чтобы новые отзывы были СВЕРХУ
                 return [...userReviews.reverse(), ...defaultReviews];
             } catch (e) {
-                console.error('Ошибка загрузки отзывов из памяти:', e);
+                console.error('Ошибка загрузки отзывов:', e);
                 return defaultReviews;
             }
         }
 
         function renderReviews() {
             const list = document.getElementById('reviewsList');
+            if (!list) return;
             const reviews = getReviews();
             if (!reviews.length) { list.innerHTML = '<div class="no-reviews">Пока нет отзывов. Будьте первым!</div>'; return; }
             list.innerHTML = reviews.map(r => {
@@ -861,8 +811,10 @@
             });
             document.getElementById('reviewModal').addEventListener('click', e => { if (e.target.id === 'reviewModal') closeReviewModal(); });
             loadCart();
+            renderReviews();
             const hash = window.location.hash.replace('#', '');
-            showPage(['calendarPage', 'weekendPage', 'deliveryPage'].includes(hash) ? hash : 'mainPage');
+            const pageToShow = ['calendarPage', 'weekendPage', 'deliveryPage'].includes(hash) ? hash : 'mainPage';
+            showPage(pageToShow);
         });
 
         function submitReview() {
@@ -879,9 +831,7 @@
             const msg = `🆕 НОВЫЙ ОТЗЫВ\n\n👤 ${name}\n📍 ${location || 'не указан'}\n⭐ ${'★'.repeat(currentRating)}${'☆'.repeat(5 - currentRating)}\n💬 ${text}\n📅 ${date}`;
             
             renderReviews(); 
-            // Прокручиваем список отзывов вверх, чтобы пользователь сразу увидел свой новый отзыв
             document.getElementById('reviewsList').scrollTop = 0;
-            
             closeReviewModal(); 
             showToast('✅ Спасибо за отзыв!');
             setTimeout(() => window.open(`https://t.me/${TELEGRAM_OWNER}?text=${encodeURIComponent(msg)}`, '_blank'), 500);
@@ -915,9 +865,13 @@
 
         function showPage(pageId) {
             ['mainPage', 'calendarPage', 'weekendPage', 'deliveryPage'].forEach(id => {
-                document.getElementById(id).style.display = 'none';
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
             });
-            document.getElementById(pageId).style.display = pageId === 'mainPage' ? 'flex' : 'block';
+            const target = document.getElementById(pageId);
+            if (target) {
+                target.style.display = pageId === 'mainPage' ? 'flex' : 'block';
+            }
             window.scrollTo(0, 0);
         }
 
@@ -943,7 +897,8 @@
             document.getElementById('weekendSelectedInfo').innerHTML = '👆 Нажмите на Сб или Вс';
             document.getElementById('weekendSubmitBtn').disabled = true;
             navigateTo('weekendPage');
-            renderCalendar(true);
+            // ✅ Рендерим календарь с небольшой задержкой
+            setTimeout(() => renderCalendar(true), 50);
         }
 
         function openWeekdayCalendar(location) {
@@ -953,7 +908,8 @@
             currentLocation = location; selectedDate = null;
             currentMonth = new Date().getMonth(); currentYear = new Date().getFullYear();
             navigateTo('calendarPage');
-            updateSelectedInfo(); renderCalendar(false);
+            updateSelectedInfo();
+            setTimeout(() => renderCalendar(false), 50);
         }
 
         function updateQty(isWeekend, id, delta) {
@@ -1011,31 +967,48 @@
             renderCalendar(isWeekend);
         }
 
+        // ✅ ИСПРАВЛЕННАЯ ФУНКЦИЯ С ЗАЩИТОЙ ОТ NULL
         function renderCalendar(isWeekend) {
             const month = isWeekend ? weekendMonth : currentMonth;
             const year = isWeekend ? weekendYear : currentYear;
+            
             const grid = document.getElementById(`${isWeekend ? 'weekend' : ''}calendarGrid`);
-            document.getElementById(`${isWeekend ? 'weekend' : ''}calendarMonth`).innerText = `${monthNames[month]} ${year}`;
+            const monthEl = document.getElementById(`${isWeekend ? 'weekend' : ''}calendarMonth`);
+            
+            if (!grid || !monthEl) {
+                console.error('❌ Элементы календаря не найдены!', {
+                    grid: grid ? 'OK' : 'NULL',
+                    month: monthEl ? 'OK' : 'NULL',
+                    isWeekend: isWeekend
+                });
+                return;
+            }
+            
+            monthEl.innerText = `${monthNames[month]} ${year}`;
             grid.innerHTML = '';
             
             dayNames.forEach((day, i) => {
                 const h = document.createElement('div');
                 h.className = `calendar-day-header${i >= 5 ? ' weekend' : ''}`;
-                h.innerText = day; grid.appendChild(h);
+                h.innerText = day;
+                grid.appendChild(h);
             });
             
             const firstDay = new Date(year, month, 1);
             const lastDay = new Date(year, month + 1, 0);
-            let startDay = firstDay.getDay() - 1; if (startDay < 0) startDay = 6;
+            let startDay = firstDay.getDay() - 1;
+            if (startDay < 0) startDay = 6;
             for (let i = 0; i < startDay; i++) grid.appendChild(document.createElement('div'));
             
-            const today = new Date(); today.setHours(0,0,0,0);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
             const selected = isWeekend ? weekendSelectedDate : selectedDate;
             
             for (let day = 1; day <= lastDay.getDate(); day++) {
                 const date = new Date(year, month, day);
                 const el = document.createElement('div');
-                el.className = 'calendar-day'; el.innerText = day;
+                el.className = 'calendar-day';
+                el.innerText = day;
                 const isWknd = date.getDay() === 0 || date.getDay() === 6;
                 
                 if (isWeekend) {
@@ -1049,7 +1022,9 @@
                         el.onclick = () => selectDate(day, el, date, false);
                     }
                 }
-                if (selected && selected.getDate() === day && selected.getMonth() === month && selected.getFullYear() === year) el.classList.add('selected');
+                if (selected && selected.getDate() === day && selected.getMonth() === month && selected.getFullYear() === year) {
+                    el.classList.add('selected');
+                }
                 grid.appendChild(el);
             }
         }
@@ -1064,7 +1039,7 @@
 
         function updateSelectedInfo() {
             const info = document.getElementById('selectedInfo');
-            if (!selectedDate) { info.innerHTML = '👆 Нажмите на будний день'; document.getElementById('confirmBtn').disabled = true; }
+            if (!selectedDate) { info.innerHTML = ' Нажмите на будний день'; document.getElementById('confirmBtn').disabled = true; }
             else {
                 info.innerHTML = `📅 <b>${selectedDate.getDate()}.${String(selectedDate.getMonth()+1).padStart(2,'0')}.${selectedDate.getFullYear()}</b> — ${weekdays[selectedDate.getDay()]}`;
                 document.getElementById('confirmBtn').disabled = false;
@@ -1112,8 +1087,6 @@
                 setTimeout(() => { window.location.href = `sms:${target}${sep}body=${encodeURIComponent(msg)}`; }, 500);
             });
         }
-
-        renderReviews();
     </script>
 </body>
 </html>
