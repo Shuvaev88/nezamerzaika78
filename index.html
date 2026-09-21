@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>❄️ Незамерзайка соседям — Новая Охта и Цветной город</title>
+    <meta name="description" content="Незамерзайка -27°C для жителей Новой Охты и Цветного города. Доставка до подъезда. 240₽/бутылка.">
+    <meta property="og:title" content="❄️ Незамерзайка соседям — 240₽">
+    <meta property="og:description" content="Доставка до подъезда. Оплата наличными.">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#11998e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Незамерзайка">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+    
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        
+        body {
+            min-height: 100vh;
+            background-color: #0a151a;
+            color: #fff;
+            padding: 10px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ===== ЧИСТОЕ СТЕКЛО С КАПЛЯМИ ===== */
+        .glass-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none; overflow: hidden;
+        }
+        
+        .water-drops {
+            position: absolute; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3CradialGradient id='drop1'%3E%3Cstop offset='0%25' stop-color='%23ffffff' stop-opacity='0.3'/%3E%3Cstop offset='50%25' stop-color='%23ffffff' stop-opacity='0.15'/%3E%3Cstop offset='100%25' stop-color='%23ffffff' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='drop2'%3E%3Cstop offset='0%25' stop-color='%23a8e6ff' stop-opacity='0.25'/%3E%3Cstop offset='50%25' stop-color='%23a8e6ff' stop-opacity='0.12'/%3E%3Cstop offset='100%25' stop-color='%23a8e6ff' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='20' cy='20' r='8' fill='url(%23drop1)'/%3E%3Ccircle cx='70' cy='60' r='6' fill='url(%23drop2)'/%3E%3Ccircle cx='40' cy='80' r='4' fill='url(%23drop1)'/%3E%3Ccircle cx='85' cy='25' r='5' fill='url(%23drop2)'/%3E%3Ccircle cx='15' cy='65' r='3' fill='url(%23drop1)'/%3E%3Ccircle cx='55' cy='35' r='7' fill='url(%23drop2)'/%3E%3C/svg%3E");
+            background-size: 200px 200px;
+            opacity: 0.6;
+            animation: dropsShimmer 20s ease-in-out infinite;
+        }
+        
+        .glass-shine {
+            position: absolute; width: 100%; height: 100%;
+            background: 
+                linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 50%),
+                linear-gradient(225deg, rgba(168,230,255,0.03) 0%, transparent 50%);
+            animation: shineMove 30s linear infinite;
+        }
+        
+        .glass-reflection {
+            position: absolute; width: 150%; height: 150%; top: -25%; left: -25%;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.08) 0%, transparent 70%);
+            animation: reflectionFloat 40s ease-in-out infinite;
+        }
+
+        @keyframes dropsShimmer {
+            0%, 100% { opacity: 0.6; filter: brightness(1); }
+            50% { opacity: 0.8; filter: brightness(1.2); }
+        }
+
+        @keyframes shineMove {
+            0% { transform: translateX(-100%) translateY(-100%); }
+            100% { transform: translateX(100%) translateY(100%); }
+        }
+
+        @keyframes reflectionFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+            50% { transform: translate(30px, 20px) scale(1.1); opacity: 0.7; }
+        }
+
+        .container, .calendar-page, .weekend-page, .delivery-page {
+            max-width: 600px; margin: 0 auto; position: relative; z-index: 1;
+            display: flex; flex-direction: column; gap: 8px; padding-bottom: 40px;
+        }
+        .calendar-page, .weekend-page, .delivery-page { display: none; }
+
+        /* ===== БАННЕР УСТАНОВКИ ===== */
+        .install-banner {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            padding: 12px; border-radius: 10px; margin-bottom: 10px;
+            text-align: center; cursor: pointer; display: none;
+            font-size: 0.85em; font-weight: 700;
+            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
+            transition: all 0.2s;
+        }
+        .install-banner:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(17, 153, 142, 0.6); }
+        .install-banner:active { transform: translateY(1px); }
+
+        /* ===== ШАПКА ===== */
+        .hero-header {
+            background: linear-gradient(135deg, rgba(116, 235, 213, 0.15), rgba(102, 126, 234, 0.15));
+            backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px; padding: 16px 14px 12px; text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .hero-header::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+            animation: headerShine 6s ease-in-out infinite;
+        }
+        @keyframes headerShine { 0% { left: -100%; } 50%, 100% { left: 100%; } }
+
+        .hero-title {
+            font-size: 1.4em; font-weight: 900;
+            background: linear-gradient(135deg, #fff 0%, #74ebd5 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            margin-bottom: 3px; position: relative; z-index: 1;
+        }
+        .hero-subtitle { font-size: 0.8em; font-weight: 700; color: #ffd89b; margin-bottom: 10px; position: relative; z-index: 1; }
+
+        .hero-info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; position: relative; z-index: 1; }
+        .hero-chip {
+            background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px; padding: 8px 6px; display: flex; align-items: center;
+            justify-content: center; gap: 6px; font-size: 0.8em; font-weight: 600;
+        }
+        .hero-chip .chip-icon { font-size: 1.3em; }
+        .hero-chip .chip-value { color: #ffd89b; font-weight: 800; }
+        .chip-weather { background: linear-gradient(135deg, rgba(102, 126, 234, 0.35), rgba(118, 75, 162, 0.35)); }
+        .chip-payment { background: linear-gradient(135deg, rgba(255, 0, 0, 0.25), rgba(255, 107, 107, 0.25)); }
+
+        .hero-delivery-btn {
+            margin-top: 10px; background: linear-gradient(135deg, #11998e, #38ef7d);
+            border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 10px; padding: 10px;
+            text-align: center; cursor: pointer; font-size: 0.85em; font-weight: 700;
+            color: #fff; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s;
+            position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .hero-delivery-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(17, 153, 142, 0.5); }
+        .hero-delivery-btn:active { transform: translateY(1px); }
+
+        .social-buttons-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; position: relative; z-index: 1; }
+        .social-btn {
+            padding: 10px 8px; border-radius: 10px; text-align: center; cursor: pointer;
+            font-size: 0.8em; font-weight: 700; color: #fff; text-decoration: none;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            transition: all 0.2s; border: 1px solid rgba(255, 255, 255, 0.3);
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .social-btn:hover { transform: translateY(-2px); filter: brightness(1.15); }
+        .social-btn:active { transform: translateY(1px) scale(0.98); }
+        .social-btn.tg { background: linear-gradient(135deg, #26A5E4, #1e8ec5); box-shadow: 0 4px 15px rgba(38, 165, 228, 0.4); }
+        .social-btn.tg:hover { box-shadow: 0 6px 20px rgba(38, 165, 228, 0.6); }
+        .social-btn.max { background: linear-gradient(135deg, #7B68EE, #5B4FCF); box-shadow: 0 4px 15px rgba(123, 104, 238, 0.4); }
+        .social-btn.max:hover { box-shadow: 0 6px 20px rgba(123, 104, 238, 0.6); }
+        .social-btn .social-icon { font-size: 1.2em; }
+
+        /* ===== КНОПКИ ЗАКАЗА ===== */
+        .order-blocks { display: flex; flex-direction: column; gap: 8px; }
+        .weekend-order-block, .weekday-order-block {
+            border-radius: 14px; padding: 12px 10px; text-align: center; cursor: pointer;
+            position: relative; overflow: hidden; transition: all 0.3s ease;
+        }
+        .weekend-order-block {
+            background: linear-gradient(135deg, #ff8c00, #ff4500); border: 2px solid #ffd700;
+            box-shadow: 0 0 15px rgba(255, 140, 0, 0.5); animation: ctaPulse 2s infinite;
+        }
+        @keyframes ctaPulse { 0%, 100% { box-shadow: 0 0 15px rgba(255, 140, 0, 0.4); } 50% { box-shadow: 0 0 25px rgba(255, 69, 0, 0.7); } }
+        .weekend-order-block:hover { transform: translateY(-2px) scale(1.01); }
+        .weekend-order-block:active { transform: scale(0.98); }
+        .weekend-order-block::after, .weekday-order-block::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+            transform: skewX(-25deg); animation: ctaShine 3s infinite;
+        }
+        @keyframes ctaShine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+
+        .weekend-title, .weekday-title { font-size: 0.95em; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; text-shadow: 0 2px 4px rgba(0,0,0,0.4); }
+        .weekend-subtitle, .weekday-subtitle { font-size: 0.65em; color: rgba(255,255,255,0.95); font-weight: 600; }
+        .click-badge {
+            display: inline-block; background: linear-gradient(135deg, #ff0000, #cc0000);
+            color: white; font-size: 0.75em; font-weight: 900; padding: 4px 12px; border-radius: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.4); margin: 3px 0; border: 2px solid #fff;
+            text-transform: uppercase; animation: badgePulse 1.5s infinite ease-in-out;
+        }
+        @keyframes badgePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+        .weekday-order-block {
+            background: linear-gradient(135deg, #0077ff, #0055cc); border: 2px solid #74ebd5;
+            box-shadow: 0 0 15px rgba(0, 119, 255, 0.5); animation: weekdayPulse 2s infinite;
+        }
+        @keyframes weekdayPulse { 0%, 100% { box-shadow: 0 0 15px rgba(0, 119, 255, 0.4); } 50% { box-shadow: 0 0 25px rgba(0, 119, 255, 0.7); } }
+        .weekday-order-block:hover { transform: translateY(-2px) scale(1.01); }
+        .weekday-order-block:active { transform: scale(0.98); }
+        .weekday-badge {
+            display: inline-block; background: linear-gradient(135deg, #ffd89b, #ff9a56);
+            color: #000; font-size: 0.7em; font-weight: 900; padding: 3px 12px; border-radius: 20px;
+            margin: 3px 0; border: 2px solid #fff; text-transform: uppercase;
+        }
+
+        /* ===== ОБЩИЕ СТИЛИ ===== */
+        .glass {
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 10px;
+        }
+        .section-title { font-size: 0.85em; font-weight: 700; margin-bottom: 6px; }
+        .products { display: flex; flex-direction: column; gap: 6px; }
+        .product {
+            background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 10px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .product-info h3 { font-size: 0.8em; margin-bottom: 1px; }
+        .product-info .desc { font-size: 0.6em; opacity: 0.7; }
+        .product-info .price {
+            font-size: 0.9em; font-weight: 800;
+            background: linear-gradient(135deg, #ffd89b 0%, #ff9a56 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .controls { display: flex; align-items: center; gap: 5px; }
+        .btn-qty {
+            width: 28px; height: 28px; border: none; background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%; font-size: 14px;
+            cursor: pointer; color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center;
+        }
+        .btn-qty:active { transform: scale(0.9); }
+        .qty-display { font-weight: 800; width: 24px; text-align: center; font-size: 0.9em; color: #ffd89b; }
+
+        input, textarea {
+            width: 100%; padding: 10px 12px; margin-bottom: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; font-size: 14px;
+            background: rgba(255, 255, 255, 0.08); color: #fff; font-family: inherit;
+        }
+        input::placeholder, textarea::placeholder { color: rgba(255, 255, 255, 0.5); }
+        input:focus, textarea:focus { outline: none; border-color: #ffd89b; background: rgba(255, 255, 255, 0.12); }
+        input:disabled { opacity: 0.4; cursor: not-allowed; background: rgba(0, 0, 0, 0.2); }
+        textarea { resize: vertical; min-height: 70px; }
+
+        .address-hint { font-size: 0.7em; color: #ffd89b; margin-bottom: 6px; text-align: center; font-weight: 600; }
+        .total-block, .weekend-total {
+            text-align: right; font-size: 1.1em; font-weight: 800; margin: 4px 0 8px;
+            background: linear-gradient(135deg, #ffd89b 0%, #ff9a56 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .sms-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .sms-block { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; padding: 8px; text-align: center; }
+        .sms-block-title { font-size: 0.7em; font-weight: 700; margin-bottom: 5px; }
+        .btn-sms {
+            width: 100%; padding: 10px 6px; color: white; border: none; border-radius: 8px;
+            font-size: 0.8em; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        }
+        .btn-sms:active { transform: scale(0.95); }
+        .btn-sms.novaya { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .btn-sms.tsvetnoy { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .note { font-size: 0.65em; opacity: 0.7; text-align: center; margin-top: 6px; line-height: 1.2; }
+
+        /* ===== ОТЗЫВЫ ===== */
+        .reviews-section { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 10px; }
+        .reviews-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .reviews-header .section-title { margin-bottom: 0; color: #ffd89b; }
+        .btn-add-review {
+            background: linear-gradient(135deg, #ffd89b, #ff9a56); color: #000; border: none;
+            border-radius: 20px; padding: 5px 12px; font-size: 0.7em; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.2s;
+        }
+        .btn-add-review:hover { transform: scale(1.05); box-shadow: 0 3px 10px rgba(255, 216, 155, 0.4); }
+        .btn-add-review:active { transform: scale(0.95); }
+        .reviews-list { display: flex; flex-direction: column; gap: 6px; max-height: 400px; overflow-y: auto; }
+        .review {
+            background: rgba(255, 255, 255, 0.08); border-left: 3px solid #ffd89b;
+            padding: 8px 10px; border-radius: 6px; animation: reviewAppear 0.4s ease-out;
+        }
+        @keyframes reviewAppear { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .review-top { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+        .review-avatar {
+            width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85em; color: #fff; flex-shrink: 0;
+        }
+        .review-meta { flex: 1; min-width: 0; }
+        .review-author { font-size: 0.8em; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .review-location { font-size: 0.65em; color: #74ebd5; opacity: 0.9; }
+        .review-stars { color: #ffd89b; font-size: 0.85em; letter-spacing: 1px; }
+        .review-text { font-size: 0.75em; line-height: 1.4; opacity: 0.95; word-wrap: break-word; }
+        .review-date { font-size: 0.6em; opacity: 0.5; margin-top: 3px; }
+        .no-reviews { text-align: center; padding: 15px; font-size: 0.8em; opacity: 0.6; font-style: italic; }
+
+        /* ===== МОДАЛЬНОЕ ОКНО ===== */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);
+            z-index: 2000; display: none; align-items: center; justify-content: center; padding: 15px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: linear-gradient(135deg, #203a43, #2c5364); border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px; padding: 18px; max-width: 400px; width: 100%; max-height: 90vh; overflow-y: auto;
+        }
+        .modal-title { font-size: 1.1em; font-weight: 800; color: #ffd89b; text-align: center; margin-bottom: 12px; }
+        .modal-label { font-size: 0.75em; font-weight: 600; margin-bottom: 4px; color: rgba(255, 255, 255, 0.9); }
+        .star-rating { display: flex; gap: 5px; justify-content: center; margin-bottom: 10px; }
+        .star { font-size: 1.8em; cursor: pointer; color: rgba(255, 255, 255, 0.3); transition: all 0.2s; user-select: none; }
+        .star:hover { transform: scale(1.2); }
+        .star.active { color: #ffd89b; text-shadow: 0 0 10px rgba(255, 216, 155, 0.5); }
+        .modal-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+        .modal-btn {
+            padding: 11px; border: none; border-radius: 10px; font-size: 0.85em; font-weight: 700; cursor: pointer; transition: all 0.2s;
+        }
+        .modal-btn.cancel { background: rgba(255, 255, 255, 0.15); color: #fff; border: 1px solid rgba(255, 255, 255, 0.3); }
+        .modal-btn.submit { background: linear-gradient(135deg, #11998e, #38ef7d); color: #fff; box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4); }
+        .modal-btn:hover { transform: translateY(-2px); }
+        .modal-btn:active { transform: scale(0.97); }
+        .modal-hint { font-size: 0.65em; opacity: 0.6; text-align: center; margin-top: 8px; line-height: 1.3; }
+
+        .how-it-works { background: rgba(255, 216, 155, 0.1); border-color: rgba(255, 216, 155, 0.3); }
+        .how-it-works .section-title { color: #ffd89b; }
+        .how-it-works-text { font-size: 0.75em; line-height: 1.4; opacity: 0.9; }
+        .how-it-works-text strong { color: #ffd89b; }
+
+        /* ===== СТРАНИЦЫ ===== */
+        .calendar-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding: 6px 0; }
+        .btn-back {
+            background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); color: white;
+            padding: 7px 12px; border-radius: 8px; cursor: pointer; font-size: 0.85em; font-weight: 700;
+            display: flex; align-items: center; gap: 4px;
+        }
+        .btn-back:hover { background: rgba(255, 255, 255, 0.25); }
+        .calendar-title { font-size: 1em; font-weight: 900; color: #ffd89b; flex: 1; text-align: center; }
+
+        .welcome-block, .weekend-welcome {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.2), rgba(247, 147, 30, 0.2));
+            border: 2px solid rgba(255, 107, 53, 0.4); border-radius: 10px; padding: 10px;
+            margin-bottom: 10px; text-align: center;
+        }
+        .welcome-icon, .weekend-welcome-icon { font-size: 1.5em; margin-bottom: 4px; display: block; }
+        .welcome-text, .weekend-welcome-text { font-size: 0.8em; font-weight: 600; line-height: 1.4; color: #fff; }
+        .welcome-text strong, .weekend-welcome-text strong { color: #ffd89b; font-weight: 800; }
+
+        .weekday-hint, .weekend-hint { border-radius: 8px; padding: 8px; margin-bottom: 10px; text-align: center; font-size: 0.75em; font-weight: 600; }
+        .weekday-hint { background: rgba(116, 235, 213, 0.15); border: 1px solid rgba(116, 235, 213, 0.3); color: #74ebd5; }
+        .weekend-hint { background: rgba(255, 107, 107, 0.15); border: 1px solid rgba(255, 107, 107, 0.3); color: #ff9a9a; }
+        .weekday-hint strong, .weekend-hint strong { color: #ffd89b; }
+
+        .calendar-card {
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 12px; margin-bottom: 10px;
+        }
+        .calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .calendar-nav button {
+            background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.3); color: white;
+            padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9em; font-weight: bold;
+        }
+        .calendar-month { font-size: 1em; font-weight: 700; color: #ffd89b; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+        .calendar-day-header { text-align: center; font-size: 0.65em; font-weight: 700; color: #ffd89b; padding: 3px 0; }
+        .calendar-day-header.weekend { color: #ff6b6b; }
+        .calendar-day {
+            aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+            background: rgba(255, 255, 255, 0.08); border-radius: 6px; font-size: 0.8em;
+            font-weight: 600; cursor: pointer; border: 2px solid transparent;
+        }
+        .calendar-day:hover:not(.disabled) { background: rgba(255, 255, 255, 0.2); transform: scale(1.05); }
+        .calendar-day.weekend:not(.disabled) { background: rgba(255, 107, 107, 0.2); color: #ff9a9a; }
+        .calendar-day.selected {
+            background: linear-gradient(135deg, #ffd89b, #ff9a56) !important; color: #000 !important;
+            border-color: #fff; font-weight: 900; transform: scale(1.05);
+        }
+        .calendar-day.disabled { opacity: 0.2; cursor: not-allowed; }
+        .calendar-day.today { border: 2px solid #74ebd5; }
+
+        .selected-info {
+            background: linear-gradient(135deg, rgba(17, 153, 142, 0.3), rgba(56, 239, 125, 0.3));
+            border: 1px solid rgba(56, 239, 125, 0.4); border-radius: 8px; padding: 10px;
+            text-align: center; margin-bottom: 10px; font-size: 0.85em; font-weight: 600;
+        }
+        .calendar-actions { display: flex; gap: 8px; }
+        .calendar-btn {
+            flex: 1; padding: 12px; border: none; border-radius: 10px; font-size: 0.9em;
+            font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;
+        }
+        .calendar-btn.cancel { background: rgba(255, 255, 255, 0.15); color: white; border: 1px solid rgba(255, 255, 255, 0.3); }
+        .calendar-btn.confirm { background: linear-gradient(135deg, #11998e, #38ef7d); color: white; }
+        .calendar-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .weekend-page-header {
+            background: linear-gradient(135deg, #ff6b35, #f7931e); border-radius: 12px; padding: 12px;
+            text-align: center; margin-bottom: 10px; border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .weekend-page-title { font-size: 1.1em; font-weight: 900; color: #fff; text-transform: uppercase; margin-bottom: 3px; }
+        .weekend-page-subtitle { font-size: 0.75em; color: rgba(255,255,255,0.9); font-weight: 600; }
+
+        .weekend-submit {
+            width: 100%; padding: 14px; background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white; border: none; border-radius: 10px; font-size: 0.95em; font-weight: 700;
+            cursor: pointer; box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+        .weekend-submit:hover { transform: translateY(-2px); }
+        .weekend-submit:active { transform: scale(0.97); }
+        .weekend-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .delivery-header {
+            background: linear-gradient(135deg, #11998e, #38ef7d); border-radius: 12px; padding: 12px;
+            text-align: center; margin-bottom: 10px; border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .delivery-header-title { font-size: 1.1em; font-weight: 900; color: #fff; text-transform: uppercase; margin-bottom: 3px; }
+        .delivery-header-subtitle { font-size: 0.75em; color: rgba(255,255,255,0.95); font-weight: 600; }
+        .delivery-section { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; padding: 10px; margin-bottom: 10px; }
+        .delivery-section-title { font-size: 0.9em; font-weight: 700; margin-bottom: 8px; color: #ffd89b; }
+        .delivery-item { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 6px; padding: 8px; margin-bottom: 6px; }
+        .delivery-item:last-child { margin-bottom: 0; }
+        .delivery-item-title { font-size: 0.8em; font-weight: 700; margin-bottom: 3px; }
+        .delivery-item-text { font-size: 0.75em; color: rgba(255,255,255,0.85); line-height: 1.3; }
+        .delivery-item-text strong { color: #74ebd5; }
+        .price-list { display: flex; flex-direction: column; gap: 6px; }
+        .price-item {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 6px; padding: 8px 10px;
+        }
+        .price-item-name { font-size: 0.8em; font-weight: 600; }
+        .price-item-value {
+            font-size: 0.95em; font-weight: 800;
+            background: linear-gradient(135deg, #ffd89b 0%, #ff9a56 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .contact-item { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 6px; padding: 8px; margin-bottom: 6px; }
+        .contact-item:last-child { margin-bottom: 0; }
+        .contact-item-title { font-size: 0.75em; font-weight: 700; color: #74ebd5; margin-bottom: 3px; }
+        .contact-item-line { font-size: 0.75em; color: rgba(255,255,255,0.9); margin-bottom: 2px; }
+        .contact-item-line:last-child { margin-bottom: 0; }
+        .delivery-note {
+            background: rgba(255, 107, 107, 0.15); border: 1px solid rgba(255, 107, 107, 0.3);
+            border-radius: 8px; padding: 8px; text-align: center; font-size: 0.75em; font-weight: 600; color: #ff9a9a; margin-top: 8px;
+        }
+        .delivery-note strong { color: #ffd89b; }
+
+        .floating-tg {
+            position: fixed; bottom: 15px; right: 15px; width: 55px; height: 55px;
+            background: linear-gradient(135deg, #26A5E4, #1e8ec5); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 26px;
+            box-shadow: 0 4px 20px rgba(38, 165, 228, 0.6); z-index: 1000; text-decoration: none;
+            animation: floatBounce 2s ease-in-out infinite;
+        }
+        .floating-tg:hover { transform: scale(1.1); }
+        @keyframes floatBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+        .copy-toast {
+            position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, #11998e, #38ef7d); color: white; padding: 10px 20px;
+            border-radius: 50px; font-size: 13px; font-weight: 600; opacity: 0;
+            transition: all 0.4s; pointer-events: none; z-index: 3000;
+        }
+        .copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+    <!-- ===== ЧИСТОЕ СТЕКЛО С КАПЛЯМИ ===== -->
+    <div class="glass-bg">
+        <div class="water-drops"></div>
+        <div class="glass-shine"></div>
+        <div class="glass-reflection"></div>
+    </div>
+
+    <!-- ===== ГЛАВНАЯ СТРАНИЦА ===== -->
+    <div class="container" id="mainPage">
+        <!-- Баннер установки PWA -->
+        <div class="install-banner" id="installBanner">
+            📲 <strong>Установить как приложение</strong> — быстрый доступ!
+        </div>
+
+        <div class="hero-header">
+            <div class="hero-title">❄️ Незамерзайка соседям</div>
+            <div class="hero-subtitle">Новая Охта • Цветной город</div>
+            <div class="hero-info-row">
+                <div class="hero-chip chip-weather">
+                    <span class="chip-icon">🌡️</span>
+                    <span><span class="chip-value" id="temp">—</span> <span style="font-size: 0.85em; opacity: 0.85;" id="weatherLabel">Мурино</span></span>
+                </div>
+                <div class="hero-chip chip-payment">
+                    <span class="chip-icon">💵</span>
+                    <span><span class="chip-value">Наличные</span> <span style="font-size: 0.85em; opacity: 0.85;">при получении</span></span>
+                </div>
+            </div>
+            <div class="hero-delivery-btn" onclick="navigateTo('deliveryPage')">🚚 Доставка и контакты</div>
+            <div class="social-buttons-row">
+                <a href="https://t.me/your_telegram_group" target="_blank" class="social-btn tg"><span class="social-icon">✈️</span><span>Мы в Telegram</span></a>
+                <a href="https://max.ru/your_max_group" target="_blank" class="social-btn max"><span class="social-icon">📨</span><span>Мы в Max</span></a>
+            </div>
+        </div>
+
+        <div class="order-blocks">
+            <div class="weekend-order-block" onclick="openWeekendPage()">
+                <div class="weekend-title">🎉 Заказать на ВЫХОДНЫЕ</div>
+                <div class="click-badge">👆 НАЖМИТЕ СЮДА</div>
+                <div class="weekend-subtitle">Суббота и Воскресенье — выберите дату!</div>
+            </div>
+            <div class="weekday-order-block" onclick="scrollToWeekdayForm()">
+                <div class="weekday-title">📅 Заказать на БУДНИ</div>
+                <div class="weekday-badge">👇 ПРОКРУТИТЕ НИЖЕ</div>
+                <div class="weekday-subtitle">Понедельник — Пятница — выберите день!</div>
+            </div>
+        </div>
+
+        <div class="glass">
+            <div class="section-title">Шаг 1. Выберите товар</div>
+            <div class="products">
+                <div class="product">
+                    <div class="product-info"><h3>Незамерзайка -27°C</h3><div class="desc">1 канистра (5л)</div><div class="price">240 ₽</div></div>
+                    <div class="controls">
+                        <button class="btn-qty" onclick="updateQty(false, 1, -1)">−</button>
+                        <span id="qty-1" class="qty-display">0</span>
+                        <button class="btn-qty" onclick="updateQty(false, 1, 1)">+</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-info"><h3>Упаковка</h3><div class="desc">4 бутылки по 5л — выгоднее!</div><div class="price">950 ₽</div></div>
+                    <div class="controls">
+                        <button class="btn-qty" onclick="updateQty(false, 2, -1)">−</button>
+                        <span id="qty-2" class="qty-display">0</span>
+                        <button class="btn-qty" onclick="updateQty(false, 2, 1)">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass">
+            <div class="section-title">📝 Шаг 2. Заполните данные</div>
+            <div class="total-block" id="totalDisplay">Итого: 0 ₽</div>
+            <form id="orderForm" onsubmit="return false;">
+                <input type="text" id="name" placeholder="Ваше имя" required>
+                <input type="tel" id="phone" placeholder="Ваш телефон" required>
+                <input type="text" id="address" placeholder="Адрес доставки (активно от 4 упаковок)" disabled>
+                <div class="address-hint" id="addressHint">🚚 Доставка от 4 упаковок</div>
+            </form>
+        </div>
+
+        <div class="glass">
+            <div class="section-title">📅 Шаг 3. Выберите ЖК и день</div>
+            <div class="sms-buttons">
+                <div class="sms-block">
+                    <div class="sms-block-title">🏢 НОВАЯ ОХТА</div>
+                    <button class="btn-sms novaya" onclick="openWeekdayCalendar('novaya')">📅 Выбрать день</button>
+                </div>
+                <div class="sms-block">
+                    <div class="sms-block-title">🏘️ ЦВЕТНОЙ ГОРОД</div>
+                    <button class="btn-sms tsvetnoy" onclick="openWeekdayCalendar('tsvetnoy')">📅 Выбрать день</button>
+                </div>
+            </div>
+            <p class="note">💡 Откроется SMS с готовым заказом — нажмите «Отправить»</p>
+        </div>
+
+        <div class="reviews-section">
+            <div class="reviews-header">
+                <div class="section-title">⭐ Отзывы соседей</div>
+                <button class="btn-add-review" onclick="openReviewModal()">✍️ Оставить отзыв</button>
+            </div>
+            <div class="reviews-list" id="reviewsList"></div>
+        </div>
+
+        <div class="glass how-it-works">
+            <div class="section-title">🤔 Как это работает?</div>
+            <div class="how-it-works-text">
+                <strong>1.</strong> Выберите товар кнопками +/−<br>
+                <strong>2.</strong> Заполните имя, телефон, адрес<br>
+                <strong>3.</strong> Нажмите «Выбрать день» под ЖК<br>
+                <strong>4.</strong> Выберите день в календаре<br>
+                <strong>5.</strong> Отправьте готовое SMS<br><br>
+                <strong>🎉 Хотите в выходные?</strong> Жмите оранжевую кнопку выше!
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== МОДАЛЬНОЕ ОКНО ОТЗЫВА ===== -->
+    <div class="modal-overlay" id="reviewModal">
+        <div class="modal">
+            <div class="modal-title">✍️ Оставить отзыв</div>
+            <div class="modal-label">Ваше имя</div>
+            <input type="text" id="reviewName" placeholder="Например, Анна" maxlength="30">
+            <div class="modal-label">Ваш ЖК</div>
+            <input type="text" id="reviewLocation" placeholder="Например, Новая Охта, корп. 3" maxlength="40">
+            <div class="modal-label" style="text-align: center;">Ваша оценка</div>
+            <div class="star-rating" id="starRating">
+                <span class="star" data-value="1">★</span><span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span><span class="star" data-value="4">★</span><span class="star" data-value="5">★</span>
+            </div>
+            <div class="modal-label">Ваш отзыв</div>
+            <textarea id="reviewText" placeholder="Расскажите о заказе..." maxlength="300"></textarea>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeReviewModal()">Отмена</button>
+                <button class="modal-btn submit" onclick="submitReview()">Отправить</button>
+            </div>
+            <div class="modal-hint">💡 Отзыв появится сразу. Мы также получим уведомление.</div>
+        </div>
+    </div>
+
+    <!-- ===== СТРАНИЦА ДОСТАВКИ ===== -->
+    <div class="delivery-page" id="deliveryPage">
+        <div class="calendar-header">
+            <button class="btn-back" onclick="goBack()">← Назад</button>
+            <div class="calendar-title">Доставка и контакты</div>
+        </div>
+        <div class="delivery-header">
+            <div class="delivery-header-title">Условия доставки</div>
+            <div class="delivery-header-subtitle">Всё просто и прозрачно!</div>
+        </div>
+        <div class="delivery-section">
+            <div class="delivery-section-title">📦 Условия</div>
+            <div class="delivery-item"><div class="delivery-item-title">✅ Бесплатная доставка</div><div class="delivery-item-text">От <strong>4 упаковок</strong> — до подъезда в Новой Охте или Цветном городе!</div></div>
+            <div class="delivery-item"><div class="delivery-item-title">📍 Самовывоз</div><div class="delivery-item-text">Менее 4 упаковок — самовывоз:<br><strong>Новая Охта:</strong> Муринская дорога, 80<br><strong>Цветной город:</strong> Муринская дорога, 16</div></div>
+            <div class="delivery-item"><div class="delivery-item-title">🗺️ За пределами ЖК</div><div class="delivery-item-text">Доставка — <strong>по договорённости</strong>.</div></div>
+            <div class="delivery-item"><div class="delivery-item-title">💵 Оплата</div><div class="delivery-item-text">Только <strong>наличными</strong> при получении. Без предоплат!</div></div>
+        </div>
+        <div class="delivery-section">
+            <div class="delivery-section-title">💰 Цены</div>
+            <div class="price-list">
+                <div class="price-item"><div class="price-item-name">🧴 1 бутылка 5л (-27°C)</div><div class="price-item-value">240 ₽</div></div>
+                <div class="price-item"><div class="price-item-name">📦 Упаковка (4×5л)</div><div class="price-item-value">950 ₽</div></div>
+            </div>
+            <div class="delivery-note">💡 <strong>Выгоднее упаковкой!</strong> Экономия 10₽/бутылка</div>
+        </div>
+        <div class="delivery-section">
+            <div class="delivery-section-title">📞 Контакты</div>
+            <div class="contact-item">
+                <div class="contact-item-title">🏢 Новая Охта</div>
+                <div class="contact-item-line">📍 Муринская дорога, 80</div>
+                <div class="contact-item-line">📞 +7 (921) 383-84-13</div>
+                <div class="contact-item-line">✈️ Telegram: @SHuVal88</div>
+            </div>
+            <div class="contact-item">
+                <div class="contact-item-title">🏘️ Цветной город</div>
+                <div class="contact-item-line">📍 Муринская дорога, 16</div>
+                <div class="contact-item-line">📞 +7 (965) 093-96-39</div>
+                <div class="contact-item-line">✈️ Telegram: @MaFin77</div>
+            </div>
+            <div class="delivery-note">🕐 Отвечаем быстро!</div>
+        </div>
+    </div>
+
+    <!-- ===== СТРАНИЦА КАЛЕНДАРЯ (БУДНИ) ===== -->
+    <div class="calendar-page" id="calendarPage">
+        <div class="calendar-header">
+            <button class="btn-back" onclick="goBack()">← Назад</button>
+            <div class="calendar-title">📅 Выберите будний день</div>
+        </div>
+        <div class="weekday-hint">💡 <strong>Только будни</strong> (Пн-Пт).<br>Для выходных — оранжевая кнопка на главной.</div>
+        <div class="welcome-block">
+            <span class="welcome-icon">👋</span>
+            <div class="welcome-text"><strong>Здравствуйте!</strong><br>Выберите дату — мы сообщим время получения заказа!<br><strong>Спасибо) </strong></div>
+        </div>
+        <div class="calendar-card">
+            <div class="calendar-nav">
+                <button onclick="changeMonth(-1, false)">◀</button>
+                <div class="calendar-month" id="calendarMonth"></div>
+                <button onclick="changeMonth(1, false)">▶</button>
+            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+        <div class="selected-info" id="selectedInfo">👆 Нажмите на будний день</div>
+        <div class="calendar-actions">
+            <button class="calendar-btn cancel" onclick="goBack()">Отмена</button>
+            <button class="calendar-btn confirm" id="confirmBtn" onclick="sendOrder(false)" disabled>✅ Отправить</button>
+        </div>
+    </div>
+
+    <!-- ===== СТРАНИЦА ВЫХОДНЫХ ===== -->
+    <div class="weekend-page" id="weekendPage">
+        <div class="calendar-header">
+            <button class="btn-back" onclick="goBack()">← Назад</button>
+            <div class="calendar-title">🎉 Заказ на выходные</div>
+        </div>
+        <div class="weekend-page-header">
+            <div class="weekend-page-title">🎉 Заказ на выходные</div>
+            <div class="weekend-page-subtitle">Выберите дату — сообщим время!</div>
+        </div>
+        <div class="weekend-welcome">
+            <span class="weekend-welcome-icon">👋</span>
+            <div class="weekend-welcome-text"><strong>Здравствуйте!</strong><br>Выберите дату и оформите заказ.<br>Мы сообщим время получения!<br><strong>Спасибо) </strong></div>
+        </div>
+        <div class="glass">
+            <div class="section-title">📝 Ваши данные</div>
+            <input type="text" id="w-name" placeholder="Ваше имя">
+            <input type="tel" id="w-phone" placeholder="Ваш телефон">
+            <input type="text" id="w-address" placeholder="Адрес (от 4 упаковок)" disabled>
+            <div class="address-hint" id="w-addressHint">🚚 Доставка от 4 упаковок</div>
+        </div>
+        <div class="glass">
+            <div class="section-title">🛒 Выберите товар</div>
+            <div class="products">
+                <div class="product">
+                    <div class="product-info"><h3>Незамерзайка -27°C</h3><div class="desc">1 канистра (5л)</div><div class="price">240 ₽</div></div>
+                    <div class="controls">
+                        <button class="btn-qty" onclick="updateQty(true, 1, -1)">−</button>
+                        <span id="w-qty-1" class="qty-display">0</span>
+                        <button class="btn-qty" onclick="updateQty(true, 1, 1)">+</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-info"><h3>Упаковка</h3><div class="desc">Выгодный запас</div><div class="price">950 ₽</div></div>
+                    <div class="controls">
+                        <button class="btn-qty" onclick="updateQty(true, 2, -1)">−</button>
+                        <span id="w-qty-2" class="qty-display">0</span>
+                        <button class="btn-qty" onclick="updateQty(true, 2, 1)">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="weekend-total" id="weekendTotalDisplay">Итого: 0 ₽</div>
+        </div>
+        <div class="weekend-hint">💡 <strong>Только выходные</strong> (Сб, Вс). Будни заблокированы.</div>
+        <div class="calendar-card">
+            <div class="calendar-nav">
+                <button onclick="changeMonth(-1, true)">◀</button>
+                <div class="calendar-month" id="weekendCalendarMonth"></div>
+                <button onclick="changeMonth(1, true)">▶</button>
+            </div>
+            <div class="calendar-grid" id="weekendCalendarGrid"></div>
+        </div>
+        <div class="selected-info" id="weekendSelectedInfo">👆 Нажмите на Сб или Вс</div>
+        <button class="weekend-submit" id="weekendSubmitBtn" onclick="sendOrder(true)" disabled>📱 Отправить заказ</button>
+    </div>
+
+    <a href="https://t.me/SHuVal88" target="_blank" class="floating-tg" title="Написать в Telegram">✈️</a>
+    <div class="copy-toast" id="copyToast">✅ Скопировано!</div>
+
+    <script>
+        const PHONE_NOVAYA = '+79213838413';
+        const PHONE_TSVETNOY = '+79650939639';
+        const TELEGRAM_OWNER = 'SHuVal88';
+        const products = { 1: { name: 'Незамерзайка -27°C', price: 240 }, 2: { name: 'Упаковка', price: 950 } };
+
+        let cart = { 1: 0, 2: 0 }, currentLocation = '', selectedDate = null;
+        let currentMonth = new Date().getMonth(), currentYear = new Date().getFullYear();
+        let weekendCart = { 1: 0, 2: 0 }, weekendSelectedDate = null;
+        let weekendMonth = new Date().getMonth(), weekendYear = new Date().getFullYear();
+        let currentRating = 0;
+        let deferredPrompt;
+
+        const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+        const dayNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+        const weekdays = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+        const defaultReviews = [
+            { name: 'Анна', location: 'Новая Охта, корп. 3', rating: 5, text: 'Заказывала упаковку, привезли прямо к подъезду. Качество отличное!', date: '15.09.2026' },
+            { name: 'Дмитрий', location: 'Цветной город', rating: 5, text: 'Брал на выходных, всё быстро. Цена адекватная.', date: '14.09.2026' },
+            { name: 'Мария', location: 'Новая Охта', rating: 5, text: 'Удобно, что можно заказать через сайт. Приехали вовремя.', date: '12.09.2026' }
+        ];
+
+        // ===== PWA INSTALLATION =====
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installBanner').style.display = 'block';
+        });
+
+        document.getElementById('installBanner').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    document.getElementById('installBanner').style.display = 'none';
+                }
+                deferredPrompt = null;
+            }
+        });
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('✅ PWA установлен'))
+                    .catch(err => console.log('❌ Ошибка:', err));
+            });
+        }
+
+        function getReviews() {
+            const saved = localStorage.getItem('user_reviews');
+            return [...defaultReviews, ...(saved ? JSON.parse(saved) : [])];
+        }
+
+        function renderReviews() {
+            const list = document.getElementById('reviewsList');
+            const reviews = getReviews();
+            if (!reviews.length) { list.innerHTML = '<div class="no-reviews">Пока нет отзывов. Будьте первым!</div>'; return; }
+            list.innerHTML = reviews.map(r => {
+                const initials = r.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+                return `<div class="review">
+                    <div class="review-top">
+                        <div class="review-avatar">${initials || '?'}</div>
+                        <div class="review-meta"><div class="review-author">${escapeHtml(r.name)}</div><div class="review-location">${escapeHtml(r.location || '')}</div></div>
+                        <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
+                    </div>
+                    <div class="review-text">${escapeHtml(r.text)}</div><div class="review-date">${r.date || ''}</div>
+                </div>`;
+            }).join('');
+        }
+
+        function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
+
+        function openReviewModal() {
+            document.getElementById('reviewModal').classList.add('active');
+            ['reviewName', 'reviewLocation', 'reviewText'].forEach(id => document.getElementById(id).value = '');
+            currentRating = 0; updateStars(); document.body.style.overflow = 'hidden';
+        }
+        function closeReviewModal() { document.getElementById('reviewModal').classList.remove('active'); document.body.style.overflow = ''; }
+        function updateStars() {
+            document.querySelectorAll('#starRating .star').forEach(star => {
+                star.classList.toggle('active', parseInt(star.dataset.value) <= currentRating);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('#starRating .star').forEach(star => {
+                star.addEventListener('click', () => { currentRating = parseInt(star.dataset.value); updateStars(); });
+            });
+            document.getElementById('reviewModal').addEventListener('click', e => { if (e.target.id === 'reviewModal') closeReviewModal(); });
+            loadCart();
+            const hash = window.location.hash.replace('#', '');
+            showPage(['calendarPage', 'weekendPage', 'deliveryPage'].includes(hash) ? hash : 'mainPage');
+        });
+
+        function submitReview() {
+            const name = document.getElementById('reviewName').value.trim();
+            const location = document.getElementById('reviewLocation').value.trim();
+            const text = document.getElementById('reviewText').value.trim();
+            if (!name || !text || currentRating === 0) return alert(!name ? 'Укажите имя!' : !text ? 'Напишите текст отзыва!' : 'Поставьте оценку!');
+            
+            const date = new Date().toLocaleDateString('ru-RU');
+            const reviews = JSON.parse(localStorage.getItem('user_reviews') || '[]');
+            reviews.push({ name, location, rating: currentRating, text, date });
+            localStorage.setItem('user_reviews', JSON.stringify(reviews));
+            
+            const msg = `🆕 НОВЫЙ ОТЗЫВ\n\n👤 ${name}\n📍 ${location || 'не указан'}\n⭐ ${'★'.repeat(currentRating)}${'☆'.repeat(5 - currentRating)}\n💬 ${text}\n📅 ${date}`;
+            renderReviews(); closeReviewModal(); showToast('✅ Спасибо за отзыв!');
+            setTimeout(() => window.open(`https://t.me/${TELEGRAM_OWNER}?text=${encodeURIComponent(msg)}`, '_blank'), 500);
+        }
+
+        async function loadWeather() {
+            try {
+                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=60.0493&longitude=30.4394&current=temperature_2m');
+                const data = await res.json();
+                const temp = Math.round(data.current.temperature_2m);
+                document.getElementById('temp').innerText = `${temp}°C`;
+                const label = document.getElementById('weatherLabel');
+                label.innerText = temp < -15 ? 'Срочно!' : temp < -5 ? 'Пора!' : temp < 0 ? 'Скоро' : 'Готовься';
+            } catch(e) { document.getElementById('temp').innerText = '—'; }
+        }
+        loadWeather();
+
+        function saveCart() { localStorage.setItem('nezamerzayka_cart', JSON.stringify(cart)); }
+        function loadCart() {
+            const saved = localStorage.getItem('nezamerzayka_cart');
+            if (saved) {
+                try {
+                    cart = JSON.parse(saved);
+                    document.getElementById('qty-1').innerText = cart[1];
+                    document.getElementById('qty-2').innerText = cart[2];
+                    updateTotal();
+                    toggleAddress(false);
+                } catch(e) {}
+            }
+        }
+
+        function showPage(pageId) {
+            ['mainPage', 'calendarPage', 'weekendPage', 'deliveryPage'].forEach(id => {
+                document.getElementById(id).style.display = 'none';
+            });
+            document.getElementById(pageId).style.display = pageId === 'mainPage' ? 'flex' : 'block';
+            window.scrollTo(0, 0);
+        }
+
+        function navigateTo(pageId) {
+            history.pushState({ page: pageId }, '', '#' + pageId);
+            showPage(pageId);
+        }
+
+        window.addEventListener('popstate', e => showPage(e.state?.page || 'mainPage'));
+        function goBack() { history.back(); }
+        function scrollToWeekdayForm() {
+            const form = document.getElementById('orderForm');
+            if (form) { form.scrollIntoView({ behavior: 'smooth', block: 'center' }); setTimeout(() => document.getElementById('name').focus(), 500); }
+        }
+
+        function openWeekendPage() {
+            weekendCart = { 1: 0, 2: 0 }; weekendSelectedDate = null;
+            weekendMonth = new Date().getMonth(); weekendYear = new Date().getFullYear();
+            ['w-name', 'w-phone', 'w-address'].forEach(id => document.getElementById(id).value = '');
+            ['w-qty-1', 'w-qty-2'].forEach(id => document.getElementById(id).innerText = '0');
+            toggleAddress(true);
+            updateWeekendTotal();
+            document.getElementById('weekendSelectedInfo').innerHTML = '👆 Нажмите на Сб или Вс';
+            document.getElementById('weekendSubmitBtn').disabled = true;
+            navigateTo('weekendPage');
+            renderCalendar(true);
+        }
+
+        function openWeekdayCalendar(location) {
+            if (cart[1] === 0 && cart[2] === 0) return alert('Сначала выберите товар!');
+            if (!document.getElementById('name').value || !document.getElementById('phone').value) return alert('Заполните имя и телефон!');
+            if (cart[2] >= 4 && !document.getElementById('address').value.trim()) return alert('Укажите адрес доставки!');
+            currentLocation = location; selectedDate = null;
+            currentMonth = new Date().getMonth(); currentYear = new Date().getFullYear();
+            navigateTo('calendarPage');
+            updateSelectedInfo(); renderCalendar(false);
+        }
+
+        function updateQty(isWeekend, id, delta) {
+            const c = isWeekend ? weekendCart : cart;
+            if (c[id] + delta >= 0) {
+                c[id] += delta;
+                document.getElementById(`${isWeekend ? 'w-' : ''}qty-${id}`).innerText = c[id];
+                isWeekend ? updateWeekendTotal() : (updateTotal(), saveCart());
+                toggleAddress(isWeekend);
+            }
+        }
+
+        function toggleAddress(isWeekend) {
+            const c = isWeekend ? weekendCart : cart;
+            const addr = document.getElementById(`${isWeekend ? 'w-' : ''}address`);
+            const hint = document.getElementById(`${isWeekend ? 'w-' : ''}addressHint`);
+            if (c[2] >= 4) {
+                addr.disabled = false;
+                hint.innerHTML = '✅ <strong>Доставка активирована!</strong>';
+                hint.style.color = '#38ef7d';
+            } else {
+                addr.disabled = true; addr.value = '';
+                hint.innerHTML = '🚚 Доставка от 4 упаковок';
+                hint.style.color = '#ffd89b';
+            }
+        }
+
+        function updateTotal() { document.getElementById('totalDisplay').innerText = `Итого: ${(cart[1] * 240) + (cart[2] * 950)} ₽`; }
+        function updateWeekendTotal() { document.getElementById('weekendTotalDisplay').innerText = `Итого: ${(weekendCart[1] * 240) + (weekendCart[2] * 950)} ₽`; }
+
+        function showToast(text) {
+            const toast = document.getElementById('copyToast');
+            toast.innerText = text; toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function copyToClipboard(text) {
+            if (navigator.clipboard?.writeText) return navigator.clipboard.writeText(text);
+            const t = document.createElement('textarea'); t.value = text; t.style.position = 'fixed'; t.style.opacity = '0';
+            document.body.appendChild(t); t.select();
+            try { document.execCommand('copy'); } catch (e) {}
+            document.body.removeChild(t); return Promise.resolve();
+        }
+
+        function changeMonth(delta, isWeekend) {
+            if (isWeekend) {
+                weekendMonth += delta;
+                if (weekendMonth > 11) { weekendMonth = 0; weekendYear++; }
+                else if (weekendMonth < 0) { weekendMonth = 11; weekendYear--; }
+            } else {
+                currentMonth += delta;
+                if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+                else if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+            }
+            renderCalendar(isWeekend);
+        }
+
+        function renderCalendar(isWeekend) {
+            const month = isWeekend ? weekendMonth : currentMonth;
+            const year = isWeekend ? weekendYear : currentYear;
+            const grid = document.getElementById(`${isWeekend ? 'weekend' : ''}calendarGrid`);
+            document.getElementById(`${isWeekend ? 'weekend' : ''}calendarMonth`).innerText = `${monthNames[month]} ${year}`;
+            grid.innerHTML = '';
+            
+            dayNames.forEach((day, i) => {
+                const h = document.createElement('div');
+                h.className = `calendar-day-header${i >= 5 ? ' weekend' : ''}`;
+                h.innerText = day; grid.appendChild(h);
+            });
+            
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            let startDay = firstDay.getDay() - 1; if (startDay < 0) startDay = 6;
+            for (let i = 0; i < startDay; i++) grid.appendChild(document.createElement('div'));
+            
+            const today = new Date(); today.setHours(0,0,0,0);
+            const selected = isWeekend ? weekendSelectedDate : selectedDate;
+            
+            for (let day = 1; day <= lastDay.getDate(); day++) {
+                const date = new Date(year, month, day);
+                const el = document.createElement('div');
+                el.className = 'calendar-day'; el.innerText = day;
+                const isWknd = date.getDay() === 0 || date.getDay() === 6;
+                
+                if (isWeekend) {
+                    if (isWknd) el.classList.add('weekend');
+                    if (!isWknd || date < today) el.classList.add('disabled');
+                    else el.onclick = () => selectDate(day, el, date, true);
+                } else {
+                    if (isWknd || date < today) el.classList.add('disabled');
+                    else {
+                        if (date.getTime() === today.getTime()) el.classList.add('today');
+                        el.onclick = () => selectDate(day, el, date, false);
+                    }
+                }
+                if (selected && selected.getDate() === day && selected.getMonth() === month && selected.getFullYear() === year) el.classList.add('selected');
+                grid.appendChild(el);
+            }
+        }
+
+        function selectDate(day, el, date, isWeekend) {
+            const prefix = isWeekend ? 'weekend' : '';
+            document.querySelectorAll(`#${prefix}calendarGrid .calendar-day`).forEach(e => e.classList.remove('selected'));
+            el.classList.add('selected');
+            if (isWeekend) { weekendSelectedDate = date; updateWeekendSelectedInfo(); }
+            else { selectedDate = date; updateSelectedInfo(); }
+        }
+
+        function updateSelectedInfo() {
+            const info = document.getElementById('selectedInfo');
+            if (!selectedDate) { info.innerHTML = '👆 Нажмите на будний день'; document.getElementById('confirmBtn').disabled = true; }
+            else {
+                info.innerHTML = `📅 <b>${selectedDate.getDate()}.${String(selectedDate.getMonth()+1).padStart(2,'0')}.${selectedDate.getFullYear()}</b> — ${weekdays[selectedDate.getDay()]}`;
+                document.getElementById('confirmBtn').disabled = false;
+            }
+        }
+
+        function updateWeekendSelectedInfo() {
+            const info = document.getElementById('weekendSelectedInfo');
+            if (!weekendSelectedDate) { info.innerHTML = '👆 Нажмите на Сб или Вс'; document.getElementById('weekendSubmitBtn').disabled = true; }
+            else {
+                info.innerHTML = `🎉 <b>${weekendSelectedDate.getDate()}.${String(weekendSelectedDate.getMonth()+1).padStart(2,'0')}.${weekendSelectedDate.getFullYear()}</b> — ${weekdays[weekendSelectedDate.getDay()]}`;
+                document.getElementById('weekendSubmitBtn').disabled = false;
+            }
+        }
+
+        function sendOrder(isWeekend) {
+            const p = isWeekend ? 'w-' : '';
+            const name = document.getElementById(`${p}name`).value.trim();
+            const phone = document.getElementById(`${p}phone`).value.trim();
+            let address = document.getElementById(`${p}address`).value.trim();
+            const c = isWeekend ? weekendCart : cart;
+            const date = isWeekend ? weekendSelectedDate : selectedDate;
+            
+            if (!name || !phone) return alert('Заполните имя и телефон!');
+            if (c[1] === 0 && c[2] === 0) return alert('Выберите товар!');
+            if (c[2] < 4) address = 'Самовывоз';
+            else if (!address) return alert('Укажите адрес!');
+
+            let items = '', total = 0;
+            if (c[1] > 0) { items += `• Незамерзайка: ${c[1]} шт. — ${c[1]*240}₽\n`; total += c[1]*240; }
+            if (c[2] > 0) { items += `• Упаковка: ${c[2]} уп. — ${c[2]*950}₽\n`; total += c[2]*950; }
+
+            const dateStr = `${date.getDate()}.${String(date.getMonth()+1).padStart(2,'0')}.${date.getFullYear()} (${weekdays[date.getDay()]})`;
+            const loc = isWeekend ? 'НОВАЯ ОХТА' : (currentLocation === 'novaya' ? 'НОВАЯ ОХТА' : 'ЦВЕТНОЙ ГОРОД');
+            const header = isWeekend ? '🎉 ЗАКАЗ НА ВЫХОДНЫЕ' : `❄️ НЕЗАМЕРЗАЙКА (БУДНИ)\nЖК: ${loc}`;
+            const msg = `${header}\n\n👤 ${name}\n📞 ${phone}\n📍 ${address}\n📅 ${dateStr}\n\n${items}💰 ${total}₽\n💵 Наличные${isWeekend ? '\n\n⏰ Сообщите время получения!' : ''}`;
+
+            if (!/Android|webOS|iPhone|iPad|iPod/i.test(navigator.userAgent)) return alert('SMS работает только на мобильных устройствах!');
+            
+            const target = isWeekend ? PHONE_NOVAYA : (currentLocation === 'novaya' ? PHONE_NOVAYA : PHONE_TSVETNOY);
+            const sep = /iPhone|iPad|iPod/i.test(navigator.userAgent) ? '&' : '?';
+
+            copyToClipboard(msg).then(() => {
+                showToast('✅ Заказ скопирован! Откроется SMS');
+                setTimeout(() => { window.location.href = `sms:${target}${sep}body=${encodeURIComponent(msg)}`; }, 500);
+            });
+        }
+
+        renderReviews();
+    </script>
+</body>
+</html>
