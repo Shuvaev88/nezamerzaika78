@@ -2,16 +2,13 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <!-- ✅ Favicon-снежинка (убирает 404 для favicon.ico) -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-size='24'%3E%E2%9D%84%EF%B8%8F%3C/text%3E%3C/svg%3E">
-    
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>❄️ Незамерзайка соседям — Новая Охта и Цветной город</title>
     <meta name="description" content="Незамерзайка -27°C для жителей Новой Охты и Цветного города. Доставка до подъезда. 240₽/бутылка.">
     <meta property="og:title" content="❄️ Незамерзайка соседям — 240₽">
     <meta property="og:description" content="Доставка до подъезда. Оплата наличными.">
     
-    <!-- PWA -->
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#203a43">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -33,7 +30,6 @@
             position: relative;
         }
 
-        /* Визуальная ошибка валидации */
         .input-error {
             border-color: #ff4d4d !important;
             animation: shake 0.4s ease-in-out;
@@ -360,6 +356,52 @@
         input:disabled, select:disabled { opacity: 0.4; cursor: not-allowed; background: rgba(0, 0, 0, 0.2); }
         textarea { resize: vertical; min-height: 70px; }
 
+        /* Переключатель способа получения */
+        .delivery-choice {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .delivery-choice-label {
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 10px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 0.85em;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .delivery-choice-label input[type="radio"] {
+            display: none;
+        }
+        .delivery-choice-label:has(input:checked) {
+            background: rgba(17, 153, 142, 0.25);
+            border-color: #38ef7d;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(56, 239, 125, 0.3);
+        }
+        .delivery-choice-label:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .delivery-choice-label .choice-icon {
+            font-size: 1.3em;
+        }
+        .delivery-choice-label.disabled-choice {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .delivery-choice-label.disabled-choice:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
         .address-hint { font-size: 0.7em; color: #ffd89b; margin-bottom: 6px; text-align: center; font-weight: 600; }
 
         .total-block {
@@ -659,7 +701,6 @@
         }
         .copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-        /* PWA Install Banner */
         .pwa-install-banner {
             display: none;
             position: fixed;
@@ -700,7 +741,6 @@
             cursor: pointer; padding: 0 5px; line-height: 1;
         }
 
-        /* iOS-инструкция */
         .pwa-ios-instructions {
             display: none;
             position: fixed;
@@ -735,7 +775,6 @@
     </style>
 </head>
 <body>
-    <!-- Баннер для Android/Chrome -->
     <div class="pwa-install-banner" id="pwaInstallBanner">
         <div class="pwa-install-content">
             <div class="pwa-install-text">📲 <strong>Установите приложение</strong> для быстрого заказа!</div>
@@ -744,12 +783,11 @@
         </div>
     </div>
 
-    <!-- Инструкция для iOS -->
     <div class="pwa-ios-instructions" id="pwaIosBanner">
-        <div class="pwa-ios-title">📱 Установите на iPhone</div>
+        <div class="pwa-ios-title"> Установите на iPhone</div>
         <div class="pwa-ios-step">
             <div class="pwa-ios-step-num">1</div>
-            <div>Нажмите кнопку <span class="pwa-ios-icon"></span> «Поделиться» внизу Safari</div>
+            <div>Нажмите кнопку <span class="pwa-ios-icon">⎙</span> «Поделиться» внизу Safari</div>
         </div>
         <div class="pwa-ios-step">
             <div class="pwa-ios-step-num">2</div>
@@ -772,7 +810,7 @@
 
             <div class="hero-info-row">
                 <div class="hero-chip chip-weather">
-                    <span class="chip-icon">🌡️</span>
+                    <span class="chip-icon">️</span>
                     <span>
                         <span class="chip-value" id="temp">—</span>
                         <span style="font-size: 0.85em; opacity: 0.85;" id="weatherLabel">Мурино</span>
@@ -793,7 +831,7 @@
 
             <div class="social-buttons-row">
                 <a href="https://t.me/nezamerzaikaSPB" target="_blank" class="social-btn tg">
-                    <span class="social-icon">✈️</span>
+                    <span class="social-icon">️</span>
                     <span>Telegram</span>
                 </a>
                 <a href="https://max.ru/channel_nezamerzaika_SPB" target="_blank" class="social-btn max">
@@ -816,7 +854,7 @@
             </div>
 
             <div class="weekday-order-block" onclick="scrollToWeekdayForm()">
-                <div class="weekday-title">📅 Заказать на БУДНИ</div>
+                <div class="weekday-title"> Заказать на БУДНИ</div>
                 <div class="weekday-badge">👇 ПРОКРУТИТЕ НИЖЕ</div>
                 <div class="weekday-subtitle">Понедельник — Пятница — выберите день!</div>
             </div>
@@ -864,8 +902,23 @@
             <form id="orderForm" onsubmit="return false;">
                 <input type="text" id="name" placeholder="Ваше имя" required autocomplete="name" autocapitalize="words" inputmode="text">
                 <input type="tel" id="phone" placeholder="+7 (___) ___-__-__" required autocomplete="tel" inputmode="tel">
-                <input type="text" id="address" placeholder="Адрес доставки (активно от 4 упаковок)" disabled autocomplete="street-address" inputmode="text">
-                <div class="address-hint" id="addressHint">🚚 Доставка от 4 упаковок</div>
+                
+                <!-- Переключатель способа получения -->
+                <div class="delivery-choice">
+                    <label class="delivery-choice-label" id="label-pickup">
+                        <input type="radio" name="delivery-method" value="pickup" checked onchange="toggleDeliveryMethod()">
+                        <span class="choice-icon">📍</span>
+                        <span>Самовывоз</span>
+                    </label>
+                    <label class="delivery-choice-label" id="label-delivery">
+                        <input type="radio" name="delivery-method" value="delivery" onchange="toggleDeliveryMethod()">
+                        <span class="choice-icon"></span>
+                        <span>Доставка (от 6 уп.)</span>
+                    </label>
+                </div>
+                
+                <input type="text" id="address" placeholder="Адрес доставки (корпус, дом, подъезд)" disabled autocomplete="street-address" inputmode="text">
+                <div class="address-hint" id="addressHint">📍 Самовывоз: выберите точку ниже</div>
             </form>
         </div>
 
@@ -902,10 +955,10 @@
             <div class="section-title">🤔 Как это работает?</div>
             <div class="how-it-works-text">
                 <strong>1.</strong> Выберите товар кнопками +/−<br>
-                <strong>2.</strong> Заполните имя, телефон, адрес<br>
-                <strong>3.</strong> Нажмите «Выбрать день» под ЖК<br>
-                <strong>4.</strong> Выберите день в календаре<br>
-                <strong>5.</strong> Отправьте готовое SMS<br><br>
+                <strong>2.</strong> Заполните имя, телефон<br>
+                <strong>3.</strong> Выберите: <strong>Самовывоз</strong> или <strong>Доставку</strong> (от 6 упаковок)<br>
+                <strong>4.</strong> Нажмите «Выбрать день» под ЖК<br>
+                <strong>5.</strong> Выберите день и отправьте SMS<br><br>
                 <strong>🎉 Хотите в выходные?</strong> Жмите оранжевую кнопку выше!
             </div>
         </div>
@@ -951,12 +1004,12 @@
             <div class="delivery-section-title">📦 Условия</div>
             <div class="delivery-item">
                 <div class="delivery-item-title">✅ Бесплатная доставка</div>
-                <div class="delivery-item-text">От <strong>4 упаковок</strong> — до подъезда в Новой Охте или Цветном городе!</div>
+                <div class="delivery-item-text">От <strong>6 упаковок</strong> — до подъезда в Новой Охте или Цветном городе!</div>
             </div>
             <div class="delivery-item">
                 <div class="delivery-item-title">📍 Самовывоз</div>
                 <div class="delivery-item-text">
-                    Менее 4 упаковок — самовывоз:<br>
+                    Любое количество — самовывоз:<br>
                     <strong>Новая Охта:</strong> Муринская дорога, 80<br>
                     <strong>Цветной город:</strong> Муринская дорога, 16
                 </div>
@@ -978,7 +1031,7 @@
                     <div class="price-item-value">240 ₽</div>
                 </div>
                 <div class="price-item">
-                    <div class="price-item-name"> Упаковка (4×5л)</div>
+                    <div class="price-item-name">📦 Упаковка (4×5л)</div>
                     <div class="price-item-value">950 ₽</div>
                 </div>
             </div>
@@ -988,8 +1041,8 @@
             <div class="delivery-section-title">📞 Контакты</div>
             <div class="contact-item">
                 <div class="contact-item-title">🏢 Новая Охта</div>
-                <div class="contact-item-line">📍 Муринская дорога, 80</div>
-                <div class="contact-item-line">📞 <a href="tel:+79213838413" style="color:#fff; text-decoration:none;">+7 (921) 383-84-13</a></div>
+                <div class="contact-item-line"> Муринская дорога, 80</div>
+                <div class="contact-item-line"> <a href="tel:+79213838413" style="color:#fff; text-decoration:none;">+7 (921) 383-84-13</a></div>
                 <div class="contact-item-line">✈️ Telegram: @SHuVai88</div>
             </div>
             <div class="contact-item">
@@ -1012,11 +1065,11 @@
             Для выходных — оранжевая кнопка на главной.
         </div>
         <div class="welcome-block">
-            <span class="welcome-icon"></span>
+            <span class="welcome-icon">👋</span>
             <div class="welcome-text">
                 <strong>Здравствуйте!</strong><br>
                 Выберите дату — мы сообщим время получения заказа!<br>
-                <strong>Спасибо) 🎉</strong>
+                <strong>Спасибо) </strong>
             </div>
         </div>
         <div class="calendar-card">
@@ -1027,7 +1080,7 @@
             </div>
             <div class="calendar-grid" id="calendarGrid"></div>
         </div>
-        <div class="selected-info" id="selectedInfo">👆 Нажмите на будний день</div>
+        <div class="selected-info" id="selectedInfo"> Нажмите на будний день</div>
         <div class="calendar-actions">
             <button class="calendar-btn cancel" onclick="goBack()">Отмена</button>
             <button class="calendar-btn confirm" id="confirmBtn" onclick="confirmDate()" disabled>✅ Отправить</button>
@@ -1056,8 +1109,23 @@
             <div class="section-title">Ваши данные</div>
             <input type="text" id="w-name" placeholder="Ваше имя" autocomplete="name" autocapitalize="words" inputmode="text">
             <input type="tel" id="w-phone" placeholder="+7 (___) ___-__-__" autocomplete="tel" inputmode="tel">
-            <input type="text" id="w-address" placeholder="Адрес (от 4 упаковок)" disabled autocomplete="street-address" inputmode="text">
-            <div class="address-hint" id="w-addressHint">🚚 Доставка от 4 упаковок</div>
+            
+            <!-- Переключатель для выходных -->
+            <div class="delivery-choice">
+                <label class="delivery-choice-label" id="w-label-pickup">
+                    <input type="radio" name="w-delivery-method" value="pickup" checked onchange="toggleWeekendDeliveryMethod()">
+                    <span class="choice-icon">📍</span>
+                    <span>Самовывоз</span>
+                </label>
+                <label class="delivery-choice-label" id="w-label-delivery">
+                    <input type="radio" name="w-delivery-method" value="delivery" onchange="toggleWeekendDeliveryMethod()">
+                    <span class="choice-icon">🚚</span>
+                    <span>Доставка (от 6 уп.)</span>
+                </label>
+            </div>
+            
+            <input type="text" id="w-address" placeholder="Адрес доставки (корпус, дом, подъезд)" disabled autocomplete="street-address" inputmode="text">
+            <div class="address-hint" id="w-addressHint">📍 Самовывоз: выберите точку ниже</div>
         </div>
         <div class="glass">
             <div class="section-title">🛒 Выберите товар</div>
@@ -1119,6 +1187,7 @@
         const PHONE_NOVAYA = '+79213838413';
         const PHONE_TSVETNOY = '+79650939639';
         const TELEGRAM_OWNER = 'SHuVai88';
+        const MIN_DELIVERY_PACKS = 6; // Минимум упаковок для доставки
 
         const products = { 1: { name: 'Незамерзайка -27°C', price: 240 }, 2: { name: 'Упаковка', price: 950 } };
 
@@ -1214,6 +1283,62 @@
             return false;
         }
 
+        // === НОВАЯ ФУНКЦИЯ: переключение способа получения (будни) ===
+        function toggleDeliveryMethod() {
+            const method = document.querySelector('input[name="delivery-method"]:checked').value;
+            const addressInput = document.getElementById('address');
+            const addressHint = document.getElementById('addressHint');
+            const labelDelivery = document.getElementById('label-delivery');
+            
+            if (method === 'pickup') {
+                // Самовывоз
+                addressInput.disabled = true;
+                addressInput.value = '';
+                addressHint.innerHTML = '📍 Самовывоз: выберите ЖК ниже';
+                addressHint.style.color = '#ffd89b';
+            } else {
+                // Доставка
+                if (cart[2] >= MIN_DELIVERY_PACKS) {
+                    addressInput.disabled = false;
+                    addressHint.innerHTML = '✅ Доставка активирована! Укажите адрес';
+                    addressHint.style.color = '#38ef7d';
+                } else {
+                    addressInput.disabled = true;
+                    addressInput.value = '';
+                    addressHint.innerHTML = `⚠️ Нужно минимум ${MIN_DELIVERY_PACKS} упаковок для доставки (сейчас: ${cart[2]})`;
+                    addressHint.style.color = '#ff9a9a';
+                    // Автоматически переключаем обратно на самовывоз
+                    document.querySelector('input[name="delivery-method"][value="pickup"]').checked = true;
+                }
+            }
+        }
+
+        // === НОВАЯ ФУНКЦИЯ: переключение способа получения (выходные) ===
+        function toggleWeekendDeliveryMethod() {
+            const method = document.querySelector('input[name="w-delivery-method"]:checked').value;
+            const addressInput = document.getElementById('w-address');
+            const addressHint = document.getElementById('w-addressHint');
+            
+            if (method === 'pickup') {
+                addressInput.disabled = true;
+                addressInput.value = '';
+                addressHint.innerHTML = '📍 Самовывоз: выберите ЖК ниже';
+                addressHint.style.color = '#ffd89b';
+            } else {
+                if (weekendCart[2] >= MIN_DELIVERY_PACKS) {
+                    addressInput.disabled = false;
+                    addressHint.innerHTML = '✅ Доставка активирована! Укажите адрес';
+                    addressHint.style.color = '#38ef7d';
+                } else {
+                    addressInput.disabled = true;
+                    addressInput.value = '';
+                    addressHint.innerHTML = `⚠️ Нужно минимум ${MIN_DELIVERY_PACKS} упаковок для доставки (сейчас: ${weekendCart[2]})`;
+                    addressHint.style.color = '#ff9a9a';
+                    document.querySelector('input[name="w-delivery-method"][value="pickup"]').checked = true;
+                }
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('#starRating .star').forEach(star => {
                 star.addEventListener('click', () => {
@@ -1226,7 +1351,6 @@
                 if (e.target.id === 'reviewModal') closeReviewModal();
             });
 
-            // Маска телефона
             const phoneInputs = document.querySelectorAll('input[type="tel"]');
             phoneInputs.forEach(input => {
                 IMask(input, { mask: '+{7} (000) 000-00-00', lazy: false });
@@ -1291,13 +1415,8 @@
                     document.getElementById('qty-1').innerText = cart[1];
                     document.getElementById('qty-2').innerText = cart[2];
                     updateTotal();
-                    const addressInput = document.getElementById('address');
-                    const addressHint = document.getElementById('addressHint');
-                    if (cart[2] >= 4) {
-                        addressInput.disabled = false;
-                        addressHint.innerHTML = '✅ <strong>Доставка активирована!</strong>';
-                        addressHint.style.color = '#38ef7d';
-                    }
+                    // Обновляем состояние доставки после загрузки корзины
+                    toggleDeliveryMethod();
                 } catch(e) {}
             }
         }
@@ -1348,11 +1467,11 @@
             document.getElementById('w-address').value = '';
             document.getElementById('w-qty-1').innerText = '0';
             document.getElementById('w-qty-2').innerText = '0';
-            document.getElementById('w-address').disabled = true;
-            document.getElementById('w-addressHint').innerHTML = ' Доставка от 4 упаковок';
-            document.getElementById('w-addressHint').style.color = '#ffd89b';
+            // Сброс на самовывоз
+            document.querySelector('input[name="w-delivery-method"][value="pickup"]').checked = true;
+            toggleWeekendDeliveryMethod();
             updateWeekendTotal();
-            document.getElementById('weekendSelectedInfo').innerHTML = ' Нажмите на Сб или Вс';
+            document.getElementById('weekendSelectedInfo').innerHTML = '👆 Нажмите на Сб или Вс';
             document.getElementById('weekendSubmitBtn').disabled = true;
             navigateTo('weekendPage');
             renderWeekendCalendar();
@@ -1365,9 +1484,20 @@
             const nameInput = document.getElementById('name');
             const phoneInput = document.getElementById('phone');
             const addressInput = document.getElementById('address');
+            const deliveryMethod = document.querySelector('input[name="delivery-method"]:checked').value;
+            
             if (!nameInput.value.trim()) return showError(nameInput);
             if (!phoneInput.value.trim() || phoneInput.value.includes('_')) return showError(phoneInput);
-            if (cart[2] >= 4 && !addressInput.value.trim()) return showError(addressInput);
+            
+            // Если выбрана доставка, проверяем адрес и количество
+            if (deliveryMethod === 'delivery') {
+                if (cart[2] < MIN_DELIVERY_PACKS) {
+                    alert(`Для доставки нужно минимум ${MIN_DELIVERY_PACKS} упаковок!`);
+                    return;
+                }
+                if (!addressInput.value.trim()) return showError(addressInput);
+            }
+
             currentLocation = location;
             selectedDate = null;
             currentMonth = new Date().getMonth();
@@ -1385,18 +1515,8 @@
                 document.getElementById(`qty-${id}`).innerText = cart[id];
                 updateTotal();
                 saveCart();
-                const addressInput = document.getElementById('address');
-                const addressHint = document.getElementById('addressHint');
-                if (cart[2] >= 4) {
-                    addressInput.disabled = false;
-                    addressHint.innerHTML = '✅ <strong>Доставка активирована!</strong>';
-                    addressHint.style.color = '#38ef7d';
-                } else {
-                    addressInput.disabled = true;
-                    addressInput.value = '';
-                    addressHint.innerHTML = '🚚 Доставка от 4 упаковок';
-                    addressHint.style.color = '#ffd89b';
-                }
+                // Обновляем состояние доставки
+                toggleDeliveryMethod();
             }
         }
 
@@ -1410,18 +1530,8 @@
                 weekendCart[id] += delta;
                 document.getElementById(`w-qty-${id}`).innerText = weekendCart[id];
                 updateWeekendTotal();
-                const wAddressInput = document.getElementById('w-address');
-                const wAddressHint = document.getElementById('w-addressHint');
-                if (weekendCart[2] >= 4) {
-                    wAddressInput.disabled = false;
-                    wAddressHint.innerHTML = '✅ <strong>Доставка активирована!</strong>';
-                    wAddressHint.style.color = '#38ef7d';
-                } else {
-                    wAddressInput.disabled = true;
-                    wAddressInput.value = '';
-                    wAddressHint.innerHTML = '🚚 Доставка от 4 упаковок';
-                    wAddressHint.style.color = '#ffd89b';
-                }
+                // Обновляем состояние доставки
+                toggleWeekendDeliveryMethod();
             }
         }
 
@@ -1515,8 +1625,16 @@
             if (!selectedDate) return;
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
+            const deliveryMethod = document.querySelector('input[name="delivery-method"]:checked').value;
             let address = document.getElementById('address').value.trim();
-            if (cart[2] < 4) address = 'Самовывоз';
+            
+            // Определяем способ получения для SMS
+            let receiveMethod = '';
+            if (deliveryMethod === 'pickup') {
+                receiveMethod = `📍 Самовывоз (${currentLocation === 'novaya' ? 'Новая Охта' : 'Цветной город'})`;
+            } else {
+                receiveMethod = `🚚 Доставка: ${address}`;
+            }
 
             let itemsList = '', total = 0;
             if (cart[1] > 0) { itemsList += `• Незамерзайка: ${cart[1]} шт. — ${cart[1]*240}₽\n`; total += cart[1]*240; }
@@ -1524,7 +1642,7 @@
 
             const loc = currentLocation === 'novaya' ? 'НОВАЯ ОХТА' : 'ЦВЕТНОЙ ГОРОД';
             const dateStr = `${selectedDate.getDate()}.${(selectedDate.getMonth()+1).toString().padStart(2,'0')}.${selectedDate.getFullYear()} (${weekdays[selectedDate.getDay()]})`;
-            const msg = `❄️ НЕЗАМЕРЗАЙКА (БУДНИ)\nЖК: ${loc}\nИмя: ${name}\nТел: ${phone}\n📍 ${address}\n ${dateStr}\n\n${itemsList}Итого: ${total}₽\n💵 Наличные`;
+            const msg = `❄️ НЕЗАМЕРЗАЙКА (БУДНИ)\nЖК: ${loc}\nИмя: ${name}\nТел: ${phone}\n${receiveMethod}\n📅 ${dateStr}\n\n${itemsList}Итого: ${total}₽\n💵 Наличные`;
 
             const isMobile = /Android|webOS|iPhone|iPad|iPod/i.test(navigator.userAgent);
             if (!isMobile) { alert('SMS только на телефонах!'); return; }
@@ -1593,7 +1711,7 @@
         function updateWeekendSelectedInfo() {
             const info = document.getElementById('weekendSelectedInfo');
             if (!weekendSelectedDate) {
-                info.innerHTML = '👆 Нажмите на Сб или Вс';
+                info.innerHTML = ' Нажмите на Сб или Вс';
                 document.getElementById('weekendSubmitBtn').disabled = true;
             } else {
                 const day = weekendSelectedDate.getDate(), month = weekendSelectedDate.getMonth() + 1;
@@ -1607,22 +1725,37 @@
             const nameInput = document.getElementById('w-name');
             const phoneInput = document.getElementById('w-phone');
             const addressInput = document.getElementById('w-address');
+            const deliveryMethod = document.querySelector('input[name="w-delivery-method"]:checked').value;
+            
             if (!nameInput.value.trim()) return showError(nameInput);
             if (!phoneInput.value.trim() || phoneInput.value.includes('_')) return showError(phoneInput);
             if (weekendCart[1] === 0 && weekendCart[2] === 0) { alert('Выберите товар!'); return; }
-            if (weekendCart[2] >= 4 && !addressInput.value.trim()) return showError(addressInput);
+            
+            if (deliveryMethod === 'delivery') {
+                if (weekendCart[2] < MIN_DELIVERY_PACKS) {
+                    alert(`Для доставки нужно минимум ${MIN_DELIVERY_PACKS} упаковок!`);
+                    return;
+                }
+                if (!addressInput.value.trim()) return showError(addressInput);
+            }
 
             const name = nameInput.value;
             const phone = phoneInput.value;
             let address = addressInput.value.trim();
-            if (weekendCart[2] < 4) address = 'Самовывоз';
+            
+            let receiveMethod = '';
+            if (deliveryMethod === 'pickup') {
+                receiveMethod = '📍 Самовывоз';
+            } else {
+                receiveMethod = `🚚 Доставка: ${address}`;
+            }
 
             let itemsList = '', total = 0;
             if (weekendCart[1] > 0) { itemsList += `• Незамерзайка: ${weekendCart[1]} шт. — ${weekendCart[1]*240}₽\n`; total += weekendCart[1]*240; }
             if (weekendCart[2] > 0) { itemsList += `• Упаковка: ${weekendCart[2]} уп. — ${weekendCart[2]*950}₽\n`; total += weekendCart[2]*950; }
 
             const dateStr = `${weekendSelectedDate.getDate()}.${(weekendSelectedDate.getMonth()+1).toString().padStart(2,'0')}.${weekendSelectedDate.getFullYear()} (${weekdays[weekendSelectedDate.getDay()]})`;
-            const msg = `🎉 ЗАКАЗ НА ВЫХОДНЫЕ\n\n👤 ${name}\n📞 ${phone}\n ${address}\n📅 ${dateStr}\n\n${itemsList}💰 ${total}₽\n💵 Наличные\n\nСообщите время получения!`;
+            const msg = `🎉 ЗАКАЗ НА ВЫХОДНЫЕ\n\n👤 ${name}\n📞 ${phone}\n${receiveMethod}\n📅 ${dateStr}\n\n${itemsList}💰 ${total}₽\n💵 Наличные\n\nСообщите время получения!`;
 
             const isMobile = /Android|webOS|iPhone|iPad|iPod/i.test(navigator.userAgent);
             if (!isMobile) { alert('SMS только на телефонах!'); return; }
@@ -1667,20 +1800,15 @@
         setInterval(createSnowman, 5000);
         for (let i = 0; i < 3; i++) setTimeout(createSnowman, i * 800);
 
-        // ============================================
-        // PWA: РЕГИСТРАЦИЯ SERVICE WORKER
-        // ============================================
+        // PWA
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
                     .then(registration => { console.log('✅ SW зарегистрирован:', registration.scope); })
-                    .catch(error => { console.error(' Ошибка SW:', error); });
+                    .catch(error => { console.error('❌ Ошибка SW:', error); });
             });
         }
 
-        // ============================================
-        // PWA: УМНАЯ ЛОГИКА УСТАНОВКИ
-        // ============================================
         (function initPWAInstall() {
             const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
             const dismissedUntil = parseInt(localStorage.getItem('pwa_dismissed_until') || '0');
@@ -1692,7 +1820,6 @@
             const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
             const isSafari = /Safari/.test(ua) && !/Chrome|CriOS|FxiOS|EdgiOS/.test(ua);
 
-            // iOS + Safari: показываем инструкцию
             if (isIOS && isSafari) {
                 const iosBanner = document.getElementById('pwaIosBanner');
                 if (iosBanner) {
@@ -1705,7 +1832,6 @@
                 return;
             }
 
-            // Android / Chrome Desktop
             let deferredPrompt = null;
             const banner = document.getElementById('pwaInstallBanner');
             const installBtn = document.getElementById('pwaInstallBtn');
