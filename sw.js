@@ -1,60 +1,67 @@
-const CACHE_VERSION = 'v2'; // ✅ Увеличиваем версию — это заставит браузер забыть старый кеш
-const CACHE_NAME = `nezamerzayka-cache-${CACHE_VERSION}`;
-const ASSETS_TO_CACHE = [
-    './',
-    './index.html',
-    './manifest.json',
-    './icon-192.png',
-    './icon-512.png'
+const CACHE_NAME = 'nezamerzayka-cache-v1';
+const urlsToCache = [
+  './',
+  './index.html',
+  './manifest.json'
+  // Если вы вынесете CSS/JS в отдельные файлы, добавьте их имена сюда
 ];
 
-// Установка — кешируем файлы
+// Установка сервис-воркера и кэширование файлов
 self.addEventListener('install', (event) => {
-    event.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => {
-            console.log('✅ Кешируем файлы версии', CACHE_VERSION);
-            return cache.addAll(ASSETS_TO_CACHE).catch(err => {
-                console.warn('Не удалось закешить все файлы:', err);
-            });
-        })
-    );
-    self.skipWaiting(); // ✅ Сразу активируем новый SW
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => {
+        console.log('Кэширование файлов приложения');
+        return cache.addAll(urlsToCache);
+      })
+  );
+  // Активируем новый SW сразу
+  self.skipWaiting();
 });
 
-// Активация — удаляем старые кеши
+// Очистка старого кэша при обновлении
 self.addEventListener('activate', (event) => {
-    event.waitUntil(
-        caches.keys().then((cacheNames) => {
-            return Promise.all(
-                cacheNames
-                    .filter((name) => name !== CACHE_NAME)
-                    .map((name) => {
-                        console.log('🗑️ Удаляем старый кеш:', name);
-                        return caches.delete(name);
-                    })
-            );
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('Удаление старого кэша:', cacheName);
+            return caches.delete(cacheName);
+          }
         })
-    );
-    self.clients.claim(); // ✅ Применяем новый SW ко всем вкладкам
+      );
+    })
+  );
+  self.clients.claim();
 });
 
-// Запрос — сначала сеть, потом кеш (для актуальных данных)
+// Перехват запросов: сначала ищем в кэше, если нет — загружаем из сети
 self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        fetch(event.request)
-            .then((response) => {
-                // Кешируем успешные ответы
-                if (response && response.status === 200) {
-                    const responseClone = response.clone();
-                    caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(event.request, responseClone);
-                    });
-                }
-                return response;
-            })
-            .catch(() => {
-                // Если сети нет — берём из кеша
-                return caches.match(event.request);
-            })
-    );
+  // API погоды не кэшируем, чтобы данные были свежими
+  if (event.request.url.includes('open-meteo.com')) {
+    return; 
+  }
+
+  event.respondWith(
+    caches.match(event.request)
+      .then((response) => {
+        if (response) {
+          return response; // Найдено в кэше
+        }
+        return fetch(event.request).then( // Загружаем из сети
+          (response) => {
+            if (!response || response.status !== 200 || response.type !== 'basic') {
+              return response;
+            }
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME)
+              .then((cache) => {
+                cache.put(event.request, responseToCache);
+              });
+            return response;
+          }
+        );
+      })
+  );
 });
