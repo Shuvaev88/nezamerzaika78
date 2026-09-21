@@ -8,6 +8,16 @@
     <meta property="og:title" content="❄️ Незамерзайка соседям — 240₽">
     <meta property="og:description" content="Доставка до подъезда. Оплата наличными.">
     
+    <!-- PWA META TAGS -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#203a43">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Незамерзайка">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Ccircle cx='96' cy='96' r='96' fill='%23203a43'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='110'%3E%E2%9D%84%EF%B8%8F%3C/text%3E%3C/svg%3E">
+    
+    <script src="https://unpkg.com/imask"></script>
+    
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
 
@@ -18,6 +28,19 @@
             padding: 10px;
             overflow-y: auto;
             position: relative;
+        }
+
+        .input-error {
+            border-color: #ff4d4d !important;
+            animation: shake 0.4s ease-in-out;
+            background: rgba(255, 77, 77, 0.15) !important;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px); }
+            40% { transform: translateX(6px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
         }
 
         .snowflake {
@@ -185,6 +208,16 @@
             box-shadow: 0 6px 20px rgba(123, 104, 238, 0.6);
         }
 
+        .social-btn.call {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
+            width: 100%;
+            margin-top: 6px;
+        }
+        .social-btn.call:hover {
+            box-shadow: 0 6px 20px rgba(17, 153, 142, 0.6);
+        }
+
         .social-btn .social-icon {
             font-size: 1.2em;
         }
@@ -337,16 +370,28 @@
         .btn-qty:active { transform: scale(0.9); }
         .qty-display { font-weight: 800; width: 24px; text-align: center; font-size: 0.9em; color: #ffd89b; }
 
-        input, textarea {
+        input, textarea, select {
             width: 100%; padding: 10px 12px; margin-bottom: 4px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 8px; font-size: 14px;
             background: rgba(255, 255, 255, 0.08); color: #fff;
             font-family: inherit;
         }
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px;
+        }
+        select option {
+            background: #203a43;
+            color: #fff;
+        }
+
         input::placeholder, textarea::placeholder { color: rgba(255, 255, 255, 0.5); }
-        input:focus, textarea:focus { outline: none; border-color: #ffd89b; background: rgba(255, 255, 255, 0.12); }
-        input:disabled { opacity: 0.4; cursor: not-allowed; background: rgba(0, 0, 0, 0.2); }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: #ffd89b; background: rgba(255, 255, 255, 0.12); }
+        input:disabled, select:disabled { opacity: 0.4; cursor: not-allowed; background: rgba(0, 0, 0, 0.2); }
         textarea { resize: vertical; min-height: 70px; }
 
         .address-hint { font-size: 0.7em; color: #ffd89b; margin-bottom: 6px; text-align: center; font-weight: 600; }
@@ -789,16 +834,74 @@
             transition: all 0.4s; pointer-events: none; z-index: 3000;
         }
         .copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* PWA Install Banner */
+        .pwa-install-banner {
+            display: none;
+            position: fixed;
+            bottom: 80px;
+            left: 10px;
+            right: 10px;
+            background: rgba(32, 58, 67, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 12px;
+            z-index: 1500;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            animation: slideUp 0.4s ease-out;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .pwa-install-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .pwa-install-text {
+            font-size: 0.8em;
+            font-weight: 600;
+            color: #fff;
+            flex: 1;
+        }
+        .pwa-install-btn {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 0.8em;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .pwa-close-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.6);
+            font-size: 1.2em;
+            cursor: pointer;
+            padding: 0 5px;
+        }
     </style>
 </head>
 <body>
+    <!-- PWA Install Banner -->
+    <div class="pwa-install-banner" id="pwaInstallBanner">
+        <div class="pwa-install-content">
+            <div class="pwa-install-text">📲 Установите приложение для быстрого заказа!</div>
+            <button class="pwa-install-btn" id="pwaInstallBtn">Установить</button>
+            <button class="pwa-close-btn" onclick="document.getElementById('pwaInstallBanner').style.display='none'">×</button>
+        </div>
+    </div>
+
     <div id="snowContainer"></div>
     <div id="snowmanContainer"></div>
 
-    <!-- ===== ГЛАВНАЯ СТРАНИЦА ===== -->
     <div class="container" id="mainPage">
-        
-        <!-- ПЕРЕРАБОТАННАЯ ШАПКА -->
         <div class="hero-header">
             <div class="hero-title">❄️ Незамерзайка соседям</div>
             <div class="hero-subtitle">Новая Охта • Цветной город</div>
@@ -824,20 +927,23 @@
                 🚚 Доставка и контакты
             </div>
 
-            <!-- НОВЫЕ КНОПКИ TELEGRAM И MAX -->
             <div class="social-buttons-row">
                 <a href="https://t.me/nezamerzaikaSPB" target="_blank" class="social-btn tg">
                     <span class="social-icon">✈️</span>
-                    <span>Мы в Telegram</span>
+                    <span>Telegram</span>
                 </a>
                 <a href="https://max.ru/channel_nezamerzaika_SPB" target="_blank" class="social-btn max">
                     <span class="social-icon">📨</span>
-                    <span>Мы в Max</span>
+                    <span>Max</span>
                 </a>
             </div>
+            
+            <a href="tel:+79213838413" class="social-btn call">
+                <span class="social-icon">📞</span>
+                <span>Позвонить нам</span>
+            </a>
         </div>
 
-        <!-- БОЛЬШИЕ КНОПКИ ЗАКАЗА -->
         <div class="order-blocks">
             <div class="weekend-order-block" onclick="openWeekendPage()">
                 <div class="weekend-title"> Заказать на ВЫХОДНЫЕ</div>
@@ -852,7 +958,6 @@
             </div>
         </div>
 
-        <!-- ШАГ 1: ТОВАР -->
         <div class="glass">
             <div class="section-title"> Шаг 1. Выберите товар</div>
             <div class="products">
@@ -889,19 +994,17 @@
             </div>
         </div>
 
-        <!-- ШАГ 2: ДАННЫЕ -->
         <div class="glass">
             <div class="section-title">📝 Шаг 2. Заполните данные</div>
             <div class="total-block" id="totalDisplay">Итого: 0 ₽</div>
-            <form id="orderForm">
-                <input type="text" id="name" placeholder="Ваше имя" required>
-                <input type="tel" id="phone" placeholder="Ваш телефон" required>
-                <input type="text" id="address" placeholder="Адрес доставки (активно от 4 упаковок)" disabled>
+            <form id="orderForm" onsubmit="return false;">
+                <input type="text" id="name" placeholder="Ваше имя" required autocomplete="name" autocapitalize="words" inputmode="text">
+                <input type="tel" id="phone" placeholder="+7 (___) ___-__-__" required autocomplete="tel" inputmode="tel">
+                <input type="text" id="address" placeholder="Адрес доставки (активно от 4 упаковок)" disabled autocomplete="street-address" inputmode="text">
                 <div class="address-hint" id="addressHint">🚚 Доставка от 4 упаковок</div>
             </form>
         </div>
 
-        <!-- ШАГ 3: ЖК И ДЕНЬ -->
         <div class="glass">
             <div class="section-title">📅 Шаг 3. Выберите ЖК и день</div>
             <div class="sms-buttons">
@@ -921,7 +1024,6 @@
             <p class="note">💡 Откроется SMS с готовым заказом — нажмите «Отправить»</p>
         </div>
 
-        <!-- ОТЗЫВЫ С КНОПКОЙ "ОСТАВИТЬ ОТЗЫВ" -->
         <div class="reviews-section">
             <div class="reviews-header">
                 <div class="section-title">⭐ Отзывы соседей</div>
@@ -930,11 +1032,9 @@
                 </button>
             </div>
             <div class="reviews-list" id="reviewsList">
-                <!-- Отзывы загружаются через JavaScript -->
             </div>
         </div>
 
-        <!-- КАК ЭТО РАБОТАЕТ -->
         <div class="glass how-it-works">
             <div class="section-title">🤔 Как это работает?</div>
             <div class="how-it-works-text">
@@ -948,16 +1048,15 @@
         </div>
     </div>
 
-    <!-- ===== МОДАЛЬНОЕ ОКНО ДЛЯ ОТЗЫВА ===== -->
     <div class="modal-overlay" id="reviewModal">
         <div class="modal">
             <div class="modal-title">✍️ Оставить отзыв</div>
             
             <div class="modal-label">Ваше имя</div>
-            <input type="text" id="reviewName" placeholder="Например, Анна" maxlength="30">
+            <input type="text" id="reviewName" placeholder="Например, Анна" maxlength="30" autocomplete="name" autocapitalize="words">
             
             <div class="modal-label">Ваш ЖК</div>
-            <input type="text" id="reviewLocation" placeholder="Например, Новая Охта, корп. 3" maxlength="40">
+            <input type="text" id="reviewLocation" placeholder="Например, Новая Охта, корп. 3" maxlength="40" autocomplete="street-address">
             
             <div class="modal-label" style="text-align: center;">Ваша оценка</div>
             <div class="star-rating" id="starRating">
@@ -982,7 +1081,6 @@
         </div>
     </div>
 
-    <!-- ===== СТРАНИЦА ДОСТАВКИ ===== -->
     <div class="delivery-page" id="deliveryPage">
         <div class="calendar-header">
             <button class="btn-back" onclick="closeDeliveryPage()">← Назад</button>
@@ -1038,20 +1136,19 @@
             <div class="contact-item">
                 <div class="contact-item-title">🏢 Новая Охта</div>
                 <div class="contact-item-line">📍 Муринская дорога, 80</div>
-                <div class="contact-item-line">📞 +7 (921) 383-84-13</div>
+                <div class="contact-item-line">📞 <a href="tel:+79213838413" style="color:#fff; text-decoration:none;">+7 (921) 383-84-13</a></div>
                 <div class="contact-item-line">✈️ Telegram: @SHuVai88</div>
             </div>
             <div class="contact-item">
                 <div class="contact-item-title">🏘️ Цветной город</div>
                 <div class="contact-item-line">📍 Муринская дорога, 16</div>
-                <div class="contact-item-line">📞 +7 (965) 093-96-39</div>
+                <div class="contact-item-line">📞 <a href="tel:+79650939639" style="color:#fff; text-decoration:none;">+7 (965) 093-96-39</a></div>
                 <div class="contact-item-line">✈️ Telegram: @MaFin77</div>
             </div>
             <div class="delivery-note">🕐 Отвечаем быстро!</div>
         </div>
     </div>
 
-    <!-- ===== СТРАНИЦА КАЛЕНДАРЯ (БУДНИ) ===== -->
     <div class="calendar-page" id="calendarPage">
         <div class="calendar-header">
             <button class="btn-back" onclick="goBack()">← Назад</button>
@@ -1089,7 +1186,6 @@
         </div>
     </div>
 
-    <!-- ===== СТРАНИЦА ВЫХОДНЫХ ===== -->
     <div class="weekend-page" id="weekendPage">
         <div class="calendar-header">
             <button class="btn-back" onclick="closeWeekendPage()">← Назад</button>
@@ -1113,9 +1209,9 @@
 
         <div class="glass">
             <div class="section-title"> Ваши данные</div>
-            <input type="text" id="w-name" placeholder="Ваше имя">
-            <input type="tel" id="w-phone" placeholder="Ваш телефон">
-            <input type="text" id="w-address" placeholder="Адрес (от 4 упаковок)" disabled>
+            <input type="text" id="w-name" placeholder="Ваше имя" autocomplete="name" autocapitalize="words" inputmode="text">
+            <input type="tel" id="w-phone" placeholder="+7 (___) ___-__-__" autocomplete="tel" inputmode="tel">
+            <input type="text" id="w-address" placeholder="Адрес (от 4 упаковок)" disabled autocomplete="street-address" inputmode="text">
             <div class="address-hint" id="w-addressHint">🚚 Доставка от 4 упаковок</div>
         </div>
 
@@ -1177,7 +1273,6 @@
     </div>
 
     <a href="https://t.me/SHuVai88" target="_blank" class="floating-tg" title="Написать в Telegram">✈️</a>
-
     <div class="copy-toast" id="copyToast">✅ Скопировано!</div>
 
     <script>
@@ -1228,11 +1323,9 @@
 
         let currentRating = 0;
 
-        // ✅ ИСПРАВЛЕНО: свежие отзывы теперь вверху списка
         function getReviews() {
             const saved = localStorage.getItem('user_reviews');
             const userReviews = saved ? JSON.parse(saved) : [];
-            // Разворачиваем пользовательские отзывы (новые сверху) + стандартные
             return [...userReviews.reverse(), ...defaultReviews];
         }
 
@@ -1293,6 +1386,14 @@
             });
         }
 
+        function showError(input) {
+            input.classList.add('input-error');
+            input.focus();
+            input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => input.classList.remove('input-error'), 1000);
+            return false;
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('#starRating .star').forEach(star => {
                 star.addEventListener('click', () => {
@@ -1304,17 +1405,27 @@
             document.getElementById('reviewModal').addEventListener('click', (e) => {
                 if (e.target.id === 'reviewModal') closeReviewModal();
             });
+
+            const phoneInputs = document.querySelectorAll('input[type="tel"]');
+            phoneInputs.forEach(input => {
+                IMask(input, {
+                    mask: '+{7} (000) 000-00-00',
+                    lazy: false
+                });
+            });
         });
 
-        // ✅ ИСПРАВЛЕНО: после отправки отзыва прокручиваем список вверх
         function submitReview() {
             const name = document.getElementById('reviewName').value.trim();
             const location = document.getElementById('reviewLocation').value.trim();
             const text = document.getElementById('reviewText').value.trim();
 
-            if (!name) { alert('Пожалуйста, укажите имя!'); return; }
-            if (!text) { alert('Напишите текст отзыва!'); return; }
-            if (currentRating === 0) { alert('Поставьте оценку звёздочками!'); return; }
+            if (!name) return showError(document.getElementById('reviewName'));
+            if (!text) return showError(document.getElementById('reviewText'));
+            if (currentRating === 0) { 
+                alert('Поставьте оценку звёздочками!'); 
+                return; 
+            }
 
             const now = new Date();
             const date = `${now.getDate().toString().padStart(2, '0')}.${(now.getMonth() + 1).toString().padStart(2, '0')}.${now.getFullYear()}`;
@@ -1330,8 +1441,6 @@
             const tgUrl = `https://t.me/${TELEGRAM_OWNER}?text=${encodeURIComponent(message)}`;
             
             renderReviews();
-            
-            // ✅ Прокручиваем список отзывов вверх, чтобы увидеть новый отзыв
             const reviewsList = document.getElementById('reviewsList');
             reviewsList.scrollTop = 0;
             
@@ -1449,12 +1558,15 @@
 
         function openWeekdayCalendar(location) {
             if (cart[1] === 0 && cart[2] === 0) { alert('Сначала выберите товар!'); return; }
-            if (!document.getElementById('name').value || !document.getElementById('phone').value) {
-                alert('Заполните имя и телефон!'); return;
-            }
-            if (cart[2] >= 4 && !document.getElementById('address').value.trim()) {
-                alert('Укажите адрес доставки!'); return;
-            }
+            
+            const nameInput = document.getElementById('name');
+            const phoneInput = document.getElementById('phone');
+            const addressInput = document.getElementById('address');
+
+            if (!nameInput.value.trim()) return showError(nameInput);
+            if (!phoneInput.value.trim() || phoneInput.value.includes('_')) return showError(phoneInput);
+            if (cart[2] >= 4 && !addressInput.value.trim()) return showError(addressInput);
+
             currentLocation = location;
             selectedDate = null;
             currentMonth = new Date().getMonth();
@@ -1481,7 +1593,7 @@
                 } else {
                     addressInput.disabled = true;
                     addressInput.value = '';
-                    addressHint.innerHTML = ' Доставка от 4 упаковок';
+                    addressHint.innerHTML = '🚚 Доставка от 4 упаковок';
                     addressHint.style.color = '#ffd89b';
                 }
             }
@@ -1600,6 +1712,7 @@
 
         function confirmDate() {
             if (!selectedDate) return;
+            
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
             let address = document.getElementById('address').value.trim();
@@ -1691,20 +1804,33 @@
 
         function submitWeekendOrder() {
             if (!weekendSelectedDate) return;
-            const name = document.getElementById('w-name').value;
-            const phone = document.getElementById('w-phone').value;
-            let address = document.getElementById('w-address').value.trim();
-            if (!name || !phone) { alert('Заполните имя и телефон!'); return; }
-            if (weekendCart[1] === 0 && weekendCart[2] === 0) { alert('Выберите товар!'); return; }
-            if (weekendCart[2] < 4) { address = 'Самовывоз'; }
-            else if (!address) { alert('Укажите адрес!'); return; }
+            
+            const nameInput = document.getElementById('w-name');
+            const phoneInput = document.getElementById('w-phone');
+            const addressInput = document.getElementById('w-address');
+
+            if (!nameInput.value.trim()) return showError(nameInput);
+            if (!phoneInput.value.trim() || phoneInput.value.includes('_')) return showError(phoneInput);
+            if (weekendCart[1] === 0 && weekendCart[2] === 0) { 
+                alert('Выберите товар!'); 
+                return; 
+            }
+            if (weekendCart[2] < 4) {
+            } else if (!addressInput.value.trim()) {
+                return showError(addressInput);
+            }
+
+            const name = nameInput.value;
+            const phone = phoneInput.value;
+            let address = addressInput.value.trim();
+            if (weekendCart[2] < 4) address = 'Самовывоз';
 
             let itemsList = '', total = 0;
             if (weekendCart[1] > 0) { itemsList += `• Незамерзайка: ${weekendCart[1]} шт. — ${weekendCart[1]*240}₽\n`; total += weekendCart[1]*240; }
             if (weekendCart[2] > 0) { itemsList += `• Упаковка: ${weekendCart[2]} уп. — ${weekendCart[2]*950}₽\n`; total += weekendCart[2]*950; }
 
             const dateStr = `${weekendSelectedDate.getDate()}.${(weekendSelectedDate.getMonth()+1).toString().padStart(2,'0')}.${weekendSelectedDate.getFullYear()} (${weekdays[weekendSelectedDate.getDay()]})`;
-            const msg = `🎉 ЗАКАЗ НА ВЫХОДНЫЕ\n\n👤 ${name}\n📞 ${phone}\n ${address}\n📅 ${dateStr}\n\n${itemsList}💰 ${total}₽\n💵 Наличные\n\n Сообщите время получения!`;
+            const msg = `🎉 ЗАКАЗ НА ВЫХОДНЫЕ\n\n👤 ${name}\n📞 ${phone}\n📍 ${address}\n📅 ${dateStr}\n\n${itemsList}💰 ${total}₽\n💵 Наличные\n\nСообщите время получения!`;
 
             const isMobile = /Android|webOS|iPhone|iPad|iPod/i.test(navigator.userAgent);
             if (!isMobile) { alert('SMS только на телефонах!'); return; }
@@ -1746,6 +1872,48 @@
         }
         setInterval(createSnowman, 5000);
         for (let i = 0; i < 3; i++) setTimeout(createSnowman, i * 800);
+
+        // PWA: РЕГИСТРАЦИЯ SERVICE WORKER
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => {
+                        console.log('SW зарегистрирован:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Ошибка регистрации SW:', error);
+                    });
+            });
+        }
+
+        // PWA: ЛОГИКА КНОПКИ УСТАНОВКИ
+        let deferredPrompt;
+        const installBanner = document.getElementById('pwaInstallBanner');
+        const installBtn = document.getElementById('pwaInstallBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBanner.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt !== null) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('Пользователь установил приложение');
+                }
+                deferredPrompt = null;
+                installBanner.style.display = 'none';
+            }
+        });
+
+        window.addEventListener('appinstalled', () => {
+            installBanner.style.display = 'none';
+            deferredPrompt = null;
+            console.log('PWA успешно установлено');
+        });
     </script>
 </body>
 </html>
