@@ -2,7 +2,7 @@
   "name": "Незамерзайка соседям",
   "short_name": "Незамерзайка",
   "description": "Незамерзайка -27°C для Новой Охты и Цветного города. Доставка до подъезда.",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#0a151a",
   "theme_color": "#11998e",
