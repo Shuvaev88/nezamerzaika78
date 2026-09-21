@@ -9,12 +9,13 @@
     <meta property="og:title" content="❄️ Незамерзайка соседям — 240₽">
     <meta property="og:description" content="Доставка до подъезда. Оплата наличными.">
     
+    <!-- PWA Meta Tags -->
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#203a43">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Незамерзайка">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%230f2027'/%3E%3Cstop offset='50%25' style='stop-color:%23203a43'/%3E%3Cstop offset='100%25' style='stop-color:%232c5364'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='192' height='192' rx='36' fill='url(%23g)'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='105'%3E%E2%9D%84%EF%B8%8F%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="./icon-192.png">
     
     <script src="https://unpkg.com/imask"></script>
     
@@ -356,7 +357,6 @@
         input:disabled, select:disabled { opacity: 0.4; cursor: not-allowed; background: rgba(0, 0, 0, 0.2); }
         textarea { resize: vertical; min-height: 70px; }
 
-        /* Переключатель способа получения */
         .delivery-choice {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -379,28 +379,15 @@
             font-weight: 700;
             color: rgba(255, 255, 255, 0.7);
         }
-        .delivery-choice-label input[type="radio"] {
-            display: none;
-        }
+        .delivery-choice-label input[type="radio"] { display: none; }
         .delivery-choice-label:has(input:checked) {
             background: rgba(17, 153, 142, 0.25);
             border-color: #38ef7d;
             color: #fff;
             box-shadow: 0 0 15px rgba(56, 239, 125, 0.3);
         }
-        .delivery-choice-label:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
-        .delivery-choice-label .choice-icon {
-            font-size: 1.3em;
-        }
-        .delivery-choice-label.disabled-choice {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-        .delivery-choice-label.disabled-choice:hover {
-            background: rgba(255, 255, 255, 0.08);
-        }
+        .delivery-choice-label:hover { background: rgba(255, 255, 255, 0.15); }
+        .delivery-choice-label .choice-icon { font-size: 1.3em; }
 
         .address-hint { font-size: 0.7em; color: #ffd89b; margin-bottom: 6px; text-align: center; font-weight: 600; }
 
@@ -810,7 +797,7 @@
 
             <div class="hero-info-row">
                 <div class="hero-chip chip-weather">
-                    <span class="chip-icon">️</span>
+                    <span class="chip-icon">🌡️</span>
                     <span>
                         <span class="chip-value" id="temp">—</span>
                         <span style="font-size: 0.85em; opacity: 0.85;" id="weatherLabel">Мурино</span>
@@ -831,7 +818,7 @@
 
             <div class="social-buttons-row">
                 <a href="https://t.me/nezamerzaikaSPB" target="_blank" class="social-btn tg">
-                    <span class="social-icon">️</span>
+                    <span class="social-icon">✈️</span>
                     <span>Telegram</span>
                 </a>
                 <a href="https://max.ru/channel_nezamerzaika_SPB" target="_blank" class="social-btn max">
@@ -841,7 +828,7 @@
             </div>
             
             <a href="tel:+79213838413" class="social-btn call">
-                <span class="social-icon">📞</span>
+                <span class="social-icon"></span>
                 <span>Позвонить нам</span>
             </a>
         </div>
@@ -865,7 +852,7 @@
             <div class="products">
                 <div class="product">
                     <div class="product-img">
-                        <img src="bottle.png" alt="Незамерзайка 5л">
+                        <img src="./bottle.png" alt="Незамерзайка 5л">
                     </div>
                     <div class="product-info">
                         <h3>Незамерзайка -27°C</h3>
@@ -880,7 +867,7 @@
                 </div>
                 <div class="product">
                     <div class="product-img">
-                        <img src="pack.png" alt="Упаковка 4x5л">
+                        <img src="./pack.png" alt="Упаковка 4x5л">
                     </div>
                     <div class="product-info">
                         <h3>Упаковка</h3>
@@ -903,7 +890,6 @@
                 <input type="text" id="name" placeholder="Ваше имя" required autocomplete="name" autocapitalize="words" inputmode="text">
                 <input type="tel" id="phone" placeholder="+7 (___) ___-__-__" required autocomplete="tel" inputmode="tel">
                 
-                <!-- Переключатель способа получения -->
                 <div class="delivery-choice">
                     <label class="delivery-choice-label" id="label-pickup">
                         <input type="radio" name="delivery-method" value="pickup" checked onchange="toggleDeliveryMethod()">
@@ -912,18 +898,18 @@
                     </label>
                     <label class="delivery-choice-label" id="label-delivery">
                         <input type="radio" name="delivery-method" value="delivery" onchange="toggleDeliveryMethod()">
-                        <span class="choice-icon"></span>
+                        <span class="choice-icon">🚚</span>
                         <span>Доставка (от 6 уп.)</span>
                     </label>
                 </div>
                 
                 <input type="text" id="address" placeholder="Адрес доставки (корпус, дом, подъезд)" disabled autocomplete="street-address" inputmode="text">
-                <div class="address-hint" id="addressHint">📍 Самовывоз: выберите точку ниже</div>
+                <div class="address-hint" id="addressHint">📍 Самовывоз: выберите ЖК ниже</div>
             </form>
         </div>
 
         <div class="glass">
-            <div class="section-title">📅 Шаг 3. Выберите ЖК и день</div>
+            <div class="section-title"> Шаг 3. Выберите ЖК и день</div>
             <div class="sms-buttons">
                 <div class="sms-block">
                     <div class="sms-block-title">🏢 НОВАЯ ОХТА</div>
@@ -1038,17 +1024,17 @@
             <div class="delivery-note">💡 <strong>Выгоднее упаковкой!</strong> Экономия 10₽/бутылка</div>
         </div>
         <div class="delivery-section">
-            <div class="delivery-section-title">📞 Контакты</div>
+            <div class="delivery-section-title"> Контакты</div>
             <div class="contact-item">
                 <div class="contact-item-title">🏢 Новая Охта</div>
-                <div class="contact-item-line"> Муринская дорога, 80</div>
-                <div class="contact-item-line"> <a href="tel:+79213838413" style="color:#fff; text-decoration:none;">+7 (921) 383-84-13</a></div>
-                <div class="contact-item-line">✈️ Telegram: @SHuVai88</div>
+                <div class="contact-item-line">📍 Муринская дорога, 80</div>
+                <div class="contact-item-line">📞 <a href="tel:+79213838413" style="color:#fff; text-decoration:none;">+7 (921) 383-84-13</a></div>
+                <div class="contact-item-line">️ Telegram: @SHuVai88</div>
             </div>
             <div class="contact-item">
                 <div class="contact-item-title">🏘️ Цветной город</div>
-                <div class="contact-item-line">📍 Муринская дорога, 16</div>
-                <div class="contact-item-line">📞 <a href="tel:+79650939639" style="color:#fff; text-decoration:none;">+7 (965) 093-96-39</a></div>
+                <div class="contact-item-line"> Муринская дорога, 16</div>
+                <div class="contact-item-line"> <a href="tel:+79650939639" style="color:#fff; text-decoration:none;">+7 (965) 093-96-39</a></div>
                 <div class="contact-item-line">✈️ Telegram: @MaFin77</div>
             </div>
             <div class="delivery-note">🕐 Отвечаем быстро!</div>
@@ -1069,7 +1055,7 @@
             <div class="welcome-text">
                 <strong>Здравствуйте!</strong><br>
                 Выберите дату — мы сообщим время получения заказа!<br>
-                <strong>Спасибо) </strong>
+                <strong>Спасибо) 🎉</strong>
             </div>
         </div>
         <div class="calendar-card">
@@ -1080,7 +1066,7 @@
             </div>
             <div class="calendar-grid" id="calendarGrid"></div>
         </div>
-        <div class="selected-info" id="selectedInfo"> Нажмите на будний день</div>
+        <div class="selected-info" id="selectedInfo">👆 Нажмите на будний день</div>
         <div class="calendar-actions">
             <button class="calendar-btn cancel" onclick="goBack()">Отмена</button>
             <button class="calendar-btn confirm" id="confirmBtn" onclick="confirmDate()" disabled>✅ Отправить</button>
@@ -1110,7 +1096,6 @@
             <input type="text" id="w-name" placeholder="Ваше имя" autocomplete="name" autocapitalize="words" inputmode="text">
             <input type="tel" id="w-phone" placeholder="+7 (___) ___-__-__" autocomplete="tel" inputmode="tel">
             
-            <!-- Переключатель для выходных -->
             <div class="delivery-choice">
                 <label class="delivery-choice-label" id="w-label-pickup">
                     <input type="radio" name="w-delivery-method" value="pickup" checked onchange="toggleWeekendDeliveryMethod()">
@@ -1125,14 +1110,14 @@
             </div>
             
             <input type="text" id="w-address" placeholder="Адрес доставки (корпус, дом, подъезд)" disabled autocomplete="street-address" inputmode="text">
-            <div class="address-hint" id="w-addressHint">📍 Самовывоз: выберите точку ниже</div>
+            <div class="address-hint" id="w-addressHint">📍 Самовывоз: выберите ЖК ниже</div>
         </div>
         <div class="glass">
             <div class="section-title">🛒 Выберите товар</div>
             <div class="products">
                 <div class="product">
                     <div class="product-img">
-                        <img src="bottle.png" alt="Незамерзайка 5л">
+                        <img src="./bottle.png" alt="Незамерзайка 5л">
                     </div>
                     <div class="product-info">
                         <h3>Незамерзайка -27°C</h3>
@@ -1147,7 +1132,7 @@
                 </div>
                 <div class="product">
                     <div class="product-img">
-                        <img src="pack.png" alt="Упаковка 4x5л">
+                        <img src="./pack.png" alt="Упаковка 4x5л">
                     </div>
                     <div class="product-info">
                         <h3>Упаковка</h3>
@@ -1180,14 +1165,14 @@
         </button>
     </div>
 
-    <a href="https://t.me/SHuVai88" target="_blank" class="floating-tg" title="Написать в Telegram">️</a>
+    <a href="https://t.me/SHuVai88" target="_blank" class="floating-tg" title="Написать в Telegram">✈️</a>
     <div class="copy-toast" id="copyToast">✅ Скопировано!</div>
 
     <script>
         const PHONE_NOVAYA = '+79213838413';
         const PHONE_TSVETNOY = '+79650939639';
         const TELEGRAM_OWNER = 'SHuVai88';
-        const MIN_DELIVERY_PACKS = 6; // Минимум упаковок для доставки
+        const MIN_DELIVERY_PACKS = 6;
 
         const products = { 1: { name: 'Незамерзайка -27°C', price: 240 }, 2: { name: 'Упаковка', price: 950 } };
 
@@ -1283,21 +1268,17 @@
             return false;
         }
 
-        // === НОВАЯ ФУНКЦИЯ: переключение способа получения (будни) ===
         function toggleDeliveryMethod() {
             const method = document.querySelector('input[name="delivery-method"]:checked').value;
             const addressInput = document.getElementById('address');
             const addressHint = document.getElementById('addressHint');
-            const labelDelivery = document.getElementById('label-delivery');
             
             if (method === 'pickup') {
-                // Самовывоз
                 addressInput.disabled = true;
                 addressInput.value = '';
                 addressHint.innerHTML = '📍 Самовывоз: выберите ЖК ниже';
                 addressHint.style.color = '#ffd89b';
             } else {
-                // Доставка
                 if (cart[2] >= MIN_DELIVERY_PACKS) {
                     addressInput.disabled = false;
                     addressHint.innerHTML = '✅ Доставка активирована! Укажите адрес';
@@ -1305,15 +1286,13 @@
                 } else {
                     addressInput.disabled = true;
                     addressInput.value = '';
-                    addressHint.innerHTML = `⚠️ Нужно минимум ${MIN_DELIVERY_PACKS} упаковок для доставки (сейчас: ${cart[2]})`;
+                    addressHint.innerHTML = `️ Нужно минимум ${MIN_DELIVERY_PACKS} упаковок для доставки (сейчас: ${cart[2]})`;
                     addressHint.style.color = '#ff9a9a';
-                    // Автоматически переключаем обратно на самовывоз
                     document.querySelector('input[name="delivery-method"][value="pickup"]').checked = true;
                 }
             }
         }
 
-        // === НОВАЯ ФУНКЦИЯ: переключение способа получения (выходные) ===
         function toggleWeekendDeliveryMethod() {
             const method = document.querySelector('input[name="w-delivery-method"]:checked').value;
             const addressInput = document.getElementById('w-address');
@@ -1415,7 +1394,6 @@
                     document.getElementById('qty-1').innerText = cart[1];
                     document.getElementById('qty-2').innerText = cart[2];
                     updateTotal();
-                    // Обновляем состояние доставки после загрузки корзины
                     toggleDeliveryMethod();
                 } catch(e) {}
             }
@@ -1467,11 +1445,10 @@
             document.getElementById('w-address').value = '';
             document.getElementById('w-qty-1').innerText = '0';
             document.getElementById('w-qty-2').innerText = '0';
-            // Сброс на самовывоз
             document.querySelector('input[name="w-delivery-method"][value="pickup"]').checked = true;
             toggleWeekendDeliveryMethod();
             updateWeekendTotal();
-            document.getElementById('weekendSelectedInfo').innerHTML = '👆 Нажмите на Сб или Вс';
+            document.getElementById('weekendSelectedInfo').innerHTML = ' Нажмите на Сб или Вс';
             document.getElementById('weekendSubmitBtn').disabled = true;
             navigateTo('weekendPage');
             renderWeekendCalendar();
@@ -1489,7 +1466,6 @@
             if (!nameInput.value.trim()) return showError(nameInput);
             if (!phoneInput.value.trim() || phoneInput.value.includes('_')) return showError(phoneInput);
             
-            // Если выбрана доставка, проверяем адрес и количество
             if (deliveryMethod === 'delivery') {
                 if (cart[2] < MIN_DELIVERY_PACKS) {
                     alert(`Для доставки нужно минимум ${MIN_DELIVERY_PACKS} упаковок!`);
@@ -1515,7 +1491,6 @@
                 document.getElementById(`qty-${id}`).innerText = cart[id];
                 updateTotal();
                 saveCart();
-                // Обновляем состояние доставки
                 toggleDeliveryMethod();
             }
         }
@@ -1530,7 +1505,6 @@
                 weekendCart[id] += delta;
                 document.getElementById(`w-qty-${id}`).innerText = weekendCart[id];
                 updateWeekendTotal();
-                // Обновляем состояние доставки
                 toggleWeekendDeliveryMethod();
             }
         }
@@ -1628,10 +1602,9 @@
             const deliveryMethod = document.querySelector('input[name="delivery-method"]:checked').value;
             let address = document.getElementById('address').value.trim();
             
-            // Определяем способ получения для SMS
             let receiveMethod = '';
             if (deliveryMethod === 'pickup') {
-                receiveMethod = `📍 Самовывоз (${currentLocation === 'novaya' ? 'Новая Охта' : 'Цветной город'})`;
+                receiveMethod = ` Самовывоз (${currentLocation === 'novaya' ? 'Новая Охта' : 'Цветной город'})`;
             } else {
                 receiveMethod = `🚚 Доставка: ${address}`;
             }
@@ -1768,7 +1741,6 @@
             });
         }
 
-        // Снежинки
         const snowContainer = document.getElementById('snowContainer');
         const snowflakes = ['', '❅', '❆', '', '✼'];
         function createSnowflake() {
@@ -1785,12 +1757,11 @@
         setInterval(createSnowflake, 150);
         for (let i = 0; i < 40; i++) setTimeout(createSnowflake, i * 40);
 
-        // Снеговики
         const snowmanContainer = document.getElementById('snowmanContainer');
         function createSnowman() {
             const s = document.createElement('div');
             s.className = 'snowman';
-            s.textContent = ['⛄', '☃️'][Math.floor(Math.random() * 2)];
+            s.textContent = ['', '☃️'][Math.floor(Math.random() * 2)];
             s.style.left = Math.random() * 85 + 'vw';
             s.style.fontSize = (Math.random() * 1.5 + 1.5) + 'em';
             s.style.animationDuration = (Math.random() * 8 + 8) + 's';
@@ -1800,15 +1771,24 @@
         setInterval(createSnowman, 5000);
         for (let i = 0; i < 3; i++) setTimeout(createSnowman, i * 800);
 
-        // PWA
+        // PWA: РЕГИСТРАЦИЯ SERVICE WORKER
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(registration => { console.log('✅ SW зарегистрирован:', registration.scope); })
-                    .catch(error => { console.error('❌ Ошибка SW:', error); });
+                const swPath = new URL('./sw.js', window.location.href).href;
+                console.log('[PWA] Регистрация SW по пути:', swPath);
+                
+                navigator.serviceWorker.register(swPath, { scope: './' })
+                    .then(registration => { 
+                        console.log('✅ SW зарегистрирован:', registration.scope);
+                        console.log('[PWA] SW статус:', registration.active ? 'active' : 'waiting');
+                    })
+                    .catch(error => { 
+                        console.error('❌ Ошибка SW:', error); 
+                    });
             });
         }
 
+        // PWA: УСТАНОВКА
         (function initPWAInstall() {
             const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
             const dismissedUntil = parseInt(localStorage.getItem('pwa_dismissed_until') || '0');
@@ -1868,6 +1848,37 @@
                 });
             }
         })();
+
+        // ДИАГНОСТИКА PWA
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                console.log('=== PWA ДИАГНОСТИКА ===');
+                console.log('1. Manifest:', document.querySelector('link[rel="manifest"]')?.href);
+                console.log('2. Theme color:', document.querySelector('meta[name="theme-color"]')?.content);
+                console.log('3. Service Worker:', 'serviceWorker' in navigator);
+                console.log('4. HTTPS:', window.location.protocol === 'https:');
+                console.log('5. URL:', window.location.href);
+                
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.getRegistration().then(reg => {
+                        console.log('6. SW регистрация:', reg ? 'НАЙДЕНА' : 'ОТСУТСТВУЕТ');
+                        if (reg) {
+                            console.log('   Scope:', reg.scope);
+                            console.log('   Active:', reg.active?.state);
+                        }
+                    });
+                }
+                
+                fetch(document.querySelector('link[rel="manifest"]').href)
+                    .then(r => r.json())
+                    .then(m => {
+                        console.log('7. Manifest name:', m.name);
+                        console.log('8. Manifest icons:', m.icons?.length, 'штук');
+                        console.log('9. Display mode:', m.display);
+                    })
+                    .catch(e => console.error('❌ Manifest не загружен:', e));
+            }, 2000);
+        });
     </script>
 </body>
 </html>
