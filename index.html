@@ -1046,10 +1046,15 @@
             showToast('✅ Спасибо за отзыв!');
         }
 
-        // --- ПОГОДА ---
-        setTimeout(async () => {
+               // --- ПОГОДА ---
+        async function updateWeather() {
             try {
-                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=60.0493&longitude=30.4394&current=temperature_2m&daily=temperature_2m_max,temperature_2m_min,weathercode&forecast_days=3&timezone=Europe/Moscow');
+                // Добавляем timestamp, чтобы браузер гарантированно не кэшировал запрос
+                const ts = Date.now();
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=60.0493&longitude=30.4394&current=temperature_2m&daily=temperature_2m_max,temperature_2m_min,weathercode&forecast_days=3&timezone=Europe/Moscow&_=${ts}`;
+                
+                const res = await fetch(url);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const data = await res.json();
                 
                 const temp = Math.round(data.current.temperature_2m);
@@ -1063,8 +1068,7 @@
                     if (code === 0) return '☀️';
                     if (code <= 3) return '⛅';
                     if (code <= 48) return '🌫️';
-                    if (code <= 57) return '🌧️';
-                    if (code <= 67) return '🌨️';
+                    if (code <= 67) return '🌧️';
                     if (code <= 77) return '❄️';
                     if (code <= 82) return '🌧️';
                     if (code <= 86) return '❄️';
@@ -1092,11 +1096,62 @@
                 }
                 forecast.innerHTML = forecastHTML;
             } catch(e) { 
-                document.getElementById('temp').innerHTML = '—<sup>°C</sup>';
-                document.getElementById('weatherForecast').innerHTML = '<div class="weather-loading">Прогноз недоступен</div>';
-            }
-        }, 1000);
+                console.warn('⚠️ Open-Meteo не ответил, подключаем резервный сервис...', e);
+                
+                // === РЕЗЕРВНЫЙ СЕРВИС (wttr.in / WorldWeatherOnline) ===
+                try {
+                    const resFallback = await fetch(`https://wttr.in/60.0493,30.4394?format=j1&_=${Date.now()}`);
+                    const dataFallback = await resFallback.json();
+                    const current = dataFallback.current_condition[0];
+                    document.getElementById('temp').innerHTML = `${current.temp_C}<sup>°C</sup>`;
+                    
+                    const forecast = document.getElementById('weatherForecast');
+                    const dayLabels = ['Сегодня', 'Завтра', 'Послезавтра'];
+                    let forecastHTML = '';
+                    
+                    function getWttrEmoji(code) {
+                        const c = parseInt(code);
+                        if (c === 113) return '☀️';
+                        if (c >= 116 && c <= 119) return '⛅';
+                        if (c >= 122 && c <= 143) return '🌫️';
+                        if (c >= 176 && c <= 399) return '🌧️';
+                        if (c >= 500 && c <= 599) return '🌧️';
+                        if (c >= 600 && c <= 699) return '❄️';
+                        if (c >= 700 && c <= 799) return '🌫️';
+                        return '🌤️';
+                    }
 
+                    for (let i = 0; i < 3; i++) {
+                        const dayData = dataFallback.weather[i];
+                        const date = new Date(dayData.date);
+                        const dayName = dayLabels[i] || ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'][date.getDay()];
+                        const maxTemp = Math.round(parseInt(dayData.maxtempC));
+                        const minTemp = Math.round(parseInt(dayData.mintempC));
+                        // Берем прогноз на полдень (12:00) для иконки дня
+                        const noonHour = dayData.hourly.find(h => h.time === "1200") || dayData.hourly[0];
+                        const emoji = getWttrEmoji(noonHour.weatherCode);
+                        
+                        forecastHTML += `
+                            <div class="weather-forecast-day">
+                                <div class="weather-forecast-day-name">${dayName}</div>
+                                <div class="weather-forecast-icon">${emoji}</div>
+                                <div class="weather-forecast-temp">${maxTemp > 0 ? '+' : ''}${maxTemp}°</div>
+                                <div class="weather-forecast-temp-min">${minTemp > 0 ? '+' : ''}${minTemp}°</div>
+                            </div>
+                        `;
+                    }
+                    forecast.innerHTML = forecastHTML;
+                } catch (e2) {
+                    console.error('❌ Оба сервиса погоды недоступны:', e2);
+                    document.getElementById('temp').innerHTML = '—<sup>°C</sup>';
+                    document.getElementById('weatherForecast').innerHTML = '<div class="weather-loading">Прогноз недоступен</div>';
+                }
+            }
+        }
+        
+        // Запускаем сразу при загрузке и обновляем каждые 10 минут (600000 мс)
+        updateWeather();
+        setInterval(updateWeather, 600000);
         // --- PWA ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
