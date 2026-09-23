@@ -1093,7 +1093,7 @@
                 const ts = Date.now();
                 // Используем публичный CORS-прокси allorigins.win для обхода блокировок
                 const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=60.0493&longitude=30.4394&current=temperature_2m&daily=temperature_2m_max,temperature_2m_min,weathercode&forecast_days=3&timezone=Europe/Moscow&_t=${ts}`;
-                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
+                const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(apiUrl)}`;
                 
                 const res = await fetchWithTimeout(proxyUrl);
                 if (!res.ok) throw new Error(`Proxy/Open-Meteo error: ${res.status}`);
