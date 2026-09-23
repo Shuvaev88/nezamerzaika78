@@ -51,37 +51,23 @@
         .hero-title { font-size: 1.4em; font-weight: 900; background: linear-gradient(135deg, #fff, #74ebd5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 4px; }
         .hero-subtitle { font-size: 0.9em; font-weight: 700; color: #f0c27f; margin-bottom: 10px; }
 
-        /* === ВИДЖЕТ ПОГОДЫ === */
+        /* === ВИДЖЕТ ПОГОДЫ GISMETEO === */
         .weather-widget {
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
             border: 1px solid rgba(116, 235, 213, 0.3);
             border-radius: 12px;
-            padding: 12px;
+            padding: 0; /* Убираем отступы для iframe */
             margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            overflow: hidden;
             box-shadow: 0 4px 15px rgba(42, 82, 152, 0.4);
+            min-height: 180px;
         }
-        .weather-current {
-            flex-shrink: 0;
-            text-align: center;
-            padding-right: 12px;
-            border-right: 1px solid rgba(255,255,255,0.15);
-            min-width: 80px;
+        .weather-widget iframe {
+            width: 100%;
+            height: 180px;
+            border: none;
+            display: block;
         }
-        .weather-current-temp { font-size: 2.2em; font-weight: 900; color: #fff; line-height: 1; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
-        .weather-current-temp sup { font-size: 0.4em; vertical-align: super; font-weight: 700; }
-        .weather-current-label { font-size: 0.7em; color: #74ebd5; font-weight: 700; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
-        
-        .weather-forecast { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
-        .weather-forecast-day { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 7px 4px; text-align: center; }
-        .weather-forecast-day:first-child { background: rgba(116, 235, 213, 0.15); border-color: rgba(116, 235, 213, 0.3); }
-        .weather-forecast-day-name { font-size: 0.65em; font-weight: 700; color: #74ebd5; margin-bottom: 3px; text-transform: uppercase; }
-        .weather-forecast-icon { font-size: 1.4em; margin: 4px 0; display: block; line-height: 1; }
-        .weather-forecast-temp { font-size: 0.85em; font-weight: 800; color: #fff; }
-        .weather-forecast-temp-min { font-size: 0.65em; opacity: 0.7; font-weight: 600; color: #a8d8ff; }
-        .weather-loading { text-align: center; font-size: 0.75em; opacity: 0.7; padding: 10px; width: 100%; color: #a8d8ff; }
 
         /* === ЧИПЫ И КНОПКИ === */
         .hero-chip { 
@@ -346,25 +332,24 @@
             <div class="hero-subtitle">Новая Охта • Цветной город</div>
 
             <!-- ВИДЖЕТ ПОГОДЫ GISMETEO -->
-<div class="weather-widget" style="padding:0; overflow:hidden; min-height:180px;">
-    <iframe 
-        src="https://www.gismeteo.ru/weather-saint-petersburg-4079/nowcast/?frame" 
-        width="100%" 
-        height="180" 
-        frameborder="0" 
-        style="border:none; display:block;"
-        title="Прогноз погоды в Санкт-Петербурге"
-        loading="lazy">
-    </iframe>
-</div>
+            <div class="weather-widget">
+                <iframe 
+                    src="https://www.gismeteo.ru/weather-saint-petersburg-4079/nowcast/?frame" 
+                    width="100%" 
+                    height="180" 
+                    frameborder="0" 
+                    title="Прогноз погоды в Санкт-Петербурге"
+                    loading="lazy">
+                </iframe>
+            </div>
 
             <div class="hero-chip">💵 <span class="chip-value">Наличные</span> при получении</div>
             
             <!-- НАВИГАЦИОННЫЕ ВКЛАДКИ -->
             <div class="nav-tabs">
-                <button class="nav-tab delivery" onclick="navigateTo('deliveryPage')">🚚 Доставка</button>
+                <button class="nav-tab delivery" onclick="navigateTo('deliveryPage')"> Доставка</button>
                 <button class="nav-tab reviews" onclick="navigateTo('reviewsPage')">⭐ Отзывы</button>
-                <button class="nav-tab instruction" onclick="navigateTo('instructionPage')">📖 Инструкция</button>
+                <button class="nav-tab instruction" onclick="navigateTo('instructionPage')"> Инструкция</button>
             </div>
 
             <div class="social-buttons-row">
@@ -427,7 +412,7 @@
 
         <!-- ШАГ 2: ДАННЫЕ -->
         <div class="glass">
-            <div class="section-title">📝 Шаг 2. Ваши данные</div>
+            <div class="section-title"> Шаг 2. Ваши данные</div>
             <form id="orderForm" onsubmit="return false;">
                 <input type="text" id="name" placeholder="Ваше имя" autocomplete="name" autocapitalize="words">
                 <input type="tel" id="phone" placeholder="+7 (___) ___-__-__" autocomplete="tel" inputmode="tel">
@@ -444,7 +429,7 @@
 
         <!-- ШАГ 3: ВЫБОР ДНЯ -->
         <div class="glass">
-            <div class="section-title">📅 Шаг 3. Выберите ЖК и день</div>
+            <div class="section-title"> Шаг 3. Выберите ЖК и день</div>
             <div class="sms-buttons">
                 <div class="sms-block">
                     <div class="sms-block-title">🏢 НОВАЯ ОХТА</div>
@@ -533,7 +518,7 @@
             </div>
         </div>
         <div class="delivery-section">
-            <div class="delivery-section-title">📞 Контакты</div>
+            <div class="delivery-section-title"> Контакты</div>
             <div class="contact-item">
                 <div class="contact-item-title"> Новая Охта</div>
                 <div class="contact-item-line">📍 Муринская дорога, 80</div>
@@ -745,8 +730,7 @@
         window.addEventListener('load', () => {
             loadCart();
             renderReviews();
-            updateWeather(); // Запускаем погоду сразу при загрузке
-            setInterval(updateWeather, 600000); // Обновляем каждые 10 минут
+            // Функция updateWeather() полностью удалена, так как используется iframe
             
             const hash = window.location.hash.replace('#', '');
             const validPages = ['calendarPage', 'weekendPage', 'deliveryPage', 'reviewsPage', 'instructionPage'];
@@ -980,7 +964,7 @@
             let items = '', total = 0;
             if (weekendCart[1] > 0) { items += `• Незамерзайка: ${weekendCart[1]} шт. — ${weekendCart[1]*240}₽\n`; total += weekendCart[1]*240; }
             if (weekendCart[2] > 0) { items += `• Упаковка: ${weekendCart[2]} уп. — ${weekendCart[2]*950}₽\n`; total += weekendCart[2]*950; }
-            const msg = `🎉 ЗАКАЗ НА ВЫХОДНЫЕ\n\n👤 ${name.value}\n📞 ${phone.value}\n📍 ${addrText}\n ${weekendSelectedDate.getDate()}.${(weekendSelectedDate.getMonth()+1).toString().padStart(2,'0')}.${weekendSelectedDate.getFullYear()} (${weekdays[weekendSelectedDate.getDay()]})\n\n${items}💰 ${total}₽\n Наличные\n\nСообщите время получения!`;
+            const msg = ` ЗАКАЗ НА ВЫХОДНЫЕ\n\n👤 ${name.value}\n📞 ${phone.value}\n📍 ${addrText}\n📅 ${weekendSelectedDate.getDate()}.${(weekendSelectedDate.getMonth()+1).toString().padStart(2,'0')}.${weekendSelectedDate.getFullYear()} (${weekdays[weekendSelectedDate.getDay()]})\n\n${items}💰 ${total}₽\n💵 Наличные\n\nСообщите время получения!`;
             sendOrder(msg, PHONE_NOVAYA);
         }
 
