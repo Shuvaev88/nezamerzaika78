@@ -1076,66 +1076,63 @@
             if (!tempEl || !forecastEl) return; 
             
             // Функция для запроса с таймаутом 5 секунд
-           async function updateWeather() {
-    const tempEl = document.getElementById('temp');
-    const forecastEl = document.getElementById('weatherForecast');
-    
-    if (!tempEl || !forecastEl) return; 
-    
-    try {
-        const ts = Date.now();
-        const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=60.0493&longitude=30.4394&current=temperature_2m&daily=temperature_2m_max,temperature_2m_min,weathercode&forecast_days=3&timezone=Europe/Moscow&_t=${ts}`;
-        
-        // Попытка 1: Прямой запрос (Open-Meteo поддерживает CORS)
-        let res, data;
-        try {
-            res = await fetch(apiUrl);
-            if (!res.ok) throw new Error(`Direct error: ${res.status}`);
-            data = await res.json();
-        } catch(e) {
-            console.warn('️ Прямой запрос не удался, пробуем прокси...', e);
-            
-            // Попытка 2: Через corsproxy.io
-            const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(apiUrl)}`;
-            res = await fetch(proxyUrl);
-            if (!res.ok) throw new Error(`Proxy error: ${res.status}`);
-            data = await res.json();
+            async function fetchWithTimeout(url, options = {}, timeout = 5000) {
+                const controller = new AbortController();
+                const id = setTimeout(() => controller.abort(), timeout);
+                try {
+                    const response = await fetch(url, { ...options, signal: controller.signal });
+                    clearTimeout(id);
+                    return response;
+                } catch (error) {
+                    clearTimeout(id);
+                    throw error;
+                }
+            }
+
+            try {
+                const ts = Date.now();
+                // Используем публичный CORS-прокси allorigins.win для обхода блокировок
+                const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=60.0493&longitude=30.4394&current=temperature_2m&daily=temperature_2m_max,temperature_2m_min,weathercode&forecast_days=3&timezone=Europe/Moscow&_t=${ts}`;
+                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
+                
+                const res = await fetchWithTimeout(proxyUrl);
+                if (!res.ok) throw new Error(`Proxy/Open-Meteo error: ${res.status}`);
+                const data = await res.json();
+                
+                const temp = Math.round(data.current.temperature_2m);
+                tempEl.innerHTML = `${temp}<sup>°C</sup>`;
+                
+                const daysShort = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+                const dayLabels = ['Сегодня', 'Завтра', 'Послезавтра'];
+                
+                function getEmoji(code) {
+                    if (code === 0) return '☀️'; if (code <= 3) return '⛅'; 
+                    if (code <= 48) return '🌫️'; if (code <= 67) return '🌧️';
+                    if (code <= 77) return '️'; if (code <= 82) return '️';
+                    if (code <= 86) return '❄️'; if (code >= 95) return '⛈️'; return '🌤️';
+                }
+                
+                let html = '';
+                for (let i = 0; i < 3; i++) {
+                    const date = new Date(data.daily.time[i]);
+                    const name = i === 0 ? dayLabels[0] : daysShort[date.getDay()];
+                    const max = Math.round(data.daily.temperature_2m_max[i]);
+                    const min = Math.round(data.daily.temperature_2m_min[i]);
+                    html += `<div class="weather-forecast-day">
+                        <div class="weather-forecast-day-name">${name}</div>
+                        <div class="weather-forecast-icon">${getEmoji(data.daily.weathercode[i])}</div>
+                        <div class="weather-forecast-temp">${max > 0 ? '+' : ''}${max}°</div>
+                        <div class="weather-forecast-temp-min">${min > 0 ? '+' : ''}${min}°</div>
+                    </div>`;
+                }
+                forecastEl.innerHTML = html;
+                
+            } catch(e) { 
+                console.warn('⚠️ Погода через прокси не доступна:', e);
+                tempEl.innerHTML = '—<sup>°C</sup>';
+                forecastEl.innerHTML = '<div class="weather-loading">Прогноз временно недоступен</div>';
+            }
         }
-        
-        const temp = Math.round(data.current.temperature_2m);
-        tempEl.innerHTML = `${temp}<sup>°C</sup>`;
-        
-        const daysShort = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
-        const dayLabels = ['Сегодня', 'Завтра', 'Послезавтра'];
-        
-        function getEmoji(code) {
-            if (code === 0) return '☀️'; if (code <= 3) return '⛅'; 
-            if (code <= 48) return '🌫️'; if (code <= 67) return '🌧️';
-            if (code <= 77) return '❄️'; if (code <= 82) return '🌧️';
-            if (code <= 86) return '❄️'; if (code >= 95) return '️'; return '🌤️';
-        }
-        
-        let html = '';
-        for (let i = 0; i < 3; i++) {
-            const date = new Date(data.daily.time[i]);
-            const name = i === 0 ? dayLabels[0] : daysShort[date.getDay()];
-            const max = Math.round(data.daily.temperature_2m_max[i]);
-            const min = Math.round(data.daily.temperature_2m_min[i]);
-            html += `<div class="weather-forecast-day">
-                <div class="weather-forecast-day-name">${name}</div>
-                <div class="weather-forecast-icon">${getEmoji(data.daily.weathercode[i])}</div>
-                <div class="weather-forecast-temp">${max > 0 ? '+' : ''}${max}°</div>
-                <div class="weather-forecast-temp-min">${min > 0 ? '+' : ''}${min}°</div>
-            </div>`;
-        }
-        forecastEl.innerHTML = html;
-        
-    } catch(e) { 
-        console.error('❌ Оба способа получения погоды не сработали:', e);
-        tempEl.innerHTML = '—<sup>°C</sup>';
-        forecastEl.innerHTML = '<div class="weather-loading">Прогноз временно недоступен</div>';
-    }
-}
 
         // --- PWA ---
         if ('serviceWorker' in navigator) {
