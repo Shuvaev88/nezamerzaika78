@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nezamerzayka-cache-v7';
+const CACHE_NAME = 'nezamerzayka-cache-v8';
 const urlsToCache = [
   './',
   './index.html',
