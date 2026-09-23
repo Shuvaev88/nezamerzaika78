@@ -11,6 +11,25 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="./manifest.json">
     <link rel="apple-touch-icon" href="./icon-192.png">
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+       m[i].l=1*new Date();
+       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+       // ⚠️ ЗАМЕНИТЕ XXXXXXXX НА ВАШ НОМЕР СЧЕТЧИКА ЯНДЕКС.МЕТРИКИ
+       ym(XXXXXXXX, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true,
+            webvisor:true
+       });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/XXXXXXXX" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
     
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -60,7 +79,7 @@
         .weather-forecast-day { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 7px 4px; text-align: center; }
         .weather-forecast-day:first-child { background: rgba(116, 235, 213, 0.15); border-color: rgba(116, 235, 213, 0.3); }
         .weather-forecast-day-name { font-size: 0.65em; font-weight: 700; color: #74ebd5; margin-bottom: 3px; text-transform: uppercase; }
-        .weather-forecast-icon { font-size: 1.2em; margin-bottom: 3px; }
+        .weather-forecast-icon { font-size: 1.4em; margin: 4px 0; display: block; }
         .weather-forecast-temp { font-size: 0.85em; font-weight: 800; color: #fff; }
         .weather-forecast-temp-min { font-size: 0.65em; opacity: 0.7; font-weight: 600; color: #a8d8ff; }
         .weather-loading { text-align: center; font-size: 0.75em; opacity: 0.7; padding: 10px; width: 100%; color: #a8d8ff; }
@@ -166,7 +185,7 @@
         input, select, textarea { 
             width: 100%; padding: 14px 16px; margin-bottom: 10px; 
             border: 2px solid rgba(116, 235, 213, 0.25); border-radius: 10px; 
-            font-size: 18px; /* ← КРУПНО! */
+            font-size: 18px; 
             background: rgba(15, 52, 96, 0.5); color: #fff; -webkit-appearance: none;
             font-weight: 500;
         }
@@ -418,7 +437,7 @@
                 </div>
                 
                 <input type="text" id="address" placeholder="Адрес (корпус, дом, подъезд)" disabled autocomplete="street-address">
-                <div class="address-hint" id="addressHint">📍 Самовывоз: выберите ЖК ниже</div>
+                <div class="address-hint" id="addressHint"> Самовывоз: выберите ЖК ниже</div>
             </form>
         </div>
 
@@ -428,7 +447,7 @@
             <div class="sms-buttons">
                 <div class="sms-block">
                     <div class="sms-block-title">🏢 НОВАЯ ОХТА</div>
-                    <button class="btn-sms novaya" onclick="openWeekdayCalendar('novaya')">📅 Выбрать день</button>
+                    <button class="btn-sms novaya" onclick="openWeekdayCalendar('novaya')"> Выбрать день</button>
                 </div>
                 <div class="sms-block">
                     <div class="sms-block-title">🏘️ ЦВЕТНОЙ ГОРОД</div>
@@ -515,7 +534,7 @@
         <div class="delivery-section">
             <div class="delivery-section-title">📞 Контакты</div>
             <div class="contact-item">
-                <div class="contact-item-title">🏢 Новая Охта</div>
+                <div class="contact-item-title"> Новая Охта</div>
                 <div class="contact-item-line">📍 Муринская дорога, 80</div>
                 <div class="contact-item-line">📞 <a href="tel:+79213838413">+7 (921) 383-84-13</a></div>
                 <div class="contact-item-line">✈️ Telegram: @SHuVai88</div>
@@ -611,7 +630,7 @@
             </div>
             <div class="calendar-grid" id="calendarGrid"></div>
         </div>
-        <div class="selected-info" id="selectedInfo">👆 Нажмите на будний день</div>
+        <div class="selected-info" id="selectedInfo"> Нажмите на будний день</div>
         <div class="calendar-actions">
             <button class="calendar-btn cancel" onclick="goBack()">Отмена</button>
             <button class="calendar-btn confirm" id="confirmBtn" onclick="confirmDate()" disabled>✅ Отправить</button>
@@ -672,7 +691,7 @@
             <div class="calendar-grid" id="weekendCalendarGrid"></div>
         </div>
         <div class="selected-info" id="weekendSelectedInfo">👆 Нажмите на Сб или Вс</div>
-        <button class="weekend-submit" id="weekendSubmitBtn" onclick="submitWeekendOrder()" disabled style="width:100%; padding:16px; background:linear-gradient(135deg,#11998e,#38ef7d); color:white; border:none; border-radius:12px; font-size:1.05em; font-weight:700; cursor:pointer; box-shadow:0 4px 15px rgba(17,153,142,0.4);">📱 Отправить заказ</button>
+        <button class="weekend-submit" id="weekendSubmitBtn" onclick="submitWeekendOrder()" disabled style="width:100%; padding:16px; background:linear-gradient(135deg,#11998e,#38ef7d); color:white; border:none; border-radius:12px; font-size:1.05em; font-weight:700; cursor:pointer; box-shadow:0 4px 15px rgba(17,153,142,0.4);"> Отправить заказ</button>
     </div>
 
     <a href="https://t.me/SHuVai88" target="_blank" class="floating-tg">✈️</a>
@@ -725,6 +744,9 @@
         window.addEventListener('load', () => {
             loadCart();
             renderReviews();
+            updateWeather(); // Запускаем погоду сразу при загрузке
+            setInterval(updateWeather, 600000); // Обновляем каждые 10 минут
+            
             const hash = window.location.hash.replace('#', '');
             const validPages = ['calendarPage', 'weekendPage', 'deliveryPage', 'reviewsPage', 'instructionPage'];
             showPage(validPages.includes(hash) ? hash : 'mainPage');
@@ -744,7 +766,7 @@
             if(hintSmall) {
                 if(cart[1] === 0 && cart[2] === 0) hintSmall.innerText = 'Выберите товар';
                 else if(cart[2] >= MIN_DELIVERY) hintSmall.innerText = '✅ Доступна бесплатная доставка';
-                else hintSmall.innerText = `📍 Самовывоз (до ${MIN_DELIVERY} уп. для доставки)`;
+                else hintSmall.innerText = ` Самовывоз (до ${MIN_DELIVERY} уп. для доставки)`;
             }
         }
         function updateWeekendTotal() {
@@ -900,7 +922,7 @@
             let items = '', total = 0;
             if (cart[1] > 0) { items += `• Незамерзайка: ${cart[1]} шт. — ${cart[1]*240}₽\n`; total += cart[1]*240; }
             if (cart[2] > 0) { items += `• Упаковка: ${cart[2]} уп. — ${cart[2]*950}₽\n`; total += cart[2]*950; }
-            const msg = `❄️ НЕЗАМЕРЗАЙКА (БУДНИ)\nЖК: ${currentLocation === 'novaya' ? 'НОВАЯ ОХТА' : 'ЦВЕТНОЙ ГОРОД'}\nИмя: ${name}\nТел: ${phone}\n📍 ${addr}\n📅 ${selectedDate.getDate()}.${(selectedDate.getMonth()+1).toString().padStart(2,'0')}.${selectedDate.getFullYear()} (${weekdays[selectedDate.getDay()]})\n\n${items}Итого: ${total}₽\n💵 Наличные`;
+            const msg = `❄️ НЕЗАМЕРЗАЙКА (БУДНИ)\nЖК: ${currentLocation === 'novaya' ? 'НОВАЯ ОХТА' : 'ЦВЕТНОЙ ГОРОД'}\nИмя: ${name}\nТел: ${phone}\n📍 ${addr}\n ${selectedDate.getDate()}.${(selectedDate.getMonth()+1).toString().padStart(2,'0')}.${selectedDate.getFullYear()} (${weekdays[selectedDate.getDay()]})\n\n${items}Итого: ${total}₽\n💵 Наличные`;
             sendOrder(msg, currentLocation === 'novaya' ? PHONE_NOVAYA : PHONE_TSVETNOY);
         }
 
@@ -957,7 +979,7 @@
             let items = '', total = 0;
             if (weekendCart[1] > 0) { items += `• Незамерзайка: ${weekendCart[1]} шт. — ${weekendCart[1]*240}₽\n`; total += weekendCart[1]*240; }
             if (weekendCart[2] > 0) { items += `• Упаковка: ${weekendCart[2]} уп. — ${weekendCart[2]*950}₽\n`; total += weekendCart[2]*950; }
-            const msg = `🎉 ЗАКАЗ НА ВЫХОДНЫЕ\n\n👤 ${name.value}\n📞 ${phone.value}\n📍 ${addrText}\n📅 ${weekendSelectedDate.getDate()}.${(weekendSelectedDate.getMonth()+1).toString().padStart(2,'0')}.${weekendSelectedDate.getFullYear()} (${weekdays[weekendSelectedDate.getDay()]})\n\n${items}💰 ${total}₽\n💵 Наличные\n\nСообщите время получения!`;
+            const msg = `🎉 ЗАКАЗ НА ВЫХОДНЫЕ\n\n ${name.value}\n📞 ${phone.value}\n📍 ${addrText}\n ${weekendSelectedDate.getDate()}.${(weekendSelectedDate.getMonth()+1).toString().padStart(2,'0')}.${weekendSelectedDate.getFullYear()} (${weekdays[weekendSelectedDate.getDay()]})\n\n${items}💰 ${total}₽\n Наличные\n\nСообщите время получения!`;
             sendOrder(msg, PHONE_NOVAYA);
         }
 
@@ -983,6 +1005,7 @@
         function getReviews() {
             const saved = localStorage.getItem('user_reviews');
             const userReviews = saved ? JSON.parse(saved) : [];
+            // Свежие пользовательские отзывы первыми
             return [...userReviews.reverse(), ...defaultReviews];
         }
 
@@ -1046,28 +1069,34 @@
             showToast('✅ Спасибо за отзыв!');
         }
 
-               // --- ПОГОДА ---
+        // --- ПОГОДА (УСИЛЕННАЯ ВЕРСИЯ) ---
         async function updateWeather() {
+            const tempEl = document.getElementById('temp');
+            const forecastEl = document.getElementById('weatherForecast');
+            
+            if (!tempEl || !forecastEl) return; 
+            
             try {
-                // Добавляем timestamp, чтобы браузер гарантированно не кэшировал запрос
+                // Добавляем уникальный параметр _t, чтобы браузер НЕ использовал кэш
                 const ts = Date.now();
-                const url = `https://api.open-meteo.com/v1/forecast?latitude=60.0493&longitude=30.4394&current=temperature_2m&daily=temperature_2m_max,temperature_2m_min,weathercode&forecast_days=3&timezone=Europe/Moscow&_=${ts}`;
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=60.0493&longitude=30.4394&current=temperature_2m&daily=temperature_2m_max,temperature_2m_min,weathercode&forecast_days=3&timezone=Europe/Moscow&_t=${ts}`;
                 
                 const res = await fetch(url);
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                if (!res.ok) throw new Error(`Open-Meteo error: ${res.status}`);
                 const data = await res.json();
                 
+                // Обновляем текущую температуру
                 const temp = Math.round(data.current.temperature_2m);
-                document.getElementById('temp').innerHTML = `${temp}<sup>°C</sup>`;
+                tempEl.innerHTML = `${temp}<sup>°C</sup>`;
                 
-                const forecast = document.getElementById('weatherForecast');
+                // Генерация прогноза
                 const daysShort = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
                 const dayLabels = ['Сегодня', 'Завтра', 'Послезавтра'];
                 
                 function getWeatherEmoji(code) {
                     if (code === 0) return '☀️';
                     if (code <= 3) return '⛅';
-                    if (code <= 48) return '🌫️';
+                    if (code <= 48) return '️';
                     if (code <= 67) return '🌧️';
                     if (code <= 77) return '❄️';
                     if (code <= 82) return '🌧️';
@@ -1094,31 +1123,33 @@
                         </div>
                     `;
                 }
-                forecast.innerHTML = forecastHTML;
-            } catch(e) { 
-                console.warn('⚠️ Open-Meteo не ответил, подключаем резервный сервис...', e);
+                forecastEl.innerHTML = forecastHTML;
                 
-                // === РЕЗЕРВНЫЙ СЕРВИС (wttr.in / WorldWeatherOnline) ===
+            } catch(e) { 
+                console.warn('️ Основной сервис погоды недоступен, переключаюсь на резервный...', e);
+                
+                // === РЕЗЕРВНЫЙ СЕРВИС (wttr.in) ===
                 try {
-                    const resFallback = await fetch(`https://wttr.in/60.0493,30.4394?format=j1&_=${Date.now()}`);
+                    const resFallback = await fetch(`https://wttr.in/60.0493,30.4394?format=j1&_t=${Date.now()}`);
+                    if (!resFallback.ok) throw new Error('Wttr.in error');
                     const dataFallback = await resFallback.json();
-                    const current = dataFallback.current_condition[0];
-                    document.getElementById('temp').innerHTML = `${current.temp_C}<sup>°C</sup>`;
                     
-                    const forecast = document.getElementById('weatherForecast');
+                    const current = dataFallback.current_condition[0];
+                    tempEl.innerHTML = `${current.temp_C}<sup>°C</sup>`;
+                    
                     const dayLabels = ['Сегодня', 'Завтра', 'Послезавтра'];
                     let forecastHTML = '';
                     
                     function getWttrEmoji(code) {
                         const c = parseInt(code);
                         if (c === 113) return '☀️';
-                        if (c >= 116 && c <= 119) return '⛅';
-                        if (c >= 122 && c <= 143) return '🌫️';
-                        if (c >= 176 && c <= 399) return '🌧️';
+                        if (c >= 116 && c <= 119) return '';
+                        if (c >= 122 && c <= 143) return '️';
+                        if (c >= 176 && c <= 399) return '️';
                         if (c >= 500 && c <= 599) return '🌧️';
                         if (c >= 600 && c <= 699) return '❄️';
                         if (c >= 700 && c <= 799) return '🌫️';
-                        return '🌤️';
+                        return '️';
                     }
 
                     for (let i = 0; i < 3; i++) {
@@ -1127,7 +1158,6 @@
                         const dayName = dayLabels[i] || ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'][date.getDay()];
                         const maxTemp = Math.round(parseInt(dayData.maxtempC));
                         const minTemp = Math.round(parseInt(dayData.mintempC));
-                        // Берем прогноз на полдень (12:00) для иконки дня
                         const noonHour = dayData.hourly.find(h => h.time === "1200") || dayData.hourly[0];
                         const emoji = getWttrEmoji(noonHour.weatherCode);
                         
@@ -1140,18 +1170,16 @@
                             </div>
                         `;
                     }
-                    forecast.innerHTML = forecastHTML;
+                    forecastEl.innerHTML = forecastHTML;
+                    
                 } catch (e2) {
                     console.error('❌ Оба сервиса погоды недоступны:', e2);
-                    document.getElementById('temp').innerHTML = '—<sup>°C</sup>';
-                    document.getElementById('weatherForecast').innerHTML = '<div class="weather-loading">Прогноз недоступен</div>';
+                    tempEl.innerHTML = '—<sup>°C</sup>';
+                    forecastEl.innerHTML = '<div class="weather-loading">Прогноз временно недоступен</div>';
                 }
             }
         }
-        
-        // Запускаем сразу при загрузке и обновляем каждые 10 минут (600000 мс)
-        updateWeather();
-        setInterval(updateWeather, 600000);
+
         // --- PWA ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
