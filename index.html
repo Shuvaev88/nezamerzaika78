@@ -39,103 +39,167 @@
 
         .container { max-width: 600px; margin: 0 auto; position: relative; z-index: 1; display: flex; flex-direction: column; gap: 10px; padding-bottom: 90px; }
 
-        /* === ШАПКА === */
         .hero-header { 
             background: linear-gradient(135deg, rgba(15, 52, 96, 0.6), rgba(22, 33, 62, 0.6)); 
             border: 1px solid rgba(116, 235, 213, 0.25); 
             border-radius: 14px; 
-            padding: 14px; 
+            padding: 12px; 
             text-align: center;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
-        .hero-title { font-size: 1.4em; font-weight: 900; background: linear-gradient(135deg, #fff, #74ebd5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 4px; }
-        .hero-subtitle { font-size: 0.9em; font-weight: 700; color: #f0c27f; margin-bottom: 10px; }
+        .hero-title { font-size: 1.3em; font-weight: 900; background: linear-gradient(135deg, #fff, #74ebd5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 2px; }
+        .hero-subtitle { font-size: 0.85em; font-weight: 700; color: #f0c27f; margin-bottom: 8px; }
 
-        /* === КАСТОМНЫЙ ВИДЖЕТ ПОГОДЫ (Как на картинке) === */
+        /* === КОМПАКТНЫЕ СОЦ. КНОПКИ (СВЕРХУ) === */
+        .social-buttons-row { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr 1fr; 
+            gap: 5px; 
+            margin-bottom: 8px; 
+        }
+        .social-btn {
+            padding: 8px 4px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 0.75em; font-weight: 700; color: #fff; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 4px; transition: all 0.2s; border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .social-btn:hover { transform: translateY(-1px); filter: brightness(1.1); }
+        .social-btn.tg { background: linear-gradient(135deg, #26A5E4, #1e8ec5); box-shadow: 0 2px 6px rgba(38, 165, 228, 0.3); }
+        .social-btn.max { background: linear-gradient(135deg, #7B68EE, #6a5acd); box-shadow: 0 2px 6px rgba(123, 104, 238, 0.3); }
+        .social-btn.call { background: linear-gradient(135deg, #11998e, #38ef7d); box-shadow: 0 2px 6px rgba(17, 153, 142, 0.3); }
+
+        /* === НАВИГАЦИОННЫЕ ВКЛАДКИ === */
+        .nav-tabs { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px; 
+            margin-bottom: 8px; 
+        }
+        .nav-tab {
+            padding: 8px 3px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 0.7em; font-weight: 700; color: #fff; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(15, 52, 96, 0.5);
+        }
+        .nav-tab:hover { background: rgba(116, 235, 213, 0.2); transform: translateY(-1px); }
+        .nav-tab.instruction { border-color: rgba(102, 126, 234, 0.4); }
+        .nav-tab.delivery { border-color: rgba(17, 153, 142, 0.4); }
+        .nav-tab.news { border-color: rgba(255, 107, 107, 0.4); }
+        .nav-tab.reviews { border-color: rgba(240, 194, 127, 0.4); }
+
+        /* === КОМПАКТНЫЙ ВИДЖЕТ ПОГОДЫ === */
         .weather-widget-custom {
             background: linear-gradient(135deg, #1e3c72, #2a5298);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 8px;
             color: white;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             border: 1px solid rgba(116, 235, 213, 0.2);
         }
         .weather-current-block {
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
             border-bottom: 1px solid rgba(255,255,255,0.2);
         }
-        .weather-icon-large { font-size: 3.5em; line-height: 1; }
-        .weather-temp-large { font-size: 3em; font-weight: 800; line-height: 1; }
+        .weather-icon-large { font-size: 2.5em; line-height: 1; }
+        .weather-temp-large { font-size: 2.2em; font-weight: 800; line-height: 1; }
         .weather-temp-large sup { font-size: 0.4em; vertical-align: super; }
-        .weather-desc { font-size: 1.1em; opacity: 0.9; font-weight: 600; margin-top: 4px; }
-        .weather-location { font-size: 0.8em; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px; }
+        .weather-desc { font-size: 0.9em; opacity: 0.9; font-weight: 600; margin-top: 2px; }
+        .weather-location { font-size: 0.7em; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px; }
 
         .weather-forecast-block {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
+            gap: 6px;
         }
         .forecast-day {
             background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            padding: 10px 5px;
+            border-radius: 6px;
+            padding: 6px 3px;
             text-align: center;
-            transition: transform 0.2s;
         }
-        .forecast-day:hover { transform: translateY(-2px); background: rgba(255,255,255,0.15); }
-        .forecast-day-name { font-size: 0.8em; opacity: 0.8; margin-bottom: 5px; font-weight: 600; color: #74ebd5; }
-        .forecast-day-icon { font-size: 1.8em; margin-bottom: 5px; }
-        .forecast-day-temp { font-size: 1.1em; font-weight: 700; }
-        .forecast-day-temp-min { font-size: 0.8em; opacity: 0.7; }
+        .forecast-day-name { font-size: 0.7em; opacity: 0.8; margin-bottom: 3px; font-weight: 600; color: #74ebd5; }
+        .forecast-day-icon { font-size: 1.4em; margin-bottom: 3px; }
+        .forecast-day-temp { font-size: 0.95em; font-weight: 700; }
+        .forecast-day-temp-min { font-size: 0.7em; opacity: 0.7; }
 
-        /* === НАВИГАЦИЯ === */
-        .nav-tabs { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); /* 4 вкладки */
-            gap: 6px; 
-            margin-bottom: 10px; 
+        .yandex-weather-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #fc0, #f90);
+            color: #000;
+            font-weight: 800;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.8em;
+            width: 100%;
         }
-        .nav-tab {
-            padding: 10px 4px; border-radius: 10px; text-align: center; cursor: pointer; font-size: 0.75em; font-weight: 700; color: #fff; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 4px; transition: all 0.2s; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(15, 52, 96, 0.5);
-        }
-        .nav-tab:hover { background: rgba(116, 235, 213, 0.2); transform: translateY(-1px); }
-        .nav-tab.delivery { border-color: rgba(17, 153, 142, 0.4); }
-        .nav-tab.reviews { border-color: rgba(240, 194, 127, 0.4); }
-        .nav-tab.instruction { border-color: rgba(102, 126, 234, 0.4); }
-        .nav-tab.news { border-color: rgba(255, 107, 107, 0.4); }
 
-        .hero-chip { 
-            background: rgba(15, 52, 96, 0.4); border: 1px solid rgba(116, 235, 213, 0.2); border-radius: 10px; padding: 8px; font-size: 0.85em; font-weight: 600; margin-bottom: 10px;
-            display: flex; justify-content: center; align-items: center; gap: 8px;
+        /* === УВЕЛИЧЕННЫЕ КНОПКИ ЗАКАЗА С ИНФО ОБ ОПЛАТЕ === */
+        .order-blocks { display: flex; flex-direction: column; gap: 10px; }
+        .weekend-order-block, .weekday-order-block { 
+            border-radius: 14px; 
+            padding: 18px 14px; 
+            text-align: center; 
+            cursor: pointer; 
+            border: 2px solid transparent; 
+            transition: all 0.2s;
+            position: relative;
         }
-        .hero-chip .chip-value { color: #f0c27f; font-weight: 800; }
-
-        .social-buttons-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
-        .social-btn {
-            padding: 12px 8px; border-radius: 10px; text-align: center; cursor: pointer; font-size: 0.85em; font-weight: 700; color: #fff; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s; border: 1px solid rgba(255, 255, 255, 0.2);
+        .weekend-order-block { 
+            background: linear-gradient(135deg, #f39c12, #e67e22); 
+            border-color: rgba(240, 194, 127, 0.5); 
+            box-shadow: 0 6px 18px rgba(243, 156, 18, 0.4); 
         }
-        .social-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
-        .social-btn.tg { background: linear-gradient(135deg, #26A5E4, #1e8ec5); box-shadow: 0 2px 8px rgba(38, 165, 228, 0.3); }
-        .social-btn.max { background: linear-gradient(135deg, #7B68EE, #6a5acd); box-shadow: 0 2px 8px rgba(123, 104, 238, 0.3); }
-        .social-btn.call { background: linear-gradient(135deg, #11998e, #38ef7d); grid-column: span 2; margin-top: 6px; box-shadow: 0 2px 8px rgba(17, 153, 142, 0.3); }
-
-        /* === ГЛАВНЫЕ КНОПКИ ЗАКАЗА === */
-        .order-blocks { display: flex; flex-direction: column; gap: 8px; }
-        .weekend-order-block, .weekday-order-block { border-radius: 12px; padding: 14px 12px; text-align: center; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
-        .weekend-order-block { background: linear-gradient(135deg, #f39c12, #e67e22); border-color: rgba(240, 194, 127, 0.5); box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3); }
-        .weekday-order-block { background: linear-gradient(135deg, #3498db, #2980b9); border-color: rgba(116, 235, 213, 0.4); box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3); }
+        .weekday-order-block { 
+            background: linear-gradient(135deg, #3498db, #2980b9); 
+            border-color: rgba(116, 235, 213, 0.4); 
+            box-shadow: 0 6px 18px rgba(52, 152, 219, 0.4); 
+        }
         .weekend-order-block:active, .weekday-order-block:active { transform: scale(0.98); }
         
-        .weekend-title, .weekday-title { font-size: 1em; font-weight: 900; color: #fff; text-transform: uppercase; margin-bottom: 4px; }
-        .click-badge { display: inline-block; background: #e74c3c; color: white; font-size: 0.7em; font-weight: 900; padding: 4px 12px; border-radius: 15px; margin: 4px 0; border: 2px solid #fff; }
-        .weekday-badge { display: inline-block; background: #f0c27f; color: #000; font-size: 0.7em; font-weight: 900; padding: 4px 12px; border-radius: 15px; margin: 4px 0; }
+        .weekend-title, .weekday-title { 
+            font-size: 1.2em; 
+            font-weight: 900; 
+            color: #fff; 
+            text-transform: uppercase; 
+            margin-bottom: 6px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .click-badge { 
+            display: inline-block; 
+            background: #e74c3c; 
+            color: white; 
+            font-size: 0.8em; 
+            font-weight: 900; 
+            padding: 5px 14px; 
+            border-radius: 15px; 
+            margin: 4px 0; 
+            border: 2px solid #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .weekday-badge { 
+            display: inline-block; 
+            background: #f0c27f; 
+            color: #000; 
+            font-size: 0.8em; 
+            font-weight: 900; 
+            padding: 5px 14px; 
+            border-radius: 15px; 
+            margin: 4px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .payment-info {
+            font-size: 0.85em;
+            font-weight: 700;
+            color: rgba(255,255,255,0.95);
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255,255,255,0.3);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
 
-        /* === ОБЩИЕ БЛОКИ === */
         .glass { 
             background: rgba(22, 33, 62, 0.5); border: 1px solid rgba(116, 235, 213, 0.2); border-radius: 14px; padding: 14px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -351,46 +415,46 @@
             <div class="hero-title">❄️ Незамерзайка соседям</div>
             <div class="hero-subtitle">Новая Охта • Цветной город</div>
 
-            <!-- КАСТОМНЫЙ ВИДЖЕТ ПОГОДЫ -->
-            <div class="weather-widget-custom" id="weatherWidget">
+            <!-- КОМПАКТНЫЕ СОЦ. КНОПКИ (СВЕРХУ) -->
+            <div class="social-buttons-row">
+                <a href="https://t.me/nezamerzaikaSPB" target="_blank" class="social-btn tg">✈️ TG</a>
+                <a href="https://max.ru/channel_nezamerzaika_SPB" target="_blank" class="social-btn max">📨 Max</a>
+                <a href="tel:+79213838413" class="social-btn call">📞 Позвонить</a>
+            </div>
+
+            <!-- НАВИГАЦИОННЫЕ ВКЛАДКИ -->
+            <div class="nav-tabs">
+                <button class="nav-tab instruction" onclick="navigateTo('instructionPage')">📖 Как заказать</button>
+                <button class="nav-tab delivery" onclick="navigateTo('deliveryPage')">🚚 Доставка</button>
+                <a href="https://yandex.ru/news" target="_blank" class="nav-tab news">📰 Новости</a>
+                <button class="nav-tab reviews" onclick="navigateTo('reviewsPage')">⭐ Отзывы</button>
+            </div>
+
+            <!-- КОМПАКТНЫЙ ВИДЖЕТ ПОГОДЫ -->
+            <div class="weather-widget-custom">
                 <div class="weather-current-block">
-                    <div class="weather-icon-large" id="wCurrentIcon">⏳</div>
-                    <div>
+                    <div class="weather-icon-large" id="wCurrentIcon"></div>
+                    <div style="flex:1; text-align:left;">
                         <div class="weather-temp-large"><span id="wCurrentTemp">--</span><sup>°C</sup></div>
                         <div class="weather-location">Мурино / СПб</div>
                     </div>
                     <div class="weather-desc" id="wCurrentDesc">Загрузка...</div>
                 </div>
-                <div class="weather-forecast-block" id="wForecast">
-                    <!-- Сюда JS вставит прогноз -->
-                </div>
-            </div>
-
-            <div class="hero-chip">💵 <span class="chip-value">Наличные</span> при получении</div>
-            
-            <div class="nav-tabs">
-                <button class="nav-tab delivery" onclick="navigateTo('deliveryPage')">🚚 Доставка</button>
-                <!-- Кнопка Новости теперь ведет на внешний сайт -->
-                <a href="https://yandex.ru/news" target="_blank" class="nav-tab news">📰 Новости</a>
-                <button class="nav-tab reviews" onclick="navigateTo('reviewsPage')">⭐ Отзывы</button>
-                <button class="nav-tab instruction" onclick="navigateTo('instructionPage')">📖 Инструкция</button>
-            </div>
-
-            <div class="social-buttons-row">
-                <a href="https://t.me/nezamerzaikaSPB" target="_blank" class="social-btn tg">✈️ Telegram</a>
-                <a href="https://max.ru/channel_nezamerzaika_SPB" target="_blank" class="social-btn max">📨 Max</a>
-                <a href="tel:+79213838413" class="social-btn call">📞 Позвонить нам</a>
+                <div class="weather-forecast-block" id="wForecast"></div>
             </div>
         </div>
 
+        <!-- КНОПКИ ЗАКАЗА С ИНФОРМАЦИЕЙ ОБ ОПЛАТЕ -->
         <div class="order-blocks">
             <div class="weekend-order-block" onclick="openWeekendPage()">
-                <div class="weekend-title">Заказать на ВЫХОДНЫЕ</div>
+                <div class="weekend-title">🎉 Заказать на ВЫХОДНЫЕ</div>
                 <div class="click-badge">👆 НАЖМИТЕ СЮДА</div>
+                <div class="payment-info"> Оплата наличными при получении</div>
             </div>
             <div class="weekday-order-block" onclick="scrollToWeekdayForm()">
                 <div class="weekday-title">📅 Заказать на БУДНИ</div>
                 <div class="weekday-badge">👇 ПРОКРУТИТЕ НИЖЕ</div>
+                <div class="payment-info">💵 Оплата наличными при получении</div>
             </div>
         </div>
 
@@ -445,7 +509,7 @@
                 </div>
                 
                 <input type="text" id="address" placeholder="Адрес (корпус, дом, подъезд)" disabled autocomplete="street-address">
-                <div class="address-hint" id="addressHint">📍 Самовывоз: выберите ЖК ниже</div>
+                <div class="address-hint" id="addressHint"> Самовывоз: выберите ЖК ниже</div>
             </form>
         </div>
 
@@ -491,73 +555,32 @@
     </div>
 
     <div class="sub-page" id="deliveryPage">
-        <div class="calendar-header">
-            <button class="btn-back" onclick="goBack()">← Назад</button>
-            <div class="calendar-title">🚚 Доставка и контакты</div>
-        </div>
-        <div class="delivery-header">
-            <div class="delivery-header-title">Условия доставки</div>
-            <div class="delivery-header-subtitle">Всё просто и прозрачно!</div>
-        </div>
+        <div class="calendar-header"><button class="btn-back" onclick="goBack()">← Назад</button><div class="calendar-title"> Доставка и контакты</div></div>
+        <div class="delivery-header"><div class="delivery-header-title">Условия доставки</div><div class="delivery-header-subtitle">Всё просто и прозрачно!</div></div>
         <div class="delivery-section">
             <div class="delivery-section-title">📦 Условия</div>
-            <div class="delivery-item">
-                <div class="delivery-item-title">✅ Бесплатная доставка</div>
-                <div class="delivery-item-text">От <strong>6 упаковок</strong> — до подъезда в Новой Охте или Цветном городе!</div>
-            </div>
-            <div class="delivery-item">
-                <div class="delivery-item-title">📍 Самовывоз</div>
-                <div class="delivery-item-text">
-                    Менее 6 упаковок — самовывоз:<br>
-                    <strong>Новая Охта:</strong> Муринская дорога, 80<br>
-                    <strong>Цветной город:</strong> Муринская дорога, 16
-                </div>
-            </div>
-            <div class="delivery-item">
-                <div class="delivery-item-title">🗺️ За пределами ЖК</div>
-                <div class="delivery-item-text">Доставка — <strong>по договорённости</strong>.</div>
-            </div>
-            <div class="delivery-item">
-                <div class="delivery-item-title">💵 Оплата</div>
-                <div class="delivery-item-text">Только <strong>наличными</strong> при получении. Без предоплат!</div>
-            </div>
+            <div class="delivery-item"><div class="delivery-item-title">✅ Бесплатная доставка</div><div class="delivery-item-text">От <strong>6 упаковок</strong> — до подъезда в Новой Охте или Цветном городе!</div></div>
+            <div class="delivery-item"><div class="delivery-item-title">📍 Самовывоз</div><div class="delivery-item-text">Менее 6 упаковок — самовывоз:<br><strong>Новая Охта:</strong> Муринская дорога, 80<br><strong>Цветной город:</strong> Муринская дорога, 16</div></div>
+            <div class="delivery-item"><div class="delivery-item-title">🗺️ За пределами ЖК</div><div class="delivery-item-text">Доставка — <strong>по договорённости</strong>.</div></div>
+            <div class="delivery-item"><div class="delivery-item-title"> Оплата</div><div class="delivery-item-text">Только <strong>наличными</strong> при получении. Без предоплат!</div></div>
         </div>
         <div class="delivery-section">
-            <div class="delivery-section-title">💰 Цены</div>
+            <div class="delivery-section-title"> Цены</div>
             <div class="price-list">
-                <div class="price-item">
-                    <div class="price-item-name">🧴 1 бутылка 5л (-27°C)</div>
-                    <div class="price-item-value">240 ₽</div>
-                </div>
-                <div class="price-item">
-                    <div class="price-item-name">📦 Упаковка (4×5л)</div>
-                    <div class="price-item-value">950 ₽</div>
-                </div>
+                <div class="price-item"><div class="price-item-name">🧴 1 бутылка 5л (-27°C)</div><div class="price-item-value">240 ₽</div></div>
+                <div class="price-item"><div class="price-item-name">📦 Упаковка (4×5л)</div><div class="price-item-value">950 ₽</div></div>
             </div>
         </div>
         <div class="delivery-section">
             <div class="delivery-section-title">📞 Контакты</div>
-            <div class="contact-item">
-                <div class="contact-item-title">🏢 Новая Охта</div>
-                <div class="contact-item-line">📍 Муринская дорога, 80</div>
-                <div class="contact-item-line">📞 <a href="tel:+79213838413">+7 (921) 383-84-13</a></div>
-                <div class="contact-item-line">✈️ Telegram: @SHuVai88</div>
-            </div>
-            <div class="contact-item">
-                <div class="contact-item-title">🏘️ Цветной город</div>
-                <div class="contact-item-line">📍 Муринская дорога, 16</div>
-                <div class="contact-item-line">📞 <a href="tel:+79650939639">+7 (965) 093-96-39</a></div>
-                <div class="contact-item-line">✈️ Telegram: @MaFin77</div>
-            </div>
-            <div class="delivery-note">🕐 Отвечаем быстро!</div>
+            <div class="contact-item"><div class="contact-item-title">🏢 Новая Охта</div><div class="contact-item-line"> Муринская дорога, 80</div><div class="contact-item-line">📞 <a href="tel:+79213838413">+7 (921) 383-84-13</a></div><div class="contact-item-line">✈️ Telegram: @SHuVai88</div></div>
+            <div class="contact-item"><div class="contact-item-title">🏘️ Цветной город</div><div class="contact-item-line">📍 Муринская дорога, 16</div><div class="contact-item-line">📞 <a href="tel:+79650939639">+7 (965) 093-96-39</a></div><div class="contact-item-line">️ Telegram: @MaFin77</div></div>
+            <div class="delivery-note"> Отвечаем быстро!</div>
         </div>
     </div>
 
     <div class="sub-page" id="reviewsPage">
-        <div class="calendar-header">
-            <button class="btn-back" onclick="goBack()">← Назад</button>
-            <div class="calendar-title">⭐ Отзывы соседей</div>
-        </div>
+        <div class="calendar-header"><button class="btn-back" onclick="goBack()">← Назад</button><div class="calendar-title">⭐ Отзывы соседей</div></div>
         <div class="glass">
             <div class="section-title">Что говорят наши клиенты</div>
             <div class="reviews-page-list" id="reviewsList"></div>
@@ -566,128 +589,62 @@
     </div>
 
     <div class="sub-page" id="instructionPage">
-        <div class="calendar-header">
-            <button class="btn-back" onclick="goBack()">← Назад</button>
-            <div class="calendar-title">📖 Как сделать заказ</div>
-        </div>
+        <div class="calendar-header"><button class="btn-back" onclick="goBack()">← Назад</button><div class="calendar-title">📖 Как сделать заказ</div></div>
         <div class="glass">
             <div class="section-title">Простые шаги</div>
             <div class="instruction-steps">
-                <div class="instruction-step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <div class="step-title">Выберите товар</div>
-                        <div class="step-desc">Нажмите «+» на карточке товара. Карточка подсветится золотом — значит товар в корзине.</div>
-                    </div>
-                </div>
-                <div class="instruction-step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <div class="step-title">Заполните данные</div>
-                        <div class="step-desc">Введите ваше имя и телефон. Крупные поля — не ошибётесь!</div>
-                    </div>
-                </div>
-                <div class="instruction-step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <div class="step-title">Выберите способ получения</div>
-                        <div class="step-desc">Самовывоз (любое количество) или доставка (от 6 упаковок бесплатно).</div>
-                    </div>
-                </div>
-                <div class="instruction-step">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <div class="step-title">Выберите ЖК и дату</div>
-                        <div class="step-desc">Нажмите кнопку под нужным жилым комплексом и выберите день в календаре.</div>
-                    </div>
-                </div>
-                <div class="instruction-step">
-                    <div class="step-number">5</div>
-                    <div class="step-content">
-                        <div class="step-title">Отправьте SMS</div>
-                        <div class="step-desc">Готовый текст заказа скопируется автоматически. Просто нажмите «Отправить» в мессенджере.</div>
-                    </div>
-                </div>
+                <div class="instruction-step"><div class="step-number">1</div><div class="step-content"><div class="step-title">Выберите товар</div><div class="step-desc">Нажмите «+» на карточке товара. Карточка подсветится золотом — значит товар в корзине.</div></div></div>
+                <div class="instruction-step"><div class="step-number">2</div><div class="step-content"><div class="step-title">Заполните данные</div><div class="step-desc">Введите ваше имя и телефон. Крупные поля — не ошибётесь!</div></div></div>
+                <div class="instruction-step"><div class="step-number">3</div><div class="step-content"><div class="step-title">Выберите способ получения</div><div class="step-desc">Самовывоз (любое количество) или доставка (от 6 упаковок бесплатно).</div></div></div>
+                <div class="instruction-step"><div class="step-number">4</div><div class="step-content"><div class="step-title">Выберите ЖК и дату</div><div class="step-desc">Нажмите кнопку под нужным жилым комплексом и выберите день в календаре.</div></div></div>
+                <div class="instruction-step"><div class="step-number">5</div><div class="step-content"><div class="step-title">Отправьте SMS</div><div class="step-desc">Готовый текст заказа скопируется автоматически. Просто нажмите «Отправить» в мессенджере.</div></div></div>
             </div>
         </div>
         <div class="glass" style="margin-top:12px; background:rgba(240, 194, 127, 0.1); border-color:rgba(240, 194, 127, 0.3);">
             <div class="section-title">💡 Полезный совет</div>
-            <div style="font-size:0.9em; line-height:1.5; opacity:0.9;">
-                Хотите заказать на <strong style="color:#f0c27f;">выходные</strong>? Нажмите оранжевую кнопку «Заказать на ВЫХОДНЫЕ» на главной странице. Там отдельный календарь только для субботы и воскресенья!
-            </div>
+            <div style="font-size:0.9em; line-height:1.5; opacity:0.9;">Хотите заказать на <strong style="color:#f0c27f;">выходные</strong>? Нажмите оранжевую кнопку «Заказать на ВЫХОДНЫЕ» на главной странице.</div>
         </div>
     </div>
 
     <div class="sub-page" id="calendarPage">
-        <div class="calendar-header">
-            <button class="btn-back" onclick="goBack()">← Назад</button>
-            <div class="calendar-title">Выберите будний день</div>
-        </div>
+        <div class="calendar-header"><button class="btn-back" onclick="goBack()">← Назад</button><div class="calendar-title">Выберите будний день</div></div>
         <div class="calendar-card">
-            <div class="calendar-nav">
-                <button onclick="changeMonth(-1)">◀</button>
-                <div class="calendar-month" id="calendarMonth"></div>
-                <button onclick="changeMonth(1)">▶</button>
-            </div>
+            <div class="calendar-nav"><button onclick="changeMonth(-1)">◀</button><div class="calendar-month" id="calendarMonth"></div><button onclick="changeMonth(1)">▶</button></div>
             <div class="calendar-grid" id="calendarGrid"></div>
         </div>
         <div class="selected-info" id="selectedInfo">👆 Нажмите на будний день</div>
-        <div class="calendar-actions">
-            <button class="calendar-btn cancel" onclick="goBack()">Отмена</button>
-            <button class="calendar-btn confirm" id="confirmBtn" onclick="confirmDate()" disabled>✅ Отправить</button>
-        </div>
+        <div class="calendar-actions"><button class="calendar-btn cancel" onclick="goBack()">Отмена</button><button class="calendar-btn confirm" id="confirmBtn" onclick="confirmDate()" disabled>✅ Отправить</button></div>
     </div>
 
     <div class="sub-page" id="weekendPage">
-        <div class="calendar-header">
-            <button class="btn-back" onclick="goBack()">← Назад</button>
-            <div class="calendar-title">Заказ на выходные</div>
-        </div>
+        <div class="calendar-header"><button class="btn-back" onclick="goBack()">← Назад</button><div class="calendar-title">Заказ на выходные</div></div>
         <div class="glass" style="margin-bottom:12px;">
             <div class="section-title">Ваши данные</div>
             <input type="text" id="w-name" placeholder="Ваше имя" autocomplete="name">
             <input type="tel" id="w-phone" placeholder="+7 (___) ___-__-__" autocomplete="tel" inputmode="tel">
             <div class="delivery-choice">
-                <label class="delivery-choice-label"><input type="radio" name="w-delivery-method" value="pickup" checked onchange="toggleWeekendDeliveryMethod()"><span>🏃 Самовывоз</span></label>
+                <label class="delivery-choice-label"><input type="radio" name="w-delivery-method" value="pickup" checked onchange="toggleWeekendDeliveryMethod()"><span> Самовывоз</span></label>
                 <label class="delivery-choice-label"><input type="radio" name="w-delivery-method" value="delivery" onchange="toggleWeekendDeliveryMethod()"><span>🚚 Доставка (от 6 уп.)</span></label>
             </div>
             <input type="text" id="w-address" placeholder="Адрес (корпус, дом, подъезд)" disabled autocomplete="street-address">
-            <div class="address-hint" id="w-addressHint">📍 Самовывоз</div>
+            <div class="address-hint" id="w-addressHint"> Самовывоз</div>
         </div>
         <div class="glass" style="margin-bottom:12px;">
             <div class="section-title">🛒 Товар</div>
             <div class="product-grid">
                 <div class="product-card" id="w-card-1">
-                    <div class="pc-info">
-                        <h3 class="pc-name">Незамерзайка 5л</h3>
-                        <div class="pc-price-row"><span class="pc-price">240 ₽</span></div>
-                    </div>
-                    <div class="pc-controls">
-                        <button class="pc-btn-minus" onclick="changeWeekendQty(1, -1)">−</button>
-                        <span class="pc-count" id="w-qty-1">0</span>
-                        <button class="pc-btn-plus" onclick="changeWeekendQty(1, 1)">+</button>
-                    </div>
+                    <div class="pc-info"><h3 class="pc-name">Незамерзайка 5л</h3><div class="pc-price-row"><span class="pc-price">240 ₽</span></div></div>
+                    <div class="pc-controls"><button class="pc-btn-minus" onclick="changeWeekendQty(1, -1)">−</button><span class="pc-count" id="w-qty-1">0</span><button class="pc-btn-plus" onclick="changeWeekendQty(1, 1)">+</button></div>
                 </div>
                 <div class="product-card highlight-card" id="w-card-2">
-                    <div class="pc-info">
-                        <h3 class="pc-name">Упаковка 4x5л</h3>
-                        <div class="pc-price-row"><span class="pc-price big">950 ₽</span></div>
-                    </div>
-                    <div class="pc-controls">
-                        <button class="pc-btn-minus" onclick="changeWeekendQty(2, -1)">−</button>
-                        <span class="pc-count" id="w-qty-2">0</span>
-                        <button class="pc-btn-plus" onclick="changeWeekendQty(2, 1)">+</button>
-                    </div>
+                    <div class="pc-info"><h3 class="pc-name">Упаковка 4x5л</h3><div class="pc-price-row"><span class="pc-price big">950 ₽</span></div></div>
+                    <div class="pc-controls"><button class="pc-btn-minus" onclick="changeWeekendQty(2, -1)">−</button><span class="pc-count" id="w-qty-2">0</span><button class="pc-btn-plus" onclick="changeWeekendQty(2, 1)">+</button></div>
                 </div>
             </div>
             <div class="total-block" id="weekendTotalDisplay" style="margin-top:12px; text-align:right; font-size:1.3em; font-weight:800; color:#f0c27f;">Итого: 0 ₽</div>
         </div>
         <div class="calendar-card">
-            <div class="calendar-nav">
-                <button onclick="changeWeekendMonth(-1)">◀</button>
-                <div class="calendar-month" id="weekendCalendarMonth"></div>
-                <button onclick="changeWeekendMonth(1)">▶</button>
-            </div>
+            <div class="calendar-nav"><button onclick="changeWeekendMonth(-1)"></button><div class="calendar-month" id="weekendCalendarMonth"></div><button onclick="changeWeekendMonth(1)">▶</button></div>
             <div class="calendar-grid" id="weekendCalendarGrid"></div>
         </div>
         <div class="selected-info" id="weekendSelectedInfo">👆 Нажмите на Сб или Вс</div>
@@ -745,55 +702,65 @@
         window.addEventListener('load', () => {
             loadCart();
             renderReviews();
-            loadWeather(); // Запускаем наш кастомный виджет погоды
+            loadWeather();
             
             const hash = window.location.hash.replace('#', '');
             const validPages = ['calendarPage', 'weekendPage', 'deliveryPage', 'reviewsPage', 'instructionPage'];
             showPage(validPages.includes(hash) ? hash : 'mainPage');
         });
 
-        // === ФУНКЦИЯ ПОГОДЫ (Open-Meteo, работает в РФ, без прокси) ===
+        // === УМНАЯ ФУНКЦИЯ ПОГОДЫ ===
         async function loadWeather() {
+            const iconEl = document.getElementById('wCurrentIcon');
+            const tempEl = document.getElementById('wCurrentTemp');
+            const descEl = document.getElementById('wCurrentDesc');
+            const forecastEl = document.getElementById('wForecast');
+
             try {
-                // Координаты Мурино/СПб
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 3000);
+                
                 const url = "https://api.open-meteo.com/v1/forecast?latitude=60.0493&longitude=30.4394&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=Europe/Moscow&forecast_days=4";
-                const response = await fetch(url);
-                if (!response.ok) throw new Error("Network response was not ok");
+                
+                const response = await fetch(url, { signal: controller.signal });
+                clearTimeout(timeoutId);
+                
+                if (!response.ok) throw new Error("API error");
                 const data = await response.json();
 
-                // Текущая погода
-                const currentTemp = Math.round(data.current.temperature_2m);
-                const currentCode = data.current.weather_code;
-                document.getElementById('wCurrentTemp').textContent = currentTemp;
-                document.getElementById('wCurrentIcon').textContent = getWeatherEmoji(currentCode);
-                document.getElementById('wCurrentDesc').textContent = getWeatherDesc(currentCode);
+                tempEl.textContent = Math.round(data.current.temperature_2m);
+                iconEl.textContent = getWeatherEmoji(data.current.weather_code);
+                descEl.textContent = getWeatherDesc(data.current.weather_code);
 
-                // Прогноз на 3 дня (пропускаем индекс 0, это сегодня)
-                const forecastContainer = document.getElementById('wForecast');
-                forecastContainer.innerHTML = '';
+                forecastEl.innerHTML = '';
                 const daysOfWeek = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
-                const dayNames = ['Завтра', 'Послезавтра', 'Через день'];
-
                 for (let i = 1; i <= 3; i++) {
                     const date = new Date(data.daily.time[i]);
                     const dayName = i === 1 ? 'Завтра' : daysOfWeek[date.getDay()];
-                    const maxTemp = Math.round(data.daily.temperature_2m_max[i]);
-                    const minTemp = Math.round(data.daily.temperature_2m_min[i]);
+                    const max = Math.round(data.daily.temperature_2m_max[i]);
+                    const min = Math.round(data.daily.temperature_2m_min[i]);
                     const code = data.daily.weather_code[i];
 
-                    const dayHtml = `
+                    forecastEl.innerHTML += `
                         <div class="forecast-day">
                             <div class="forecast-day-name">${dayName}</div>
                             <div class="forecast-day-icon">${getWeatherEmoji(code)}</div>
-                            <div class="forecast-day-temp">${maxTemp > 0 ? '+' : ''}${maxTemp}°</div>
-                            <div class="forecast-day-temp-min">${minTemp > 0 ? '+' : ''}${minTemp}°</div>
+                            <div class="forecast-day-temp">${max > 0 ? '+' : ''}${max}°</div>
+                            <div class="forecast-day-temp-min">${min > 0 ? '+' : ''}${min}°</div>
                         </div>
                     `;
-                    forecastContainer.innerHTML += dayHtml;
                 }
             } catch (error) {
-                console.error("Weather fetch failed:", error);
-                document.getElementById('wCurrentDesc').textContent = "Недоступно";
+                iconEl.textContent = '❄️';
+                tempEl.textContent = '—';
+                descEl.textContent = 'Мурино / СПб';
+                forecastEl.innerHTML = `
+                    <div style="grid-column: 1 / -1;">
+                        <a href="https://yandex.ru/pogoda/murino" target="_blank" class="yandex-weather-btn">
+                            🌤️ Яндекс.Погода
+                        </a>
+                    </div>
+                `;
             }
         }
 
@@ -804,7 +771,7 @@
             if (code >= 51 && code <= 67) return '🌧️';
             if (code >= 71 && code <= 77) return '❄️';
             if (code >= 80 && code <= 82) return '🌧️';
-            if (code >= 85 && code <= 86) return '❄️';
+            if (code >= 85 && code <= 86) return '️';
             if (code >= 95) return '⛈️';
             return '🌤️';
         }
@@ -820,7 +787,6 @@
             if (code >= 95) return 'Гроза';
             return 'Облачно';
         }
-        // ============================================================
 
         function updateTotal() {
             let total = (cart[1] * products[1].price) + (cart[2] * products[2].price);
@@ -831,7 +797,7 @@
             if(hintSmall) {
                 if(cart[1] === 0 && cart[2] === 0) hintSmall.innerText = 'Выберите товар';
                 else if(cart[2] >= MIN_DELIVERY) hintSmall.innerText = '✅ Доступна бесплатная доставка';
-                else hintSmall.innerText = `📍 Самовывоз (до ${MIN_DELIVERY} уп. для доставки)`;
+                else hintSmall.innerText = ` Самовывоз (до ${MIN_DELIVERY} уп. для доставки)`;
             }
         }
         function updateWeekendTotal() {
@@ -912,7 +878,7 @@
                 hint.innerText = '✅ Доставка активирована!'; hint.style.color = '#38ef7d'; 
             } else { 
                 addr.disabled = true; addr.value = ''; 
-                hint.innerText = `⚠️ Нужно мин. ${MIN_DELIVERY} уп.`; hint.style.color = '#ff9a9a'; 
+                hint.innerText = `️ Нужно мин. ${MIN_DELIVERY} уп.`; hint.style.color = '#ff9a9a'; 
                 document.querySelector('input[name="w-delivery-method"][value="pickup"]').checked = true; 
             }
         }
@@ -972,7 +938,7 @@
             let items = '', total = 0;
             if (cart[1] > 0) { items += `• Незамерзайка: ${cart[1]} шт. — ${cart[1]*240}₽\n`; total += cart[1]*240; }
             if (cart[2] > 0) { items += `• Упаковка: ${cart[2]} уп. — ${cart[2]*950}₽\n`; total += cart[2]*950; }
-            const msg = `❄️ НЕЗАМЕРЗАЙКА (БУДНИ)\nЖК: ${currentLocation === 'novaya' ? 'НОВАЯ ОХТА' : 'ЦВЕТНОЙ ГОРОД'}\nИмя: ${name}\nТел: ${phone}\n📍 ${addr}\n📅 ${selectedDate.getDate()}.${(selectedDate.getMonth()+1).toString().padStart(2,'0')}.${selectedDate.getFullYear()} (${weekdays[selectedDate.getDay()]})\n\n${items}Итого: ${total}₽\n💵 Наличные`;
+            const msg = `❄️ НЕЗАМЕРЗАЙКА (БУДНИ)\nЖК: ${currentLocation === 'novaya' ? 'НОВАЯ ОХТА' : 'ЦВЕТНОЙ ГОРОД'}\nИмя: ${name}\nТел: ${phone}\n ${addr}\n📅 ${selectedDate.getDate()}.${(selectedDate.getMonth()+1).toString().padStart(2,'0')}.${selectedDate.getFullYear()} (${weekdays[selectedDate.getDay()]})\n\n${items}Итого: ${total}₽\n💵 Наличные`;
             sendOrder(msg, currentLocation === 'novaya' ? PHONE_NOVAYA : PHONE_TSVETNOY);
         }
 
@@ -1013,7 +979,7 @@
         function updateWeekendSelectedInfo() {
             const info = document.getElementById('weekendSelectedInfo');
             if (!weekendSelectedDate) { info.innerHTML = '👆 Нажмите на Сб или Вс'; document.getElementById('weekendSubmitBtn').disabled = true; }
-            else { info.innerHTML = `🎉 <b>${weekendSelectedDate.getDate()}.${(weekendSelectedDate.getMonth()+1).toString().padStart(2,'0')}.${weekendSelectedDate.getFullYear()}</b> — ${weekdays[weekendSelectedDate.getDay()]}`; }
+            else { info.innerHTML = ` <b>${weekendSelectedDate.getDate()}.${(weekendSelectedDate.getMonth()+1).toString().padStart(2,'0')}.${weekendSelectedDate.getFullYear()}</b> — ${weekdays[weekendSelectedDate.getDay()]}`; }
         }
         function submitWeekendOrder() {
             if (!weekendSelectedDate) return;
