@@ -51,40 +51,69 @@
         .hero-title { font-size: 1.4em; font-weight: 900; background: linear-gradient(135deg, #fff, #74ebd5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 4px; }
         .hero-subtitle { font-size: 0.9em; font-weight: 700; color: #f0c27f; margin-bottom: 10px; }
 
-        /* === ВИДЖЕТ ЯНДЕКС.ПОГОДЫ === */
-        .weather-widget {
-            background: rgba(15, 52, 96, 0.5);
-            border: 1px solid rgba(116, 235, 213, 0.2);
+        /* === КАСТОМНЫЙ ВИДЖЕТ ПОГОДЫ (Как на картинке) === */
+        .weather-widget-custom {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
             border-radius: 12px;
-            padding: 0;
-            margin-bottom: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            margin-bottom: 15px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 1px solid rgba(116, 235, 213, 0.2);
         }
-        .weather-widget iframe {
-            width: 100%;
-            height: 180px;
-            border: none;
-            display: block;
-            /* Небольшая фильтрация, чтобы белый виджет лучше сочетался с темной темой */
-            filter: brightness(0.9) contrast(1.1);
+        .weather-current-block {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
         }
+        .weather-icon-large { font-size: 3.5em; line-height: 1; }
+        .weather-temp-large { font-size: 3em; font-weight: 800; line-height: 1; }
+        .weather-temp-large sup { font-size: 0.4em; vertical-align: super; }
+        .weather-desc { font-size: 1.1em; opacity: 0.9; font-weight: 600; margin-top: 4px; }
+        .weather-location { font-size: 0.8em; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* === ЧИПЫ И КНОПКИ === */
-        .hero-chip { 
-            background: rgba(15, 52, 96, 0.4); border: 1px solid rgba(116, 235, 213, 0.2); border-radius: 10px; padding: 8px; font-size: 0.85em; font-weight: 600; margin-bottom: 10px;
-            display: flex; justify-content: center; align-items: center; gap: 8px;
+        .weather-forecast-block {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
         }
-        .hero-chip .chip-value { color: #f0c27f; font-weight: 800; }
+        .forecast-day {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 10px 5px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .forecast-day:hover { transform: translateY(-2px); background: rgba(255,255,255,0.15); }
+        .forecast-day-name { font-size: 0.8em; opacity: 0.8; margin-bottom: 5px; font-weight: 600; color: #74ebd5; }
+        .forecast-day-icon { font-size: 1.8em; margin-bottom: 5px; }
+        .forecast-day-temp { font-size: 1.1em; font-weight: 700; }
+        .forecast-day-temp-min { font-size: 0.8em; opacity: 0.7; }
 
-        .nav-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 10px; }
+        /* === НАВИГАЦИЯ === */
+        .nav-tabs { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); /* 4 вкладки */
+            gap: 6px; 
+            margin-bottom: 10px; 
+        }
         .nav-tab {
-            padding: 10px 6px; border-radius: 10px; text-align: center; cursor: pointer; font-size: 0.8em; font-weight: 700; color: #fff; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 4px; transition: all 0.2s; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(15, 52, 96, 0.5);
+            padding: 10px 4px; border-radius: 10px; text-align: center; cursor: pointer; font-size: 0.75em; font-weight: 700; color: #fff; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 4px; transition: all 0.2s; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(15, 52, 96, 0.5);
         }
         .nav-tab:hover { background: rgba(116, 235, 213, 0.2); transform: translateY(-1px); }
         .nav-tab.delivery { border-color: rgba(17, 153, 142, 0.4); }
         .nav-tab.reviews { border-color: rgba(240, 194, 127, 0.4); }
         .nav-tab.instruction { border-color: rgba(102, 126, 234, 0.4); }
+        .nav-tab.news { border-color: rgba(255, 107, 107, 0.4); }
+
+        .hero-chip { 
+            background: rgba(15, 52, 96, 0.4); border: 1px solid rgba(116, 235, 213, 0.2); border-radius: 10px; padding: 8px; font-size: 0.85em; font-weight: 600; margin-bottom: 10px;
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .hero-chip .chip-value { color: #f0c27f; font-weight: 800; }
 
         .social-buttons-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
         .social-btn {
@@ -113,7 +142,6 @@
         }
         .section-title { font-size: 1em; font-weight: 700; margin-bottom: 12px; color: #f0c27f; display: flex; justify-content: space-between; align-items: center; }
 
-        /* === ДИЗАЙН ТОВАРОВ === */
         .product-grid { display: flex; flex-direction: column; gap: 12px; }
         .product-card {
             background: linear-gradient(135deg, rgba(15, 52, 96, 0.8), rgba(22, 33, 62, 0.8));
@@ -167,7 +195,6 @@
         .pc-btn-plus { color: #38ef7d; }
         .pc-count { width: 32px; text-align: center; font-weight: 900; font-size: 1.1em; color: #fff; }
 
-        /* === ФОРМА ДАННЫХ === */
         input, select, textarea { 
             width: 100%; padding: 14px 16px; margin-bottom: 10px; 
             border: 2px solid rgba(116, 235, 213, 0.25); border-radius: 10px; 
@@ -199,7 +226,6 @@
         .btn-sms.novaya { background: linear-gradient(135deg, #667eea, #5a6fd6); box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3); }
         .btn-sms.tsvetnoy { background: linear-gradient(135deg, #f093fb, #e082ea); color: #000; box-shadow: 0 2px 8px rgba(240, 147, 251, 0.3); }
 
-        /* === ЛИПКАЯ ПАНЕЛЬ ИТОГОВ === */
         .sticky-total-bar {
             position: fixed; bottom: 0; left: 0; right: 0;
             background: linear-gradient(to top, #1a1a2e, rgba(26, 26, 46, 0.98));
@@ -214,7 +240,6 @@
         .st-sum { font-size: 1.8em; font-weight: 900; color: #f0c27f; text-shadow: 0 2px 6px rgba(0,0,0,0.4); }
         .st-hint { font-size: 0.75em; color: #74ebd5; display: block; margin-top: 3px; font-weight: 600; }
 
-        /* === ОТЗЫВЫ === */
         .reviews-page-list { display: flex; flex-direction: column; gap: 10px; }
         .review-item { background: rgba(15, 52, 96, 0.5); border-left: 4px solid #f0c27f; padding: 12px; border-radius: 8px; }
         .review-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
@@ -227,7 +252,6 @@
         .review-date { font-size: 0.7em; opacity: 0.5; margin-top: 4px; }
         .btn-add-review-big { background: linear-gradient(135deg, #f0c27f, #e6a54d); color: #000; border: none; border-radius: 10px; padding: 12px 20px; font-size: 0.95em; font-weight: 700; cursor: pointer; width: 100%; margin-top: 12px; box-shadow: 0 4px 12px rgba(240, 194, 127, 0.3); }
 
-        /* === ИНСТРУКЦИЯ === */
         .instruction-steps { display: flex; flex-direction: column; gap: 12px; }
         .instruction-step { background: rgba(15, 52, 96, 0.5); border: 1px solid rgba(116, 235, 213, 0.15); border-radius: 10px; padding: 12px; display: flex; align-items: flex-start; gap: 12px; }
         .step-number { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #f0c27f, #e6a54d); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.95em; flex-shrink: 0; }
@@ -235,7 +259,6 @@
         .step-title { font-size: 0.95em; font-weight: 700; margin-bottom: 4px; }
         .step-desc { font-size: 0.85em; color: rgba(255,255,255,0.75); line-height: 1.4; }
 
-        /* === СТРАНИЦЫ === */
         .sub-page { display: none; max-width: 600px; margin: 0 auto; padding-bottom: 90px; animation: slideIn 0.2s ease-out; }
         @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
         
@@ -306,7 +329,6 @@
     </style>
 </head>
 <body>
-    <!-- СНЕГ -->
     <div id="snowContainer">
         <div class="snowflake" style="left:10%; animation-duration:8s; font-size:0.8em;">❅</div>
         <div class="snowflake" style="left:25%; animation-duration:11s; font-size:0.7em; animation-delay:1s;">❆</div>
@@ -316,7 +338,6 @@
         <div class="snowflake" style="left:85%; animation-duration:13s; font-size:0.6em; animation-delay:1.5s;">❆</div>
     </div>
 
-    <!-- PWA БАННЕР -->
     <div class="pwa-install-banner" id="pwaInstallBanner">
         <div class="pwa-install-content">
             <div style="font-size:0.85em; font-weight:600; flex:1;">📲 <strong>Установите приложение</strong>!</div>
@@ -325,21 +346,32 @@
         </div>
     </div>
 
-    <!-- ОСНОВНАЯ СТРАНИЦА -->
     <div class="container" id="mainPage">
         <div class="hero-header">
             <div class="hero-title">❄️ Незамерзайка соседям</div>
             <div class="hero-subtitle">Новая Охта • Цветной город</div>
 
-            <!-- ВИДЖЕТ ЯНДЕКС.ПОГОДЫ (100% РАБОТАЕТ В РФ) -->
-            <div class="weather-widget">
-                <iframe src="https://yandex.ru/pogoda/widgets/informer?geoid=213&lang=ru" width="100%" height="180" frameborder="0" title="Погода в Санкт-Петербурге"></iframe>
+            <!-- КАСТОМНЫЙ ВИДЖЕТ ПОГОДЫ -->
+            <div class="weather-widget-custom" id="weatherWidget">
+                <div class="weather-current-block">
+                    <div class="weather-icon-large" id="wCurrentIcon">⏳</div>
+                    <div>
+                        <div class="weather-temp-large"><span id="wCurrentTemp">--</span><sup>°C</sup></div>
+                        <div class="weather-location">Мурино / СПб</div>
+                    </div>
+                    <div class="weather-desc" id="wCurrentDesc">Загрузка...</div>
+                </div>
+                <div class="weather-forecast-block" id="wForecast">
+                    <!-- Сюда JS вставит прогноз -->
+                </div>
             </div>
 
             <div class="hero-chip">💵 <span class="chip-value">Наличные</span> при получении</div>
             
             <div class="nav-tabs">
                 <button class="nav-tab delivery" onclick="navigateTo('deliveryPage')">🚚 Доставка</button>
+                <!-- Кнопка Новости теперь ведет на внешний сайт -->
+                <a href="https://yandex.ru/news" target="_blank" class="nav-tab news">📰 Новости</a>
                 <button class="nav-tab reviews" onclick="navigateTo('reviewsPage')">⭐ Отзывы</button>
                 <button class="nav-tab instruction" onclick="navigateTo('instructionPage')">📖 Инструкция</button>
             </div>
@@ -362,7 +394,6 @@
             </div>
         </div>
 
-        <!-- ШАГ 1: ТОВАРЫ -->
         <div class="glass">
             <div class="section-title">🛒 Шаг 1. Что берём?</div>
             <div class="product-grid">
@@ -402,7 +433,6 @@
             </div>
         </div>
 
-        <!-- ШАГ 2: ДАННЫЕ -->
         <div class="glass">
             <div class="section-title">📝 Шаг 2. Ваши данные</div>
             <form id="orderForm" onsubmit="return false;">
@@ -419,7 +449,6 @@
             </form>
         </div>
 
-        <!-- ШАГ 3: ВЫБОР ДНЯ -->
         <div class="glass">
             <div class="section-title">📅 Шаг 3. Выберите ЖК и день</div>
             <div class="sms-buttons">
@@ -435,7 +464,6 @@
         </div>
     </div>
 
-    <!-- ЛИПКАЯ ПАНЕЛЬ ИТОГОВ -->
     <div class="sticky-total-bar" id="stickyBar">
         <div>
             <span class="st-label">Итого к оплате:</span>
@@ -444,7 +472,6 @@
         <div class="st-sum" id="totalDisplayNew">0 ₽</div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО ОТЗЫВА -->
     <div class="modal-overlay" id="reviewModal">
         <div class="modal">
             <div class="section-title" style="justify-content:center; margin-bottom:14px;">✍️ Оставить отзыв</div>
@@ -463,7 +490,6 @@
         </div>
     </div>
 
-    <!-- СТРАНИЦА ДОСТАВКИ -->
     <div class="sub-page" id="deliveryPage">
         <div class="calendar-header">
             <button class="btn-back" onclick="goBack()">← Назад</button>
@@ -527,7 +553,6 @@
         </div>
     </div>
 
-    <!-- СТРАНИЦА ОТЗЫВОВ -->
     <div class="sub-page" id="reviewsPage">
         <div class="calendar-header">
             <button class="btn-back" onclick="goBack()">← Назад</button>
@@ -540,7 +565,6 @@
         </div>
     </div>
 
-    <!-- СТРАНИЦА ИНСТРУКЦИИ -->
     <div class="sub-page" id="instructionPage">
         <div class="calendar-header">
             <button class="btn-back" onclick="goBack()">← Назад</button>
@@ -594,7 +618,6 @@
         </div>
     </div>
 
-    <!-- СТРАНИЦА КАЛЕНДАРЯ (БУДНИ) -->
     <div class="sub-page" id="calendarPage">
         <div class="calendar-header">
             <button class="btn-back" onclick="goBack()">← Назад</button>
@@ -615,7 +638,6 @@
         </div>
     </div>
 
-    <!-- СТРАНИЦА КАЛЕНДАРЯ (ВЫХОДНЫЕ) -->
     <div class="sub-page" id="weekendPage">
         <div class="calendar-header">
             <button class="btn-back" onclick="goBack()">← Назад</button>
@@ -719,13 +741,86 @@
         function navigateTo(pageId) { history.pushState({ page: pageId }, '', '#' + pageId); showPage(pageId); }
         function goBack() { history.back(); }
         window.addEventListener('popstate', e => showPage(e.state?.page || 'mainPage'));
+        
         window.addEventListener('load', () => {
             loadCart();
             renderReviews();
+            loadWeather(); // Запускаем наш кастомный виджет погоды
+            
             const hash = window.location.hash.replace('#', '');
             const validPages = ['calendarPage', 'weekendPage', 'deliveryPage', 'reviewsPage', 'instructionPage'];
             showPage(validPages.includes(hash) ? hash : 'mainPage');
         });
+
+        // === ФУНКЦИЯ ПОГОДЫ (Open-Meteo, работает в РФ, без прокси) ===
+        async function loadWeather() {
+            try {
+                // Координаты Мурино/СПб
+                const url = "https://api.open-meteo.com/v1/forecast?latitude=60.0493&longitude=30.4394&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=Europe/Moscow&forecast_days=4";
+                const response = await fetch(url);
+                if (!response.ok) throw new Error("Network response was not ok");
+                const data = await response.json();
+
+                // Текущая погода
+                const currentTemp = Math.round(data.current.temperature_2m);
+                const currentCode = data.current.weather_code;
+                document.getElementById('wCurrentTemp').textContent = currentTemp;
+                document.getElementById('wCurrentIcon').textContent = getWeatherEmoji(currentCode);
+                document.getElementById('wCurrentDesc').textContent = getWeatherDesc(currentCode);
+
+                // Прогноз на 3 дня (пропускаем индекс 0, это сегодня)
+                const forecastContainer = document.getElementById('wForecast');
+                forecastContainer.innerHTML = '';
+                const daysOfWeek = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+                const dayNames = ['Завтра', 'Послезавтра', 'Через день'];
+
+                for (let i = 1; i <= 3; i++) {
+                    const date = new Date(data.daily.time[i]);
+                    const dayName = i === 1 ? 'Завтра' : daysOfWeek[date.getDay()];
+                    const maxTemp = Math.round(data.daily.temperature_2m_max[i]);
+                    const minTemp = Math.round(data.daily.temperature_2m_min[i]);
+                    const code = data.daily.weather_code[i];
+
+                    const dayHtml = `
+                        <div class="forecast-day">
+                            <div class="forecast-day-name">${dayName}</div>
+                            <div class="forecast-day-icon">${getWeatherEmoji(code)}</div>
+                            <div class="forecast-day-temp">${maxTemp > 0 ? '+' : ''}${maxTemp}°</div>
+                            <div class="forecast-day-temp-min">${minTemp > 0 ? '+' : ''}${minTemp}°</div>
+                        </div>
+                    `;
+                    forecastContainer.innerHTML += dayHtml;
+                }
+            } catch (error) {
+                console.error("Weather fetch failed:", error);
+                document.getElementById('wCurrentDesc').textContent = "Недоступно";
+            }
+        }
+
+        function getWeatherEmoji(code) {
+            if (code === 0) return '☀️';
+            if (code >= 1 && code <= 3) return '⛅';
+            if (code >= 45 && code <= 48) return '🌫️';
+            if (code >= 51 && code <= 67) return '🌧️';
+            if (code >= 71 && code <= 77) return '❄️';
+            if (code >= 80 && code <= 82) return '🌧️';
+            if (code >= 85 && code <= 86) return '❄️';
+            if (code >= 95) return '⛈️';
+            return '🌤️';
+        }
+
+        function getWeatherDesc(code) {
+            if (code === 0) return 'Ясно';
+            if (code >= 1 && code <= 3) return 'Переменная облачность';
+            if (code >= 45 && code <= 48) return 'Туман';
+            if (code >= 51 && code <= 67) return 'Дождь';
+            if (code >= 71 && code <= 77) return 'Снег';
+            if (code >= 80 && code <= 82) return 'Ливень';
+            if (code >= 85 && code <= 86) return 'Снегопад';
+            if (code >= 95) return 'Гроза';
+            return 'Облачно';
+        }
+        // ============================================================
 
         function updateTotal() {
             let total = (cart[1] * products[1].price) + (cart[2] * products[2].price);
@@ -1012,7 +1107,6 @@
             renderReviews(); closeReviewModal(); showToast('✅ Спасибо за отзыв!');
         }
 
-        // --- PWA ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register(new URL('./sw.js', window.location.href).href, { scope: './' })
