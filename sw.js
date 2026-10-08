@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v7-final-fix';
+const CACHE_VERSION = 'v8-final-fix';
 const CACHE_NAME = `nezamerzayka-${CACHE_VERSION}`;
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
