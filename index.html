@@ -50,13 +50,7 @@
         .hero-title { font-size: 1.3em; font-weight: 900; background: linear-gradient(135deg, #fff, #74ebd5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 2px; }
         .hero-subtitle { font-size: 0.85em; font-weight: 700; color: #f0c27f; margin-bottom: 8px; }
 
-        /* === КОМПАКТНЫЕ СОЦ. КНОПКИ (СВЕРХУ) === */
-        .social-buttons-row { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr 1fr; 
-            gap: 5px; 
-            margin-bottom: 8px; 
-        }
+        .social-buttons-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin-bottom: 8px; }
         .social-btn {
             padding: 8px 4px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 0.75em; font-weight: 700; color: #fff; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 4px; transition: all 0.2s; border: 1px solid rgba(255, 255, 255, 0.2);
         }
@@ -65,13 +59,7 @@
         .social-btn.max { background: linear-gradient(135deg, #7B68EE, #6a5acd); box-shadow: 0 2px 6px rgba(123, 104, 238, 0.3); }
         .social-btn.call { background: linear-gradient(135deg, #11998e, #38ef7d); box-shadow: 0 2px 6px rgba(17, 153, 142, 0.3); }
 
-        /* === НАВИГАЦИОННЫЕ ВКЛАДКИ === */
-        .nav-tabs { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr);
-            gap: 5px; 
-            margin-bottom: 8px; 
-        }
+        .nav-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 8px; }
         .nav-tab {
             padding: 8px 3px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 0.7em; font-weight: 700; color: #fff; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 3px; transition: all 0.2s; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(15, 52, 96, 0.5);
         }
@@ -81,165 +69,73 @@
         .nav-tab.news { border-color: rgba(255, 107, 107, 0.4); }
         .nav-tab.reviews { border-color: rgba(240, 194, 127, 0.4); }
 
-        /* === КОМПАКТНЫЙ ВИДЖЕТ ПОГОДЫ === */
         .weather-widget-custom {
             background: linear-gradient(135deg, #1e3c72, #2a5298);
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 8px;
-            color: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            border: 1px solid rgba(116, 235, 213, 0.2);
+            border-radius: 10px; padding: 10px; margin-bottom: 8px; color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 1px solid rgba(116, 235, 213, 0.2);
         }
-        .weather-current-block {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-        }
+        .weather-current-block { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.2); }
         .weather-icon-large { font-size: 2.5em; line-height: 1; }
         .weather-temp-large { font-size: 2.2em; font-weight: 800; line-height: 1; }
         .weather-temp-large sup { font-size: 0.4em; vertical-align: super; }
         .weather-desc { font-size: 0.9em; opacity: 0.9; font-weight: 600; margin-top: 2px; }
         .weather-location { font-size: 0.7em; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px; }
-
-        .weather-forecast-block {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-        }
-        .forecast-day {
-            background: rgba(255,255,255,0.1);
-            border-radius: 6px;
-            padding: 6px 3px;
-            text-align: center;
-        }
+        .weather-forecast-block { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .forecast-day { background: rgba(255,255,255,0.1); border-radius: 6px; padding: 6px 3px; text-align: center; }
         .forecast-day-name { font-size: 0.7em; opacity: 0.8; margin-bottom: 3px; font-weight: 600; color: #74ebd5; }
         .forecast-day-icon { font-size: 1.4em; margin-bottom: 3px; }
         .forecast-day-temp { font-size: 0.95em; font-weight: 700; }
         .forecast-day-temp-min { font-size: 0.7em; opacity: 0.7; }
-
         .yandex-weather-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            background: linear-gradient(135deg, #fc0, #f90);
-            color: #000;
-            font-weight: 800;
-            padding: 8px 12px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 0.8em;
-            width: 100%;
+            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+            background: linear-gradient(135deg, #fc0, #f90); color: #000; font-weight: 800;
+            padding: 8px 12px; border-radius: 8px; text-decoration: none; font-size: 0.8em; width: 100%;
         }
 
-        /* === УВЕЛИЧЕННЫЕ КНОПКИ ЗАКАЗА С ИНФО ОБ ОПЛАТЕ === */
         .order-blocks { display: flex; flex-direction: column; gap: 10px; }
         .weekend-order-block, .weekday-order-block { 
-            border-radius: 14px; 
-            padding: 18px 14px; 
-            text-align: center; 
-            cursor: pointer; 
-            border: 2px solid transparent; 
-            transition: all 0.2s;
-            position: relative;
+            border-radius: 14px; padding: 18px 14px; text-align: center; cursor: pointer; 
+            border: 2px solid transparent; transition: all 0.2s; position: relative;
         }
-        .weekend-order-block { 
-            background: linear-gradient(135deg, #f39c12, #e67e22); 
-            border-color: rgba(240, 194, 127, 0.5); 
-            box-shadow: 0 6px 18px rgba(243, 156, 18, 0.4); 
-        }
-        .weekday-order-block { 
-            background: linear-gradient(135deg, #3498db, #2980b9); 
-            border-color: rgba(116, 235, 213, 0.4); 
-            box-shadow: 0 6px 18px rgba(52, 152, 219, 0.4); 
-        }
+        .weekend-order-block { background: linear-gradient(135deg, #f39c12, #e67e22); border-color: rgba(240, 194, 127, 0.5); box-shadow: 0 6px 18px rgba(243, 156, 18, 0.4); }
+        .weekday-order-block { background: linear-gradient(135deg, #3498db, #2980b9); border-color: rgba(116, 235, 213, 0.4); box-shadow: 0 6px 18px rgba(52, 152, 219, 0.4); }
         .weekend-order-block:active, .weekday-order-block:active { transform: scale(0.98); }
         
-        .weekend-title, .weekday-title { 
-            font-size: 1.2em; 
-            font-weight: 900; 
-            color: #fff; 
-            text-transform: uppercase; 
-            margin-bottom: 6px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-        .click-badge { 
-            display: inline-block; 
-            background: #e74c3c; 
-            color: white; 
-            font-size: 0.8em; 
-            font-weight: 900; 
-            padding: 5px 14px; 
-            border-radius: 15px; 
-            margin: 4px 0; 
-            border: 2px solid #fff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
-        .weekday-badge { 
-            display: inline-block; 
-            background: #f0c27f; 
-            color: #000; 
-            font-size: 0.8em; 
-            font-weight: 900; 
-            padding: 5px 14px; 
-            border-radius: 15px; 
-            margin: 4px 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-        .payment-info {
-            font-size: 0.85em;
-            font-weight: 700;
-            color: rgba(255,255,255,0.95);
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 1px solid rgba(255,255,255,0.3);
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        .weekend-title, .weekday-title { font-size: 1.2em; font-weight: 900; color: #fff; text-transform: uppercase; margin-bottom: 6px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .click-badge { display: inline-block; background: #e74c3c; color: white; font-size: 0.8em; font-weight: 900; padding: 5px 14px; border-radius: 15px; margin: 4px 0; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+        .weekday-badge { display: inline-block; background: #f0c27f; color: #000; font-size: 0.8em; font-weight: 900; padding: 5px 14px; border-radius: 15px; margin: 4px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .payment-info { font-size: 0.85em; font-weight: 700; color: rgba(255,255,255,0.95); margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.3); text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+        
+        .weekday-time-hint {
+            font-size: 0.85em; font-weight: 700; color: #ffd89b; margin-top: 8px;
+            padding-top: 8px; border-top: 1px solid rgba(255, 216, 155, 0.2);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; gap: 6px;
         }
 
-        .glass { 
-            background: rgba(22, 33, 62, 0.5); border: 1px solid rgba(116, 235, 213, 0.2); border-radius: 14px; padding: 14px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        .time-notice {
+            background: rgba(240, 194, 127, 0.1); border: 1px solid rgba(240, 194, 127, 0.4);
+            border-radius: 10px; padding: 10px 12px; text-align: center; font-size: 0.85em;
+            font-weight: 600; color: #ffd89b; margin: 0 10px 12px 10px;
+            display: flex; align-items: center; justify-content: center; gap: 6px; line-height: 1.4;
         }
+        .time-notice strong { color: #f0c27f; }
+
+        .glass { background: rgba(22, 33, 62, 0.5); border: 1px solid rgba(116, 235, 213, 0.2); border-radius: 14px; padding: 14px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); }
         .section-title { font-size: 1em; font-weight: 700; margin-bottom: 12px; color: #f0c27f; display: flex; justify-content: space-between; align-items: center; }
 
         .product-grid { display: flex; flex-direction: column; gap: 12px; }
         .product-card {
             background: linear-gradient(135deg, rgba(15, 52, 96, 0.8), rgba(22, 33, 62, 0.8));
-            border: 2px solid rgba(116, 235, 213, 0.15);
-            border-radius: 14px;
-            padding: 14px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
+            border: 2px solid rgba(116, 235, 213, 0.15); border-radius: 14px; padding: 14px;
+            display: flex; align-items: center; gap: 14px; transition: all 0.3s ease; cursor: pointer; position: relative;
         }
-        .product-card.active-selection {
-            border-color: #f0c27f;
-            box-shadow: 0 0 20px rgba(240, 194, 127, 0.3);
-            transform: scale(1.02);
-        }
-        .highlight-card {
-            background: linear-gradient(135deg, rgba(26, 58, 114, 0.9), rgba(42, 82, 152, 0.9));
-            border-color: rgba(56, 239, 125, 0.3);
-        }
-        .highlight-card.active-selection {
-            border-color: #38ef7d;
-            box-shadow: 0 0 20px rgba(56, 239, 125, 0.4);
-        }
+        .product-card.active-selection { border-color: #f0c27f; box-shadow: 0 0 20px rgba(240, 194, 127, 0.3); transform: scale(1.02); }
+        .highlight-card { background: linear-gradient(135deg, rgba(26, 58, 114, 0.9), rgba(42, 82, 152, 0.9)); border-color: rgba(56, 239, 125, 0.3); }
+        .highlight-card.active-selection { border-color: #38ef7d; box-shadow: 0 0 20px rgba(56, 239, 125, 0.4); }
 
-        .pc-image-box {
-            width: 65px; height: 65px; flex-shrink: 0; background: rgba(0,0,0,0.3); border-radius: 10px; position: relative; display: flex; align-items: center; justify-content: center;
-        }
+        .pc-image-box { width: 65px; height: 65px; flex-shrink: 0; background: rgba(0,0,0,0.3); border-radius: 10px; position: relative; display: flex; align-items: center; justify-content: center; }
         .pc-image-box img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
-        .pc-badge {
-            position: absolute; top: -6px; right: -6px; background: #e74c3c; color: white; font-size: 0.55em; font-weight: 900; padding: 3px 8px; border-radius: 12px; text-transform: uppercase; box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
+        .pc-badge { position: absolute; top: -6px; right: -6px; background: #e74c3c; color: white; font-size: 0.55em; font-weight: 900; padding: 3px 8px; border-radius: 12px; text-transform: uppercase; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
         .pc-badge.best-value { background: #38ef7d; color: #000; }
 
         .pc-info { flex: 1; min-width: 0; }
@@ -249,9 +145,7 @@
         .pc-price { font-size: 1.2em; font-weight: 900; color: #f0c27f; }
         .pc-price.big { font-size: 1.4em; color: #38ef7d; }
 
-        .pc-controls {
-            display: flex; align-items: center; background: rgba(0,0,0,0.3); border-radius: 22px; padding: 3px; border: 1px solid rgba(255,255,255,0.1);
-        }
+        .pc-controls { display: flex; align-items: center; background: rgba(0,0,0,0.3); border-radius: 22px; padding: 3px; border: 1px solid rgba(255,255,255,0.1); }
         .pc-btn-minus, .pc-btn-plus {
             width: 36px; height: 36px; border: none; background: transparent; color: #fff; font-size: 22px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; border-radius: 50%;
         }
@@ -262,9 +156,7 @@
         input, select, textarea { 
             width: 100%; padding: 14px 16px; margin-bottom: 10px; 
             border: 2px solid rgba(116, 235, 213, 0.25); border-radius: 10px; 
-            font-size: 18px; 
-            background: rgba(15, 52, 96, 0.5); color: #fff; -webkit-appearance: none;
-            font-weight: 500;
+            font-size: 18px; background: rgba(15, 52, 96, 0.5); color: #fff; -webkit-appearance: none; font-weight: 500;
         }
         input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.45); font-size: 16px; }
         input:focus, textarea:focus { outline: none; border-color: #74ebd5; background: rgba(15, 52, 96, 0.7); box-shadow: 0 0 12px rgba(116, 235, 213, 0.2); }
@@ -293,11 +185,8 @@
         .sticky-total-bar {
             position: fixed; bottom: 0; left: 0; right: 0;
             background: linear-gradient(to top, #1a1a2e, rgba(26, 26, 46, 0.98));
-            backdrop-filter: blur(12px);
-            border-top: 2px solid rgba(240, 194, 127, 0.4);
-            padding: 14px 16px;
-            z-index: 100;
-            display: flex; justify-content: space-between; align-items: center;
+            backdrop-filter: blur(12px); border-top: 2px solid rgba(240, 194, 127, 0.4);
+            padding: 14px 16px; z-index: 100; display: flex; justify-content: space-between; align-items: center;
             box-shadow: 0 -6px 24px rgba(0,0,0,0.6);
         }
         .st-label { font-size: 0.95em; color: rgba(255,255,255,0.8); font-weight: 600; }
@@ -349,9 +238,13 @@
         .calendar-btn.confirm { background: linear-gradient(135deg, #11998e, #38ef7d); color: #fff; box-shadow: 0 4px 12px rgba(17, 153, 142, 0.3); }
         .calendar-btn:disabled { opacity: 0.4; pointer-events: none; }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 15px; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(4px); }
         .modal-overlay.active { display: flex; }
-        .modal { background: linear-gradient(135deg, #1a1a2e, #16213e); border: 1px solid rgba(116, 235, 213, 0.3); border-radius: 16px; padding: 20px; max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); }
+        .modal-overlay.active .modal { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        
+        .modal { background: linear-gradient(135deg, #1a1a2e, #16213e); border: 1px solid rgba(116, 235, 213, 0.3); border-radius: 16px; padding: 20px; max-width: 360px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6); text-align: center; }
+        
         .star-rating { display: flex; gap: 10px; justify-content: center; margin: 12px 0; font-size: 1.8em; }
         .star { cursor: pointer; color: rgba(255,255,255,0.3); transition: color 0.2s; }
         .star.active { color: #f0c27f; }
@@ -415,14 +308,12 @@
             <div class="hero-title">❄️ Незамерзайка соседям</div>
             <div class="hero-subtitle">Новая Охта • Цветной город</div>
 
-            <!-- КОМПАКТНЫЕ СОЦ. КНОПКИ (СВЕРХУ) -->
             <div class="social-buttons-row">
                 <a href="https://t.me/nezamerzaikaSPB" target="_blank" class="social-btn tg">✈️ TG</a>
                 <a href="https://max.ru/channel_nezamerzaika_SPB" target="_blank" class="social-btn max">📨 Max</a>
                 <a href="tel:+79213838413" class="social-btn call">📞 Позвонить</a>
             </div>
 
-            <!-- НАВИГАЦИОННЫЕ ВКЛАДКИ -->
             <div class="nav-tabs">
                 <button class="nav-tab instruction" onclick="navigateTo('instructionPage')">📖 Как заказать</button>
                 <button class="nav-tab delivery" onclick="navigateTo('deliveryPage')">🚚 Доставка</button>
@@ -430,7 +321,6 @@
                 <button class="nav-tab reviews" onclick="navigateTo('reviewsPage')">⭐ Отзывы</button>
             </div>
 
-            <!-- КОМПАКТНЫЙ ВИДЖЕТ ПОГОДЫ -->
             <div class="weather-widget-custom">
                 <div class="weather-current-block">
                     <div class="weather-icon-large" id="wCurrentIcon"></div>
@@ -444,7 +334,6 @@
             </div>
         </div>
 
-        <!-- КНОПКИ ЗАКАЗА С ИНФОРМАЦИЕЙ ОБ ОПЛАТЕ -->
         <div class="order-blocks">
             <div class="weekend-order-block" onclick="openWeekendPage()">
                 <div class="weekend-title">🎉 Заказать на ВЫХОДНЫЕ</div>
@@ -455,6 +344,7 @@
                 <div class="weekday-title">📅 Заказать на БУДНИ</div>
                 <div class="weekday-badge">👇 ПРОКРУТИТЕ НИЖЕ</div>
                 <div class="payment-info">💵 Оплата наличными при получении</div>
+                <div class="weekday-time-hint">⏰ Выдача и доставка после 19:30</div>
             </div>
         </div>
 
@@ -515,6 +405,7 @@
 
         <div class="glass">
             <div class="section-title">📅 Шаг 3. Выберите ЖК и день</div>
+            <div class="time-notice">⏰ В будние дни самовывоз и доставка осуществляются <strong>после 19:30</strong></div>
             <div class="sms-buttons">
                 <div class="sms-block">
                     <div class="sms-block-title">🏢 НОВАЯ ОХТА</div>
@@ -536,8 +427,20 @@
         <div class="st-sum" id="totalDisplayNew">0 ₽</div>
     </div>
 
-    <div class="modal-overlay" id="reviewModal">
+    <!-- ВСПЛЫВАЮЩИЙ БАННЕР (МОДАЛЬНОЕ ОКНО) ДЛЯ БУДНЕЙ -->
+    <div class="modal-overlay" id="timeNoticeModal">
         <div class="modal">
+            <div style="font-size: 3.5em; margin-bottom: 10px; line-height: 1;">⏰</div>
+            <h3 style="color: #f0c27f; margin-bottom: 12px; font-size: 1.2em;">Обратите внимание!</h3>
+            <p style="font-size: 0.95em; line-height: 1.5; margin-bottom: 20px; color: rgba(255,255,255,0.9);">
+                В будние дни самовывоз и доставка незамерзайки осуществляются <strong style="color: #fff; font-size: 1.1em;">строго после 19:30</strong>.
+            </p>
+            <button class="modal-btn submit" style="width: 100%;" onclick="closeTimeNotice()">Понятно, спасибо!</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="reviewModal">
+        <div class="modal" style="text-align: left;">
             <div class="section-title" style="justify-content:center; margin-bottom:14px;">✍️ Оставить отзыв</div>
             <input type="text" id="reviewName" placeholder="Ваше имя" style="margin-bottom:10px;">
             <input type="text" id="reviewLocation" placeholder="Ваш ЖК (напр. Новая Охта)" style="margin-bottom:10px;">
@@ -596,7 +499,7 @@
                 <div class="instruction-step"><div class="step-number">1</div><div class="step-content"><div class="step-title">Выберите товар</div><div class="step-desc">Нажмите «+» на карточке товара. Карточка подсветится золотом — значит товар в корзине.</div></div></div>
                 <div class="instruction-step"><div class="step-number">2</div><div class="step-content"><div class="step-title">Заполните данные</div><div class="step-desc">Введите ваше имя и телефон. Крупные поля — не ошибётесь!</div></div></div>
                 <div class="instruction-step"><div class="step-number">3</div><div class="step-content"><div class="step-title">Выберите способ получения</div><div class="step-desc">Самовывоз (любое количество) или доставка (от 6 упаковок бесплатно).</div></div></div>
-                <div class="instruction-step"><div class="step-number">4</div><div class="step-content"><div class="step-title">Выберите ЖК и дату</div><div class="step-desc">Нажмите кнопку под нужным жилым комплексом и выберите день в календаре.</div></div></div>
+                <div class="instruction-step"><div class="step-number">4</div><div class="step-content"><div class="step-title">Выберите ЖК и дату</div><div class="step-desc">Нажмите кнопку под нужным жилым комплексом и выберите день в календаре. <br><strong style="color:#f0c27f;">Обратите внимание: в будни выдача после 19:30!</strong></div></div></div>
                 <div class="instruction-step"><div class="step-number">5</div><div class="step-content"><div class="step-title">Отправьте SMS</div><div class="step-desc">Готовый текст заказа скопируется автоматически. Просто нажмите «Отправить» в мессенджере.</div></div></div>
             </div>
         </div>
@@ -644,7 +547,7 @@
             <div class="total-block" id="weekendTotalDisplay" style="margin-top:12px; text-align:right; font-size:1.3em; font-weight:800; color:#f0c27f;">Итого: 0 ₽</div>
         </div>
         <div class="calendar-card">
-            <div class="calendar-nav"><button onclick="changeWeekendMonth(-1)"></button><div class="calendar-month" id="weekendCalendarMonth"></div><button onclick="changeWeekendMonth(1)">▶</button></div>
+            <div class="calendar-nav"><button onclick="changeWeekendMonth(-1)">◀</button><div class="calendar-month" id="weekendCalendarMonth"></div><button onclick="changeWeekendMonth(1)">▶</button></div>
             <div class="calendar-grid" id="weekendCalendarGrid"></div>
         </div>
         <div class="selected-info" id="weekendSelectedInfo">👆 Нажмите на Сб или Вс</div>
@@ -709,7 +612,6 @@
             showPage(validPages.includes(hash) ? hash : 'mainPage');
         });
 
-        // === УМНАЯ ФУНКЦИЯ ПОГОДЫ ===
         async function loadWeather() {
             const iconEl = document.getElementById('wCurrentIcon');
             const tempEl = document.getElementById('wCurrentTemp');
@@ -719,12 +621,9 @@
             try {
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 3000);
-                
                 const url = "https://api.open-meteo.com/v1/forecast?latitude=60.0493&longitude=30.4394&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=Europe/Moscow&forecast_days=4";
-                
                 const response = await fetch(url, { signal: controller.signal });
                 clearTimeout(timeoutId);
-                
                 if (!response.ok) throw new Error("API error");
                 const data = await response.json();
 
@@ -754,13 +653,7 @@
                 iconEl.textContent = '❄️';
                 tempEl.textContent = '—';
                 descEl.textContent = 'Мурино / СПб';
-                forecastEl.innerHTML = `
-                    <div style="grid-column: 1 / -1;">
-                        <a href="https://yandex.ru/pogoda/murino" target="_blank" class="yandex-weather-btn">
-                            🌤️ Яндекс.Погода
-                        </a>
-                    </div>
-                `;
+                forecastEl.innerHTML = `<div style="grid-column: 1 / -1;"><a href="https://yandex.ru/pogoda/murino" target="_blank" class="yandex-weather-btn">🌤️ Яндекс.Погода</a></div>`;
             }
         }
 
@@ -771,7 +664,7 @@
             if (code >= 51 && code <= 67) return '🌧️';
             if (code >= 71 && code <= 77) return '❄️';
             if (code >= 80 && code <= 82) return '🌧️';
-            if (code >= 85 && code <= 86) return '️';
+            if (code >= 85 && code <= 86) return '🌨️';
             if (code >= 95) return '⛈️';
             return '🌤️';
         }
@@ -899,9 +792,28 @@
             if (!name.value.trim()) return showError(name);
             if (phone.value.length < 18) return showError(phone);
             if (document.querySelector('input[name="delivery-method"]:checked').value === 'delivery' && (!addr.value.trim() || cart[2] < MIN_DELIVERY)) return showError(addr);
-            currentLocation = location; selectedDate = null; currentMonth = new Date().getMonth(); currentYear = new Date().getFullYear();
-            navigateTo('calendarPage'); renderCalendar(); updateSelectedInfo();
+            
+            currentLocation = location; 
+            selectedDate = null; 
+            currentMonth = new Date().getMonth(); 
+            currentYear = new Date().getFullYear();
+            navigateTo('calendarPage'); 
+            renderCalendar(); 
+            updateSelectedInfo();
+            
+            // Показываем всплывающий баннер, если он еще не был показан в этой сессии
+            if (!sessionStorage.getItem('weekdayTimeNoticeShown')) {
+                setTimeout(() => {
+                    document.getElementById('timeNoticeModal').classList.add('active');
+                }, 300);
+            }
         }
+
+        function closeTimeNotice() {
+            document.getElementById('timeNoticeModal').classList.remove('active');
+            sessionStorage.setItem('weekdayTimeNoticeShown', 'true');
+        }
+
         function renderCalendar() {
             const grid = document.getElementById('calendarGrid');
             document.getElementById('calendarMonth').innerText = `${monthNames[currentMonth]} ${currentYear}`;
@@ -938,7 +850,7 @@
             let items = '', total = 0;
             if (cart[1] > 0) { items += `• Незамерзайка: ${cart[1]} шт. — ${cart[1]*240}₽\n`; total += cart[1]*240; }
             if (cart[2] > 0) { items += `• Упаковка: ${cart[2]} уп. — ${cart[2]*950}₽\n`; total += cart[2]*950; }
-            const msg = `❄️ НЕЗАМЕРЗАЙКА (БУДНИ)\nЖК: ${currentLocation === 'novaya' ? 'НОВАЯ ОХТА' : 'ЦВЕТНОЙ ГОРОД'}\nИмя: ${name}\nТел: ${phone}\n ${addr}\n📅 ${selectedDate.getDate()}.${(selectedDate.getMonth()+1).toString().padStart(2,'0')}.${selectedDate.getFullYear()} (${weekdays[selectedDate.getDay()]})\n\n${items}Итого: ${total}₽\n💵 Наличные`;
+            const msg = `❄️ НЕЗАМЕРЗАЙКА (БУДНИ)\nЖК: ${currentLocation === 'novaya' ? 'НОВАЯ ОХТА' : 'ЦВЕТНОЙ ГОРОД'}\nИмя: ${name}\nТел: ${phone}\n📍 ${addr}\n📅 ${selectedDate.getDate()}.${(selectedDate.getMonth()+1).toString().padStart(2,'0')}.${selectedDate.getFullYear()} (${weekdays[selectedDate.getDay()]})\n⏰ Время: после 19:30\n\n${items}Итого: ${total}₽\n💵 Наличные`;
             sendOrder(msg, currentLocation === 'novaya' ? PHONE_NOVAYA : PHONE_TSVETNOY);
         }
 
